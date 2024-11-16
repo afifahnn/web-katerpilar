@@ -23,12 +23,27 @@
                     <i class="fa-solid fa-grip"></i>
                     <a href="">Dashboard</a>
                 </li>
-                <li><a href="">Kelola Data Customer</a></li>
-                <li><a href="">Kelola Data Transaksi</a></li>
-                <li><a href="">Kelola Data Barang</a></li>
-                <li><a href="">Kelola Keuangan</a></li>
+                <li>
+                    <i class="fa-solid fa-headset"></i>
+                    <a href="">Kelola Data Customer</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <a href="">Kelola Data Transaksi</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-toolbox"></i>
+                    <a href="">Kelola Data Barang</a>
+                </li>
+                <li>
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                    <a href="">Kelola Keuangan</a>
+                </li>
                 <hr>
-                <li><a href="">Profil</a></li>
+                <li>
+                    <i class="fa-solid fa-user"></i>
+                    <a href="">Profil</a>
+                </li>
             </ul>
         </div>
     </div>

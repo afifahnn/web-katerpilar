@@ -11,6 +11,13 @@ html, body {
     font-size: 14px;
 }
 
+.main-content {
+    margin-left: 16%;
+    padding: 15px;
+    background-color: rgba(255, 222, 77, 0.5);
+    height: 100%;
+}
+
 #side-bar {
     /* background-color: red; */
     position: fixed;
@@ -48,9 +55,8 @@ html, body {
 }
 
 .btn-sidebar ul li {
-    background-color: red;
     display: flex;
-    margin: 5px;
+    margin: 0px;
     align-items: center;
 }
 
@@ -70,9 +76,8 @@ html, body {
 
 .btn-sidebar ul li i {
     font-size: 20px;
-    background-color: green;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 
 .btn-sidebar hr {
@@ -82,4 +87,3 @@ html, body {
     opacity: 0.9;
     margin: 10px 0;
 }
-
