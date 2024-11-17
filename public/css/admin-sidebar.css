@@ -14,12 +14,11 @@ html, body {
 .main-content {
     margin-left: 16%;
     padding: 15px;
-    background-color: rgba(255, 222, 77, 0.5);
+    background-color: rgba(255, 222, 77, 0.1);
     height: 100%;
 }
 
 #side-bar {
-    /* background-color: red; */
     position: fixed;
     top: 0;
     left: 0;
@@ -58,6 +57,7 @@ html, body {
     display: flex;
     margin: 0px;
     align-items: center;
+    cursor: pointer;
 }
 
 .btn-sidebar ul li a {

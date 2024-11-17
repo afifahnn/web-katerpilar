@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('nama_customer');
             $table->text('alamat_customer');
             $table->integer('telp_customer');
-            $table->integer('email_customer');
-            $table->integer('password_customer');
+            $table->string('email_customer');
+            $table->string('password_customer');
             $table->timestamps();
         });
     }
