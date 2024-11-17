@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{-- @vite('resources/css/app.css') --}}
     <link rel="stylesheet" href="{{ asset('css/admin-sidebar.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Admin Katerpilar Outdoor</title>
 </head>
 <body>
@@ -18,31 +18,30 @@
         </div>
         <div class="btn-sidebar">
             <ul>
-                {{-- <li><a href="{{ url('/admin/jadwal') }}">Jadwal</a></li> --}}
                 <li>
                     <i class="fa-solid fa-grip"></i>
-                    <a href="">Dashboard</a>
+                    <a href="{{ url('/') }}">Dashboard</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-headset"></i>
-                    <a href="">Kelola Data Customer</a>
+                    <a href="{{ url('/kelola-customer') }}">Kelola Data Customer</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-money-bill-transfer"></i>
-                    <a href="">Kelola Data Transaksi</a>
+                    <a href="{{ url('/kelola-transaksi') }}">Kelola Data Transaksi</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-toolbox"></i>
-                    <a href="">Kelola Data Barang</a>
+                    <a href="{{ url('/kelola-barang') }}">Kelola Data Barang</a>
                 </li>
                 <li>
                     <i class="fa-solid fa-money-bill-trend-up"></i>
-                    <a href="">Kelola Keuangan</a>
+                    <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
                 </li>
                 <hr>
                 <li>
                     <i class="fa-solid fa-user"></i>
-                    <a href="">Profil</a>
+                    <a href="{{ url('/admin-profil') }}">Profil</a>
                 </li>
             </ul>
         </div>

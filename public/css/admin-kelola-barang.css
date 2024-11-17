@@ -1,0 +1,27 @@
+#kelola-barang {
+    font-size: 13px;
+}
+
+.col-deskripsi {
+    width: 210px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.pic-head,
+.pic-barang {
+    width: 100px;
+}
+
+.pic-barang {
+    width: 90px;
+    height: 90px;
+    background-color: #bbbbbb;
+    border-radius: 8px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #999;
+}
