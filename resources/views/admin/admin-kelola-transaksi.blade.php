@@ -46,11 +46,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($transaksi as $index => $item)
                     <tr>
-                        <td>1.</td>
-                        <td>15 November 2024</td>
-                        <td>16 November 2024</td>
-                        <td>Afifah</td>
+                        <td>{{ $loop->iteration }}.</td>
+                        <td>{{ $item->tgl_sewa }}</td>
+                        <td>{{ $item->tgl_kembali }}</td>
+                        <td>
+                            {{ $item->customer ? $item->customer->nama_customer : 'No Customer' }}
+                            {{-- @php
+                                $customer = $customer->firstWhere('id', $item->id);
+                            @endphp
+                            {{ $customer ? $customer->nama_customer : 'No Customer' }} --}}
+                        </td>
                         <td>Kemiri, Tulung</td>
                         <td>081548228138</td>
                         <td>Carier 30L</td>
@@ -64,6 +71,7 @@
                             </button>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -13,6 +13,7 @@ Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
 // Kelola Customer
 Route::get('/kelola-customer', [KelolaCustomerController::class, 'kelolacustomer'])->name('kelolacustomer');
+Route::get('admin/kelola-customer/create', [KelolaCustomerController::class, 'createCustomer'])->name('admin.kelola-customer.create');
 
 // Kelola Transaksi
 Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi'])->name('kelolatransaksi');

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('username_admin');
             $table->string('password_admin');
             $table->string('nama_admin');
-            $table->integer('telp_admin');
+            $table->string('telp_admin');
             $table->string('email_admin');
             $table->timestamps();
         });
