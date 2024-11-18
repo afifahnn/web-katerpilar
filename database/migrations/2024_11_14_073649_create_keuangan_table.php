@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('keuangan', function (Blueprint $table) {
             $table->id();
             $table->date('tgl_transaksi');
-            $table->string('jenis_transaksi');
+            $table->enum('jenis_transaksi', ['pemasukan', 'pengeluaran'])->default('pemasukan');
             $table->integer('nominal');
             $table->integer('laba');
             $table->text('deskripsi');

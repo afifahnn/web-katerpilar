@@ -51,16 +51,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($barang as $index => $barang)
                     <tr>
-                        <td>1.</td>
-                        <td class="pic-barang">gambar</td>
-                        <td>Tas</td>
-                        <td>Carier 30L</td>
-                        <td>6</td>
-                        <td>Rp 20.000</td>
-                        <td>Rp 25.000</td>
-                        <td>Rp 30.000</td>
-                        <td class="col-deskripsi">Tas Carier 30L dengan bahan kuat dan bagus bgt. Cocok untuk pendakian dan kegiatan outdoor lainnya.</td>
+                        <td>{{ $barang->id }}.</td>
+                        <td class="pic-barang">{{ $barang->gambar_barang }}</td>
+                        <td>{{ $barang->jenis }}</td>
+                        <td>{{ $barang->nama_barang }}</td>
+                        <td>{{ $barang->stok_barang }}</td>
+                        <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
+                        <td class="col-deskripsi">{{ $barang->deskripsi_barang }}</td>
                         <td class="btn-aksi">
                             <button class="btn-hapus">
                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
@@ -70,6 +71,7 @@
                             </button>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->date('tgl_sewa');
             $table->date('tgl_kembali');
+            $table->string('barang_sewa');
             $table->integer('jumlah_sewa');
             $table->integer('total_bayar');
             $table->timestamps();

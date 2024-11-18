@@ -24,8 +24,10 @@
                 </div>
             </div>
             <div class="btn-add">
-                <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px"></i>
-                <button>Tambah Data</button>
+                <a href="{{ route('admin.kelola-customer.create') }}">
+                    <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px"></i>
+                    <button>Tambah Data</button>
+                </a>
             </div>
         </div>
 
@@ -42,11 +44,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($customer as $index => $customer)
                     <tr>
-                        <td>1.</td>
-                        <td>Afifah Nur N</td>
-                        <td>Kemiri, Tulung</td>
-                        <td>081548228138</td>
+                        <td>{{ $customer->id }}.</td>
+                        <td>{{ $customer->nama_customer}}</td>
+                        <td>{{ $customer->alamat_customer}}</td>
+                        <td>{{ $customer->telp_customer}}</td>
                         <td class="btn-aksi">
                             <button class="btn-hapus">
                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
@@ -56,6 +59,7 @@
                             </button>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

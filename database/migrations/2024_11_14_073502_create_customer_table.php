@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_customer');
             $table->text('alamat_customer');
-            $table->integer('telp_customer');
+            $table->string('telp_customer');
             $table->string('email_customer');
             $table->string('password_customer');
             $table->timestamps();

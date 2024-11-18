@@ -18,28 +18,28 @@
         </div>
         <div class="btn-sidebar">
             <ul>
-                <li>
+                <li class="{{ Request::is('/') ? 'active' : '' }}">
                     <i class="fa-solid fa-grip"></i>
                     <a href="{{ url('/') }}">Dashboard</a>
                 </li>
-                <li>
+                <li class="{{ Request::is('kelola-customer') || Request::is('admin/kelola-customer/create') ? 'active' : '' }}">
                     <i class="fa-solid fa-headset"></i>
                     <a href="{{ url('/kelola-customer') }}">Kelola Data Customer</a>
                 </li>
-                <li>
+                <li class="{{ Request::is('kelola-transaksi') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-transfer"></i>
                     <a href="{{ url('/kelola-transaksi') }}">Kelola Data Transaksi</a>
                 </li>
-                <li>
+                <li class="{{ Request::is('kelola-barang') ? 'active' : '' }}">
                     <i class="fa-solid fa-toolbox"></i>
                     <a href="{{ url('/kelola-barang') }}">Kelola Data Barang</a>
                 </li>
-                <li>
+                <li class="{{ Request::is('kelola-keuangan') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
                 </li>
                 <hr>
-                <li>
+                <li class="{{ Request::is('admin-profil') ? 'active' : '' }}">
                     <i class="fa-solid fa-user"></i>
                     <a href="{{ url('/admin-profil') }}">Profil</a>
                 </li>
