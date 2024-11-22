@@ -15,7 +15,8 @@ html, body {
     margin-left: 16%;
     padding: 15px;
     background-color: rgba(255, 222, 77, 0.1);
-    height: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
 }
 
 #side-bar {

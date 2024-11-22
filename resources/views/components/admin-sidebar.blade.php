@@ -26,15 +26,15 @@
                     <i class="fa-solid fa-headset"></i>
                     <a href="{{ url('/kelola-customer') }}">Kelola Data Customer</a>
                 </li>
-                <li class="{{ Request::is('kelola-transaksi') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-transaksi') || Request::is('admin/kelola-transaksi/create') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-transfer"></i>
                     <a href="{{ url('/kelola-transaksi') }}">Kelola Data Transaksi</a>
                 </li>
-                <li class="{{ Request::is('kelola-barang') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-barang') || Request::is('admin/kelola-barang/create') ? 'active' : '' }}">
                     <i class="fa-solid fa-toolbox"></i>
                     <a href="{{ url('/kelola-barang') }}">Kelola Data Barang</a>
                 </li>
-                <li class="{{ Request::is('kelola-keuangan') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
                 </li>

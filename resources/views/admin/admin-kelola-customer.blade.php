@@ -23,12 +23,12 @@
                     <input type="text" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
                 </div>
             </div>
-            <div class="btn-add">
-                <a href="{{ route('admin.kelola-customer.create') }}">
+            <a href="{{ route('admin.kelola-customer.create') }}">
+                <div class="btn-add">
                     <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px"></i>
                     <button>Tambah Data</button>
-                </a>
-            </div>
+                </div>
+            </a>
         </div>
 
         {{-- tabel --}}

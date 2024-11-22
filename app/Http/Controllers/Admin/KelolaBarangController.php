@@ -13,4 +13,11 @@ class KelolaBarangController extends Controller
         $barang = Barang::all();
         return view('admin.admin-kelola-barang', ['barang' => $barang]);
     }
+
+    // create barang
+    public function createBarang()
+    {
+        $barang = Barang::all();
+        return view('admin.kelola-barang.create', ['barang' => $barang]);
+    }
 }
