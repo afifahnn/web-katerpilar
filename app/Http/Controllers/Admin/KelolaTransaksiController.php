@@ -18,4 +18,11 @@ class KelolaTransaksiController extends Controller
         $transaksi = Transaksi::with('customer')->get();
         return view('admin.admin-kelola-transaksi', compact('transaksi'));
     }
+
+    // create transaksi
+    public function createTransaksi()
+    {
+        $transaksi = Transaksi::all();
+        return view('admin.kelola-transaksi.create', ['transaksi' => $transaksi]);
+    }
 }

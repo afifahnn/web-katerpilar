@@ -1,0 +1,47 @@
+#create-barang {
+    font-size: 13px;
+    padding-bottom: 80px;
+}
+
+.container-price {
+    display: flex;
+    padding: 10px 0 0 20px;
+}
+
+.grid-container-2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+    padding: 10px 20px;
+}
+
+.input-data {
+    padding: 10px 20px;
+}
+
+.input-data input {
+    border-radius: 10px;
+    padding: 8px 15px;
+    width: 100%;
+    border: 1px solid #a7a7a7;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-data input:focus {
+    border-color: #696969;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#imagePreview {
+    margin-top: 10px;
+}
+
+#preview {
+    height: 200px;
+    width: 200px;
+    display: none;
+    border: 1px solid #b9b9b9;
+    border-radius: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1)
+}

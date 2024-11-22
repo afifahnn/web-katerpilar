@@ -78,10 +78,12 @@
                     <input type="text" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
                 </div>
             </div>
-            <div class="btn-add">
-                <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px"></i>
-                <button>Tambah Data</button>
-            </div>
+            <a href="{{ route('admin.kelola-keuangan.create') }}">
+                <div class="btn-add">
+                    <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px"></i>
+                    <button>Tambah Data</button>
+                </div>
+            </a>
         </div>
 
         {{-- tabel --}}

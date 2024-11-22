@@ -17,12 +17,15 @@ Route::get('admin/kelola-customer/create', [KelolaCustomerController::class, 'cr
 
 // Kelola Transaksi
 Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi'])->name('kelolatransaksi');
+Route::get('admin/kelola-transaksi/create', [KelolaTransaksiController::class, 'createTransaksi'])->name('admin.kelola-transaksi.create');
 
 // Kelola Barang
 Route::get('/kelola-barang', [KelolaBarangController::class, 'kelolabarang'])->name('kelolabarang');
+Route::get('admin/kelola-barang/create', [KelolaBarangController::class, 'createBarang'])->name('admin.kelola-barang.create');
 
 // Kelola Keuangan
 Route::get('/kelola-keuangan', [KelolaUangController::class, 'kelolakeuangan'])->name('kelolakeuangan');
+Route::get('admin/kelola-keuangan/create', [KelolaUangController::class, 'createKeuangan'])->name('admin.kelola-keuangan.create');
 
 // Profil Admin
 Route::get('/admin-profil', [AdminProfilController::class, 'adminprofil'])->name('adminprofil');
