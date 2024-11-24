@@ -16,23 +16,23 @@ class Admin extends Model
 
     protected $hidden = ['password_admin'];
 
-    public function barang()
-    {
-        return $this->hasMany(Barang::class, 'admin_id');
-    }
+    // public function barang()
+    // {
+    //     return $this->hasMany(Barang::class, 'admin_id');
+    // }
 
-    public function customer()
-    {
-        return $this->hasMany(Customer::class, 'admin_id');
-    }
+    // public function customer()
+    // {
+    //     return $this->hasMany(Customer::class, 'admin_id');
+    // }
 
-    public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class, 'admin_id');
-    }
+    // public function transaksi()
+    // {
+    //     return $this->hasMany(Transaksi::class, 'admin_id');
+    // }
 
-    public function keuangan()
-    {
-        return $this->hasMany(Keuangan::class, 'admin_id');
-    }
+    // public function keuangan()
+    // {
+    //     return $this->hasMany(Keuangan::class, 'admin_id');
+    // }
 }

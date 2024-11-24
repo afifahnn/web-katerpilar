@@ -4,16 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Keuangan extends Model
 {
     use HasFactory;
 
-    protected $table = 'keuangan';
-    protected $fillable = ['tgl_transaksi', 'jenis_transaksi', 'nominal', 'laba', 'deskripsi'];
+    // protected $table = 'keuangan';
+    protected $fillable = ['tgl_transaksi', 'jenis_transaksi', 'nominal', 'laba', 'deskripsi', 'transaksi_id'];
 
-    public function admin()
+    // public function admin()
+    // {
+    //     return $this->belongsTo(Admin::class, 'admin_id');
+    // }
+
+    public function transaksi(): BelongsTo
     {
-        return $this->belongsTo(Admin::class, 'admin_id');
+        return $this->belongsTo(Transaksi::class, 'transaksi_id');
     }
 }

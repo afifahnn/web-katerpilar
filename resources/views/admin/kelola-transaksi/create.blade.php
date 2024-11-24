@@ -102,7 +102,7 @@
             }
         });
 
-        // add barang
+        // add barang [CEK KEMBALI YAA NANTI]
         const addItemBtn = document.getElementById('addItemBtn');
         const selectBox = document.getElementById('inputGroupSelect04');
         const selectedItemsContainer = document.getElementById('selectedItems');

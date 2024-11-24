@@ -101,13 +101,26 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($keuangan as $index => $item)
                     <tr>
-                        <td>1.</td>
-                        <td>15 November 2024</td>
-                        <td>Pemasukan</td>
-                        <td>Rp 100.000</td>
-                        <td>Rp 3.000.000</td>
-                        <td class="col-deskripsi">Uang pemasukan sewa hari ini, dengan sewa barang yang banyak nih cuy.</td>
+                        <td>{{ $loop->iteration }}.</td>
+                        <td>
+                            @if ($item->transaksi)
+                                {{ $item->transaksi->tgl_sewa }}
+                            @else
+                                {{ $item->tgl_transaksi }}
+                            @endif
+                        </td>
+                        <td>{{ ucwords($item->jenis_transaksi) }}</td>
+                        <td>
+                            @if ($item->transaksi)
+                                Rp {{ number_format($item->transaksi->total_bayar, 0, ',', '.') }}
+                            @else
+                                Rp {{ number_format($item->nominal, 0, ',', '.') }}
+                            @endif
+                        </td>
+                        <td>Rp {{ number_format($item->laba, 0, ',', '.') }}</td>
+                        <td class="col-deskripsi">{{ $item->deskripsi }}</td>
                         <td class="btn-aksi">
                             <button class="btn-hapus">
                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
@@ -117,6 +130,7 @@
                             </button>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

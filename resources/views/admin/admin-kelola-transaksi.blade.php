@@ -44,6 +44,8 @@
                         <th>Alamat</th>
                         <th>Telp.</th>
                         <th scope="row" colspan="2">Barang Sewa</th>
+                        <th>Total Bayar</th>
+                        <th>Opsi Bayar</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -54,16 +56,14 @@
                         <td>{{ $item->tgl_sewa }}</td>
                         <td>{{ $item->tgl_kembali }}</td>
                         <td>
-                            {{ $item->customer ? $item->customer->nama_customer : 'No Customer' }}
-                            {{-- @php
-                                $customer = $customer->firstWhere('id', $item->id);
-                            @endphp
-                            {{ $customer ? $customer->nama_customer : 'No Customer' }} --}}
+                            {{ $item->customer->nama_customer }}
                         </td>
-                        <td>Kemiri, Tulung</td>
-                        <td>081548228138</td>
-                        <td>Carier 30L</td>
-                        <td>1</td>
+                        <td>{{ $item->customer->alamat_customer }}</td>
+                        <td>{{ $item->customer->telp_customer }}</td>
+                        <td>{{ $item->barang_sewa }}</td>
+                        <td>{{ $item->jumlah_sewa }}</td>
+                        <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                        <td>{{ ucwords($item->opsi_bayar) }}</td>
                         <td class="btn-aksi">
                             <button class="btn-hapus">
                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
