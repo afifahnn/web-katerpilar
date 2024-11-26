@@ -24,59 +24,62 @@
         </a>
 
         <div class="create-container">
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Nama Barang</div>
-                    <input placeholder="Nama Barang" required>
+            <form action="{{ route('admin.kelola-barang.store') }}" method="post">
+                @csrf
+                <div class="grid-container">
+                    <div class="input-container">
+                        <div class="content" for="nama_barang">Nama Barang</div>
+                        <input type="text" name="nama_barang" id="nama_barang" placeholder="Nama Barang" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="jenis">Jenis Barang</div>
+                        <input type="text" name="jenis" id="jenis" placeholder="Jenis Barang" required>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <div class="content">Jenis Barang</div>
-                    <input placeholder="Jenis Barang" required>
+                <div class="grid-container">
+                    <div class="input-container">
+                        <div class="content" for="stok_barang">Stok Barang</div>
+                        <input type="number" name="stok_barang" id="stok_barang" placeholder="Stok Barang" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="deskripsi_barang">Deskripsi</div>
+                        <input type="text" name="deskripsi_barang" id="deskripsi_barang" placeholder="Deskripsi" required>
+                    </div>
                 </div>
-            </div>
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Stok Barang</div>
-                    <input type="number" placeholder="Stok Barang" required>
+                <div class="container-price">
+                    <div class="input-container">
+                        <div class="content">Harga Sewa</div>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <div class="content">Deskripsi</div>
-                    <input placeholder="Deskripsi" required>
+                <div class="grid-container-2">
+                    <div class="input-container">
+                        <div class="content" for="harga_sewa1">1 Hari</div>
+                        <input type="text" name="harga_sewa1" id="harga_sewa1" class="currency-input" placeholder="Harga Sewa 1 Hari" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="harga_sewa2">2 Hari</div>
+                        <input type="text" name="harga_sewa2" id="harga_sewa2" class="currency-input" placeholder="Harga Sewa 2 Hari" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="harga_sewa3">3 Hari</div>
+                        <input type="text" name="harga_sewa3" id="harga_sewa3" class="currency-input" placeholder="Harga Sewa 3 Hari" required>
+                    </div>
                 </div>
-            </div>
-            <div class="container-price">
-                <div class="input-container">
-                    <div class="content">Harga Sewa</div>
+                <div class="input-data">
+                    <div class="content" for="gambar_barang">Gambar</div>
+                    <input type="file" name="gambar_barang" accept="image/*" required id="imageInput">
+                    <div id="imagePreview">
+                        <img id="preview" src="" alt="Preview Gambar">
+                    </div>
                 </div>
-            </div>
-            <div class="grid-container-2">
-                <div class="input-container">
-                    <div class="content">1 Hari</div>
-                    <input type="text" class="currency-input" placeholder="Harga Sewa 1 Hari" required>
-                </div>
-                <div class="input-container">
-                    <div class="content">2 Hari</div>
-                    <input type="text" class="currency-input" placeholder="Harga Sewa 2 Hari" required>
-                </div>
-                <div class="input-container">
-                    <div class="content">3 Hari</div>
-                    <input type="text" class="currency-input" placeholder="Harga Sewa 3 Hari" required>
-                </div>
-            </div>
-            <div class="input-data">
-                <div class="content">Gambar</div>
-                <input type="file" accept="image/*" required id="imageInput">
-                <div id="imagePreview">
-                    <img id="preview" src="" alt="Preview Gambar">
-                </div>
-            </div>
 
-            <div class="btn-add-create">
-                <div class="btn-add-data">
-                    <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
-                    <button>Tambah Data</button>
+                <div class="btn-add-create">
+                    <div class="btn-add-data">
+                        <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
+                        <button type="submit">Tambah Data</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
     </div>

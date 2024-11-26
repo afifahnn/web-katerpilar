@@ -39,6 +39,24 @@
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.input-data {
+    padding: 10px 20px;
+}
+
+.input-data input {
+    border-radius: 10px;
+    padding: 8px 15px;
+    width: 100%;
+    border: 1px solid #a7a7a7;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-data input:focus {
+    border-color: #696969;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .input-container input {
     border-radius: 10px;
     padding: 8px 15px;

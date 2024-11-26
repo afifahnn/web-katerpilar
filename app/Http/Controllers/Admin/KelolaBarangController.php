@@ -20,4 +20,23 @@ class KelolaBarangController extends Controller
         $barang = Barang::all();
         return view('admin.kelola-barang.create', ['barang' => $barang]);
     }
+
+    // store barang
+    public function storeBarang(Request $request)
+    {
+        $request->validate([
+            'gambar_barang' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'nama_barang' => 'required',
+            'stok_barang' => 'required|numeric',
+            'harga_sewa1' => 'required|numeric',
+            'harga_sewa2' => 'required|numeric',
+            'harga_sewa3' => 'required|numeric',
+            'deskripsi_barang' => 'required',
+            'jenis' => 'required',
+        ]);
+
+        Barang::create($request->all());
+
+        return redirect()->back()->with('success', 'Barang berhasil ditambahkan.');
+    }
 }

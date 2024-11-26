@@ -46,7 +46,7 @@
                 <tbody>
                     @foreach($customer as $index => $customer)
                     <tr>
-                        <td>{{ $customer->id }}.</td>
+                        <td>{{ $loop->iteration }}.</td>
                         <td>{{ $customer->nama_customer}}</td>
                         <td>{{ $customer->alamat_customer}}</td>
                         <td>{{ $customer->telp_customer}}</td>
