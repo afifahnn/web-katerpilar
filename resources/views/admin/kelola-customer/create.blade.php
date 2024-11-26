@@ -23,33 +23,30 @@
         </a>
 
         <div class="create-container">
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Nama</div>
-                    <input placeholder="Nama" required>
+            <form action="{{ route('admin.kelola-customer.store') }}" method="post">
+                @csrf
+                <div class="input-data">
+                    <div class="content" for="nama_customer">Nama</div>
+                    <input type="text" name="nama_customer" id="nama_customer" placeholder="Nama" required>
                 </div>
-                <div class="input-container">
-                    <div class="content">Nomor Telepon</div>
-                    <input placeholder="e.g. 081234567890" required>
+                <div class="grid-container">
+                    <div class="input-container">
+                        <div class="content" for="alamat_customer">Alamat</div>
+                        <input type="text" name="alamat_customer" id="alamat_customer" placeholder="Alamat" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="telp_customer">Nomor Telepon</div>
+                        <input type="text" name="telp_customer" id="telp_customer" placeholder="e.g. 081234567890" required>
+                    </div>
                 </div>
-            </div>
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Alamat</div>
-                    <input placeholder="Alamat" required>
-                </div>
-                <div class="input-container">
-                    <div class="content">Email</div>
-                    <input placeholder="Email" required>
-                </div>
-            </div>
 
-            <div class="btn-add-create">
-                <div class="btn-add-data">
-                    <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
-                    <button>Tambah Data</button>
+                <div class="btn-add-create">
+                    <div class="btn-add-data">
+                        <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
+                        <button type="submit">Tambah Data</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
     </div>

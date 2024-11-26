@@ -55,8 +55,10 @@
                 <tbody>
                     @foreach($barang as $index => $barang)
                     <tr>
-                        <td>{{ $barang->id }}.</td>
-                        <td class="pic-barang">{{ $barang->gambar_barang }}</td>
+                        <td>{{ $loop->iteration }}.</td>
+                        <td class="pic-barang">
+                            <img src="{{ asset($barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
+                        </td>
                         <td>{{ $barang->jenis }}</td>
                         <td>{{ $barang->nama_barang }}</td>
                         <td>{{ $barang->stok_barang }}</td>
