@@ -11,10 +11,13 @@ class KelolaUangController extends Controller
     public function kelolakeuangan()
     {
         $keuangan = Keuangan::with('transaksi')
-        ->join('transaksis', 'keuangans.transaksi_id', '=', 'transaksis.id')
-        ->orderBy('transaksis.tgl_sewa', 'asc')
-        ->orderBy('keuangans.tgl_transaksi', 'asc')
+        // ->join('transaksis', 'keuangans.transaksi_id', '=', 'transaksis.id')
+        // ->orderBy('transaksis.tgl_sewa', 'asc')
+        // ->orderBy('keuangans.tgl_transaksi', 'asc')
         ->get();
+
+        // dd($keuangan);
+
         return view('admin.admin-kelola-uang', compact('keuangan'));
     }
 

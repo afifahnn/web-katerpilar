@@ -51,12 +51,18 @@
                         <td>{{ $customer->alamat_customer}}</td>
                         <td>{{ $customer->telp_customer}}</td>
                         <td class="btn-aksi">
-                            <button class="btn-hapus">
-                                <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                            </button>
-                            <button class="btn-edit">
-                                <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                            </button>
+                            <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                </button>
+                            </form>
+                            <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
+                                <button type="submit" class="btn-edit">
+                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                </button>
+                            </a>
                         </td>
                     </tr>
                     @endforeach

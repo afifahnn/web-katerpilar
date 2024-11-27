@@ -13,11 +13,11 @@ return new class extends Migration
             $table->date('tgl_sewa');
             $table->date('tgl_kembali');
             $table->string('barang_sewa');
-            $table->integer('jumlah_sewa');
+            $table->integer('jumlah_sewa')->nullable();
             $table->integer('total_bayar');
             $table->enum('opsi_bayar', ['cash', 'non-cash'])->default('cash');
-            $table->unsignedBigInteger('customer_id')->unsigned();
-            $table->unsignedBigInteger('barang_id')->unsigned();
+            $table->unsignedBigInteger('customer_id')->nullable()->unsigned();
+            $table->unsignedBigInteger('barang_id')->nullable()->unsigned();
             $table->foreign('customer_id')->references('id')->on('customer')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('barang_id')->references('id')->on('barang')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
