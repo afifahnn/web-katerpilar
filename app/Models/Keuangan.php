@@ -10,7 +10,7 @@ class Keuangan extends Model
 {
     use HasFactory;
 
-    // protected $table = 'keuangan';
+    protected $table = 'keuangans';
     protected $fillable = ['tgl_transaksi', 'jenis_transaksi', 'nominal', 'laba', 'deskripsi', 'transaksi_id'];
 
     // public function admin()

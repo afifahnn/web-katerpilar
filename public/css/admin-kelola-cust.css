@@ -1,5 +1,6 @@
 #kelola-customer {
     font-size: 13px;
+    padding-bottom: 80px;
 }
 
 .kelola-cust-top {
@@ -130,7 +131,14 @@
 }
 
 .btn-aksi {
+    display: flex;
     text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 0;
+    outline: none;
+    background: none;
 }
 
 .btn-hapus, .btn-edit {

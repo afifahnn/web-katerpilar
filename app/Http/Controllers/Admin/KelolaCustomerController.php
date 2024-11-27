@@ -38,6 +38,37 @@ class KelolaCustomerController extends Controller
         // $customer->telp_customer = $request->input('telp_customer');
         // $customer->save();
 
-        return redirect()->back()->with('success', 'Customer berhasil ditambahkan.');
+        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil ditambahkan.');
+    }
+
+    // edit customer
+    public function editCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return view('admin.kelola-customer.edit', compact('customer'));
+    }
+
+    // update customer
+    public function updateCustomer(Request $request, $id)
+    {
+        $request->validate([
+            'nama_customer' => 'required',
+            'alamat_customer' => 'required',
+            'telp_customer' => 'required',
+        ]);
+
+        $customer = Customer::findOrFail($id);
+        $customer->update($request->all());
+
+        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil diperbarui.');
+    }
+
+    // delete customer
+    public function deleteCustomer($id)
+    {
+        $customer = Customer::findOrFail($id);
+        $customer->delete();
+
+        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil dihapus.');
     }
 }

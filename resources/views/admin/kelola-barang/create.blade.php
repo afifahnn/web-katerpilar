@@ -24,7 +24,7 @@
         </a>
 
         <div class="create-container">
-            <form action="{{ route('admin.kelola-barang.store') }}" method="post">
+            <form action="{{ route('admin.kelola-barang.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="grid-container">
                     <div class="input-container">

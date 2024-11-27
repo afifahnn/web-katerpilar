@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('keuangans', function (Blueprint $table) {
             $table->id();
-            $table->date('tgl_transaksi');
+            $table->date('tgl_transaksi')->nullable();
             $table->enum('jenis_transaksi', ['pemasukan', 'pengeluaran'])->default('pemasukan');
             $table->integer('nominal');
-            $table->integer('laba');
+            $table->integer('laba')->nullable();
+            $table->integer('omzet')->nullable();
             $table->text('deskripsi');
             $table->unsignedBigInteger('transaksi_id')->nullable()->unsigned();
             $table->foreign('transaksi_id')->references('id')->on('transaksis')->onUpdate('cascade')->onDelete('cascade');

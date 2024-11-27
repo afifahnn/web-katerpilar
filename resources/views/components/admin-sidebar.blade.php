@@ -22,19 +22,19 @@
                     <i class="fa-solid fa-grip"></i>
                     <a href="{{ url('/') }}">Dashboard</a>
                 </li>
-                <li class="{{ Request::is('kelola-customer') || Request::is('admin/kelola-customer/create') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-customer') || Request::is('admin/kelola-customer/create') || Request::is('admin/kelola-customer/*/edit') ? 'active' : '' }}">
                     <i class="fa-solid fa-headset"></i>
                     <a href="{{ url('/kelola-customer') }}">Kelola Data Customer</a>
                 </li>
-                <li class="{{ Request::is('kelola-transaksi') || Request::is('admin/kelola-transaksi/create') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-transaksi') || Request::is('admin/kelola-transaksi/create') || Request::is('admin/kelola-transaksi/*/edit') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-transfer"></i>
                     <a href="{{ url('/kelola-transaksi') }}">Kelola Data Transaksi</a>
                 </li>
-                <li class="{{ Request::is('kelola-barang') || Request::is('admin/kelola-barang/create') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-barang') || Request::is('admin/kelola-barang/create') || Request::is('admin/kelola-barang/*/edit') ? 'active' : '' }}">
                     <i class="fa-solid fa-toolbox"></i>
                     <a href="{{ url('/kelola-barang') }}">Kelola Data Barang</a>
                 </li>
-                <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') || Request::is('admin/kelola-keuangan/*/edit') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
                 </li>
