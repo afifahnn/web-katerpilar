@@ -1,5 +1,12 @@
 #kelola-trans {
     font-size: 13px;
+    padding-bottom: 80px;
+}
+
+.col-barang {
+    width: 140px;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .btn-logout {
@@ -25,4 +32,8 @@
 .btn-hapus:hover,
 .btn-edit:hover {
     opacity: 80%;
+}
+
+.data-table td.btn-aksi {
+    border: none;
 }

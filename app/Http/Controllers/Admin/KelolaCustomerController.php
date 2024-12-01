@@ -14,14 +14,14 @@ class KelolaCustomerController extends Controller
         return view('admin.admin-kelola-customer', ['customer' => $customer]);
     }
 
-    // create customer
+    // CREATE CUSTOMER
     public function createCustomer()
     {
         $customer = Customer::all();
         return view('admin.kelola-customer.create', ['customer' => $customer]);
     }
 
-    // store customer
+    // STORE CUSTOMER
     public function storeCustomer(Request $request)
     {
         $request->validate([
@@ -41,14 +41,14 @@ class KelolaCustomerController extends Controller
         return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil ditambahkan.');
     }
 
-    // edit customer
+    // EDIT CUSTOMER
     public function editCustomer($id)
     {
         $customer = Customer::findOrFail($id);
         return view('admin.kelola-customer.edit', compact('customer'));
     }
 
-    // update customer
+    // UPDATE CUSTOMER
     public function updateCustomer(Request $request, $id)
     {
         $request->validate([
@@ -63,7 +63,7 @@ class KelolaCustomerController extends Controller
         return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil diperbarui.');
     }
 
-    // delete customer
+    // DELETE CUSTOMER
     public function deleteCustomer($id)
     {
         $customer = Customer::findOrFail($id);

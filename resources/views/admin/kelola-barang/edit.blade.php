@@ -24,7 +24,7 @@
         </a>
 
         <div class="create-container">
-            <form action="{{ route('admin.kelola-barang.update', $barang->id) }}" method="post">
+            <form action="{{ route('admin.kelola-barang.update', $barang->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="grid-container">
@@ -55,25 +55,30 @@
                 <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="harga_sewa1">1 Hari</div>
-                        <input type="text" name="harga_sewa1" id="harga_sewa1" class="currency-input" value="{{ $barang->harga_sewa1 }}" required>
+                        <input type="text" name="harga_sewa1" id="harga_sewa1" value="{{ $barang->harga_sewa1 }}" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa2">2 Hari</div>
-                        <input type="text" name="harga_sewa2" id="harga_sewa2" class="currency-input" value="{{ $barang->harga_sewa2 }}" required>
+                        <input type="text" name="harga_sewa2" id="harga_sewa2" value="{{ $barang->harga_sewa2 }}" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa3">3 Hari</div>
-                        <input type="text" name="harga_sewa3" id="harga_sewa3" class="currency-input" value="{{ $barang->harga_sewa3 }}" required>
+                        <input type="text" name="harga_sewa3" id="harga_sewa3" value="{{ $barang->harga_sewa3 }}" required>
                     </div>
                 </div>
                 <div class="input-data">
                     <div class="content" for="gambar_barang">Gambar</div>
-                    <input type="file" name="gambar_barang" accept="image/*" required id="imageInput">
+                    <input type="file" name="gambar_barang" accept="image/*" id="imageInput">
                     @if($barang->gambar_barang)
                         <div id="imagePreview">
-                            <img id="preview" src="{{ asset($barang->gambar_barang) }}" alt="{{ $barang->gambar_barang }}">
+                            <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
                         </div>
+                    @else
+                        <div>Tidak ada gambar saat ini.</div>
                     @endif
+                    <div id="imagePreviewImg">
+                        <img id="preview" src="" alt="Preview Gambar">
+                    </div>
                 </div>
 
                 <div class="btn-add-create">
@@ -84,4 +89,39 @@
             </form>
         </div>
     </div>
+
+    {{-- JAVASCRIPT --}}
+    <script>
+        // PREVIEW GAMBAR JIKA INPUT
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewImg = document.getElementById('imagePreviewImg');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                // Saat file selesai dibaca
+                reader.onload = function (e) {
+                    // Tampilkan preview gambar baru
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    imagePreviewImg.style.display = 'block';
+
+                    // Sembunyikan gambar sebelumnya (jika ada)
+                    imagePreview.style.display = 'none';
+                };
+
+                // Membaca file yang diupload sebagai data URL
+                reader.readAsDataURL(file);
+            } else {
+                // Jika tidak ada file yang dipilih, tampilkan gambar sebelumnya lagi
+                preview.src = '';
+                imagePreviewImg.style.display = 'none';
+                imagePreview.style.display = 'block';
+            }
+        });
+    </script>
 @endsection

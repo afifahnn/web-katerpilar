@@ -54,15 +54,18 @@
                 <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="harga_sewa1">1 Hari</div>
-                        <input type="text" name="harga_sewa1" id="harga_sewa1" class="currency-input" placeholder="Harga Sewa 1 Hari" required>
+                        <input type="text" id="harga_sewa1_display" class="currency-input" placeholder="Harga Sewa 1 Hari" required>
+                        <input type="hidden" name="harga_sewa1" id="harga_sewa1">
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa2">2 Hari</div>
-                        <input type="text" name="harga_sewa2" id="harga_sewa2" class="currency-input" placeholder="Harga Sewa 2 Hari" required>
+                        <input type="text" id="harga_sewa2_display" class="currency-input" placeholder="Harga Sewa 2 Hari" required>
+                        <input type="hidden" name="harga_sewa2" id="harga_sewa2">
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa3">3 Hari</div>
-                        <input type="text" name="harga_sewa3" id="harga_sewa3" class="currency-input" placeholder="Harga Sewa 3 Hari" required>
+                        <input type="text" id="harga_sewa3_display" class="currency-input" placeholder="Harga Sewa 3 Hari" required>
+                        <input type="hidden" name="harga_sewa3" id="harga_sewa3">
                     </div>
                 </div>
                 <div class="input-data">
@@ -86,9 +89,10 @@
 
     {{-- javascript --}}
     <script>
-        // format rupiah
-        function formatRupiah(value) {
-            const numberString = value.replace(/[^,\d]/g, '');
+        // FORMAT RUPIAH
+        // format rupiah untuk tampilan
+        function formatRupiah(angka, prefix = 'Rp ') {
+            const numberString = angka.replace(/[^,\d]/g, '');
             const split = numberString.split(',');
             const sisa = split[0].length % 3;
             let rupiah = split[0].substr(0, sisa);
@@ -98,30 +102,39 @@
                 const separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
-            return split[1] !== undefined ? 'Rp ' + rupiah + ',' + split[1] : 'Rp ' + rupiah;
+            return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
         }
 
+        // hapus format rupiah untuk mendapatkan angka mentah
+        function cleanRupiah(angka) {
+            return angka.replace(/\D/g, '');
+        }
+
+        // terapkan event listener pada semua input harga sewa
         document.querySelectorAll('.currency-input').forEach(input => {
-            input.addEventListener('input', function (e) {
+            input.addEventListener('focus', function () {
+                this.value = cleanRupiah(this.value);
+            });
+
+            input.addEventListener('blur', function () {
                 this.value = formatRupiah(this.value);
             });
 
-            input.addEventListener('keypress', function (e) {
-                const charCode = e.which || e.keyCode;
-                if (charCode < 48 || charCode > 57) {
-                    e.preventDefault();
-                }
-            });
-
-            input.addEventListener('paste', function (e) {
-                const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-                if (!/^\d+$/.test(clipboardData)) {
-                    e.preventDefault();
-                }
+            input.addEventListener('input', function (e) {
+                this.value = cleanRupiah(this.value);
             });
         });
 
-        // preview gambar
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelectorAll('.currency-input').forEach(input => {
+                const hiddenInput = document.getElementById(input.id.replace('_display', ''));
+                hiddenInput.value = cleanRupiah(input.value);
+            });
+        });
+
+
+
+        // PREVIEW GAMBAR
         const imageInput = document.getElementById('imageInput');
         const preview = document.getElementById('preview');
 
