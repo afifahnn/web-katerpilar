@@ -23,6 +23,7 @@ Route::delete('/kelola-customer/{id}', [KelolaCustomerController::class, 'delete
 Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi'])->name('kelolatransaksi');
 Route::get('admin/kelola-transaksi/create', [KelolaTransaksiController::class, 'createTransaksi'])->name('admin.kelola-transaksi.create');
 Route::post('/kelola-transaksi', [KelolaTransaksiController::class, 'storeTransaksi'])->name('admin.kelola-transaksi.store');
+Route::delete('/kelola-transaksi/{id}', [KelolaTransaksiController::class, 'deleteTransaksi'])->name('admin.kelola-transaksi.delete');
 
 // Kelola Barang
 Route::get('/kelola-barang', [KelolaBarangController::class, 'kelolabarang'])->name('kelolabarang');

@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->date('tgl_sewa');
             $table->date('tgl_kembali');
-            $table->string('barang_sewa');
-            $table->integer('jumlah_sewa')->nullable();
+            $table->json('barang_sewa');
+            $table->json('jumlah_sewa')->nullable();
             $table->integer('total_bayar');
             $table->enum('opsi_bayar', ['cash', 'non-cash'])->default('cash');
             $table->unsignedBigInteger('customer_id')->nullable()->unsigned();

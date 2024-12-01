@@ -15,15 +15,20 @@
     padding: 10px 20px;
 }
 
-#imagePreview {
+#imagePreview,
+#imagePreviewImg {
     margin-top: 10px;
 }
 
+#imagePreview img,
 #preview {
     height: 200px;
     width: 200px;
-    display: none;
     border: 1px solid #b9b9b9;
     border-radius: 10px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1)
+}
+
+#preview {
+    display: none;
 }

@@ -16,83 +16,139 @@ class KelolaTransaksiController extends Controller
         return view('admin.admin-kelola-transaksi', compact('transaksi'));
     }
 
-    // create transaksi
+    // CREATE TRANSAKSI
     public function createTransaksi()
     {
-        $transaksi = Transaksi::all();
+        $transaksi = Transaksi::with('customer')->get();
         $barang = Barang::all();
         return view('admin.kelola-transaksi.create', ['barang' => $barang, 'transaksi' => $transaksi]);
     }
 
-    // store transaksi
+    // STORE TRANSAKSI
     public function storeTransaksi(Request $request)
     {
-        $request->validate([
-            'nama_customer' => 'required',
-            'alamat_customer' => 'required',
-            'telp_customer' => 'required',
-            'tgl_sewa' => 'required',
-            'tgl_kembali' => 'required',
-            'barang_sewa' => 'required',
-            'jumlah_sewa' => 'required',
-            'total_bayar' => 'required',
-            'opsi_bayar' => 'required|in:Cash,Non-Cash'
-        ]);
+        try {
+            // dd($request->all());
 
-        // Customer::create($request->all());
-        // Transaksi::create($request->all());
+            $request->validate([
+                'nama_customer' => 'required',
+                'alamat_customer' => 'required',
+                'telp_customer' => 'required',
+                'tgl_sewa' => 'required',
+                'tgl_kembali' => 'required|date|after:tgl_sewa',
+                'barang_sewa' => 'required',
+                // 'barang_sewa' => 'required|array',
+                // 'barang_sewa.*' => 'required|string',
+                // 'jumlah_sewa' => 'required|array',
+                // 'jumlah_sewa.*' => 'required|integer|min:1',
+                // 'barang_sewa' => 'required|exists:barang,id',
+                'jumlah_sewa' => 'required',
+                'total_bayar' => 'required',
+                'opsi_bayar' => 'required|in:Cash,Non-Cash'
+            ]);
 
-        // Buat data customer
-        $customer = Customer::create([
-            'nama_customer' => $request->nama_customer,
-            'alamat_customer' => $request->alamat_customer,
-            'telp_customer' => $request->telp_customer,
-        ]);
+            // Customer::create($request->all());
+            // Transaksi::create($request->all());
 
-        // Menghitung total bayar
-        $barangIds = json_decode($request->barang_sewa);
-        $jumlahBarang = json_decode($request->jumlah_sewa);
-        $totalBayar = 0;
+            // Buat data customer
+            $customer = Customer::firstOrCreate(
+                ['telp_customer' => $request->telp_customer],
+                [
+                    'nama_customer' => $request->nama_customer,
+                    'alamat_customer' => $request->alamat_customer,
+                ]
+            );
 
-        foreach ($barangIds as $index => $barangId) {
-            $barang = Barang::find($barangId);
+            // Menghitung total bayar
+            // $barangIds = json_decode($request->barang_sewa);
+            // $jumlahBarang = json_decode($request->jumlah_sewa);
+            // $totalBayar = 0;
 
-            // Menentukan harga berdasarkan lama sewa
-            $tglSewa = new \DateTime($request->tgl_sewa);
-            $tglKembali = new \DateTime($request->tgl_kembali);
-            $lamaSewa = $tglSewa->diff($tglKembali)->days;
+            // foreach ($barangIds as $index => $barangId) {
+            //     $barang = Barang::find($barangId);
 
-            if ($lamaSewa <= 1) {
-                $hargaPerItem = $barang->harga_sewa1;
-            } elseif ($lamaSewa <= 3) {
-                $hargaPerItem = $barang->harga_sewa2;
-            } else {
-                $hargaPerItem = $barang->harga_sewa3;
+            //     // Menentukan harga berdasarkan lama sewa
+            //     $tglSewa = new \DateTime($request->tgl_sewa);
+            //     $tglKembali = new \DateTime($request->tgl_kembali);
+            //     $lamaSewa = $tglSewa->diff($tglKembali)->days;
+
+            //     if ($lamaSewa <= 1) {
+            //         $hargaPerItem = $barang->harga_sewa1;
+            //     } elseif ($lamaSewa <= 3) {
+            //         $hargaPerItem = $barang->harga_sewa2;
+            //     } else {
+            //         $hargaPerItem = $barang->harga_sewa3;
+            //     }
+
+            //     $totalBayar += $hargaPerItem * $jumlahBarang[$index];
+            // }
+
+            $barangSewa = isset($request->barang_sewa[0]) ? explode(',', $request->barang_sewa[0]) : [];
+            $jumlahSewa = isset($request->jumlah_sewa[0]) ? explode(',', $request->jumlah_sewa[0]) : [];
+            $jumlahSewa = array_map('intval', $jumlahSewa);
+
+            // dd($barangSewa, $jumlahSewa);
+            // dd($request->all());
+
+            // Buat data transaksi
+            Transaksi::create([
+                'customer_id' => $customer->id,
+                'tgl_sewa' => $request->tgl_sewa,
+                'tgl_kembali' => $request->tgl_kembali,
+                'barang_sewa' => json_encode($barangSewa),
+                'jumlah_sewa' => json_encode($jumlahSewa),
+                'opsi_bayar' => $request->opsi_bayar,
+                'total_bayar' => $request->total_bayar,
+                // 'total_bayar' => $totalBayar,
+            ]);
+
+            foreach ($barangSewa as $index => $namaBarang) {
+                $barang = Barang::where('nama_barang', $namaBarang)->first();
+                if ($barang) {
+                    $barang->stok_barang -= $jumlahSewa[$index];
+                    $barang->save();
+                }
             }
 
-            $totalBayar += $hargaPerItem * $jumlahBarang[$index];
+            // foreach ($barangSewa as $index => $barangId) {
+            //     $transaksi->barangSewa()->create([
+            //         'barang_id' => $barangId,
+            //         'jumlah' => $jumlahSewa[$index],
+            //     ]);
+            // }
+
+            // $barang = Barang::findOrFail($request->barang_sewa);
+            // $barang->stok_barang -= $request->jumlah_sewa;
+            // $barang->save();
+
+            return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil ditambahkan.');
+        }
+        catch (\Exception $e) {
+            \Log::error('Error saat menyimpan transaksi: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // DELETE TRANSAKSI
+    public function deleteTransaksi($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+        $barangSewa = json_decode($transaksi->barang_sewa, true); // Format: ['barang_id' => jumlah]
+
+        foreach ($barangSewa as $barangId => $jumlah) {
+            $barang = Barang::find($barangId);
+            if ($barang) {
+                $barang->stok_barang += $jumlah;
+                $barang->save();
+            }
+
+
+
         }
 
-        // Buat data transaksi
-        $transaksi = Transaksi::create([
-            'customer_id' => $customer->id,
-            'tgl_sewa' => $request->tgl_sewa,
-            'tgl_kembali' => $request->tgl_kembali,
-            'opsi_bayar' => $request->opsi_bayar,
-            'total_bayar' => $totalBayar, // Simpan total bayar
-        ]);
+        // Hapus transaksi
+        $transaksi->delete();
 
-        // Proses data barang dan jumlah
-        $barangSewa = json_decode($request->barang_sewa, true);
-        $jumlahSewa = json_decode($request->jumlah_sewa, true);
-
-        foreach ($barangSewa as $index => $barangId) {
-            $transaksi->barangSewa()->create([
-                'barang_id' => $barangId,
-                'jumlah' => $jumlahSewa[$index],
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Transaksi berhasil ditambahkan.');
+        return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil dihapus.');
     }
 }

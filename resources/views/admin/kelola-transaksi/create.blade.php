@@ -29,32 +29,50 @@
                 <div class="input-data">
                     <div class="content" for="nama_customer">Nama</div>
                     <input type="text" name="nama_customer" placeholder="Nama" required>
+                    @error('nama_customer')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
                 </div>
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="telp_customer">Nomor Telepon</div>
                         <input type="text" name="telp_customer" placeholder="e.g. 081234567890" required>
+                        @error('telp_customer')
+                            <small style="color: red;">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="input-container">
                         <div class="content" for="alamat_customer">Alamat</div>
                         <input type="text" name="alamat_customer" placeholder="Alamat" required>
+                        @error('alamat_customer')
+                            <small style="color: red;">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="tgl_sewa">Tanggal Sewa</div>
                         <input type="date" name="tgl_sewa" id="tanggalSewa" required>
+                        @error('tgl_sewa')
+                            <small style="color: red;">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="input-container">
                         <div class="content" for="tgl_kembali">Tanggal Kembali</div>
                         <input type="date" name="tgl_kembali" id="tanggalKembali" required>
+                        @error('tgl_kembali')
+                            <small style="color: red;">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
                 <div class="input-data">
                     <div class="input-container">
                         <div class="content" for="opsi_bayar">Opsi Bayar</div>
+                        @error('opsi_bayar')
+                            <small style="color: red;">{{ $message }}</small>
+                        @enderror
                         <div class="input-group">
-                            <select class="form-select" id="inputGroupSelect" aria-label="Example select with button addon">
+                            <select class="form-select" id="inputGroupSelect" name="opsi_bayar" required>
                                 <option value="" disabled selected>Pilih...</option>
                                 <option value="Cash">Cash</option>
                                 <option value="Non-Cash">Non-Cash</option>
@@ -66,37 +84,51 @@
                 {{-- barang yang disewa --}}
                 <div class="input-data">
                     <div class="content" for="barang_sewa">Barang yang Disewa </div>
+                    {{-- <input type="text" name="barang_sewa"> --}}
+                    @error('barang_sewa')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                    @error('jumlah_sewa')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
                     <div class="input-group">
-                        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                        <select class="form-select" id="inputGroupSelect04">
                         <option value="" disabled selected>Pilih...</option>
-                        @foreach($barang as $index => $item)
-                            <option value="{{ $item->id }}"
-                                data-harga-sewa1="{{ $item->harga_sewa1 }}"
-                                data-harga-sewa2="{{ $item->harga_sewa2 }}"
-                                data-harga-sewa3="{{ $item->harga_sewa3 }}">
-                                    {{ $item->nama_barang }}
-                            </option>
+                        @foreach ($barang as $index => $item)
+                            @if ($item->stok_barang == 0)
+                                <option value="{{ $item->nama_barang }}" disabled>
+                                    {{ $item->nama_barang }} (Stok : {{ $item->stok_barang }})
+                                </option>
+                            @else
+                                <option value="{{ $item->nama_barang }}">
+                                    {{ $item->nama_barang }} (Stok : {{ $item->stok_barang }})
+                                </option>
+                            @endif
                         @endforeach
                         </select>
                         <button class="btn btn-outline-secondary" type="button" id="addItemBtn">
                             <i class="fa-solid fa-plus" style="font-size: 20px;"></i>
                         </button>
                     </div>
+                    <input type="hidden" name="barang_sewa[]" id="barangSewaInput">
+                    <input type="hidden" name="jumlah_sewa[]" id="jumlahSewaInput">
                     <div id="selectedItems" style="margin-top: 10px;">
-                        <!-- Pilihan akan muncul di sini -->
+                        {{-- pilihan akan muncul di sini --}}
                     </div>
-                    <input type="hidden" name="barang_sewa" id="barangSewaInput">
-                    <input type="hidden" name="jumlah_sewa" id="jumlahSewaInput">
                 </div>
                 <div class="input-data">
                     <div class="content" for="total_bayar">Total Bayar</div>
-                    <div id="totalBayar" class="form-control" readonly>Rp 0</div>
+                    <input type="number" name="total_bayar">
+                    @error('total_bayar')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
+                    {{-- <div id="totalBayar" class="form-control" readonly>Rp 0</div> --}}
                 </div>
 
                 <div class="btn-add-create">
                     <div class="btn-add-data">
                         <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
-                        <button>Tambah Data</button>
+                        <button type="submit">Tambah Data</button>
                     </div>
                 </div>
             </form>
@@ -104,9 +136,9 @@
 
     </div>
 
-    {{-- javascript --}}
+    {{-- JAVASCRIPT --}}
     <script>
-        // tanggal sewa dan tanggal kembali
+        // TANGGAL SEWA DAN TANGGAL KEMBALI
         const tanggalSewa = document.getElementById('tanggalSewa');
         const tanggalKembali = document.getElementById('tanggalKembali');
 
@@ -128,63 +160,35 @@
             }
         });
 
-        // add barang
+        // ADD BARANG
         const addItemBtn = document.getElementById('addItemBtn');
         const selectBox = document.getElementById('inputGroupSelect04');
         const selectedItemsContainer = document.getElementById('selectedItems');
         const barangSewaInput = document.getElementById('barangSewaInput');
         const jumlahSewaInput = document.getElementById('jumlahSewaInput');
-        const totalBayarDisplay = document.getElementById('totalBayar');
         const selectedItems = {}; // Menyimpan data barang dan jumlah
 
         addItemBtn.addEventListener('click', function () {
             const selectedValue = selectBox.value;
-            const selectedText = selectBox.options[selectBox.selectedIndex].text;
+            const selectedText = selectBox.options[selectBox.selectedIndex]?.text;
 
-            if (selectedValue === "") {
+            if (selectedValue === "" || !selectedValue) {
                 alert('Pilih barang terlebih dahulu!');
                 return;
-            }
-
-            // Ambil harga sewa berdasarkan lama sewa (harga_sewa1, harga_sewa2, harga_sewa3)
-            const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex].dataset.harga_sewa1 || 0);
-            const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex].dataset.harga_sewa2 || 0);
-            const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex].dataset.harga_sewa3 || 0);
-
-            if (isNaN(hargaSewa1) || isNaN(hargaSewa2) || isNaN(hargaSewa3)) {
-                alert('Harga sewa tidak valid! Pastikan data barang memiliki harga.');
-                return;
-            }
-
-            // Tentukan harga berdasarkan lama sewa
-            let hargaPerItem = 0;
-            const tglSewa = new Date(document.getElementById('tanggalSewa').value);
-            const tglKembali = new Date(document.getElementById('tanggalKembali').value);
-            const lamaSewa = Math.ceil((tglKembali - tglSewa) / (1000 * 3600 * 24));  // Lama sewa dalam hari
-
-            if (lamaSewa <= 1) {
-                hargaPerItem = hargaSewa1;
-            } else if (lamaSewa <= 3) {
-                hargaPerItem = hargaSewa2;
-            } else {
-                hargaPerItem = hargaSewa3;
             }
 
             // Jika barang sudah ada, tambahkan jumlahnya
             if (selectedItems[selectedValue]) {
                 selectedItems[selectedValue].quantity += 1;
-                selectedItems[selectedValue].price = hargaPerItem;
 
                 // Update tampilan jumlah
                 const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
                 itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
-                itemElement.querySelector('.item-price').textContent = `Harga: Rp ${(selectedItems[selectedValue].quantity * hargaPerItem).toFixed(2)}`;
             } else {
                 // Tambahkan barang baru
                 selectedItems[selectedValue] = {
                     name: selectedText,
-                    quantity: 1,
-                    price: hargaPerItem
+                    quantity: 1
                 };
 
                 const itemDiv = document.createElement('div');
@@ -192,7 +196,6 @@
                 itemDiv.dataset.value = selectedValue;
                 itemDiv.innerHTML = `
                     ${selectedText} <span class="item-quantity">Jumlah: 1</span>
-                    <span class="item-price">Harga: Rp ${hargaPerItem.toFixed(2)}</span>
                 `;
 
                 const removeBtn = document.createElement('button');
@@ -209,7 +212,14 @@
             }
 
             updateHiddenInputs();
-            updateTotalBayar();
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            // Cek apakah ada barang yang ditambahkan
+            if (Object.keys(selectedItems).length === 0) {
+                alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
+                e.preventDefault(); // Mencegah form dikirim
+            }
         });
 
         // Fungsi untuk memperbarui input tersembunyi
@@ -222,50 +232,11 @@
                 jumlahSewa.push(data.quantity);
             }
 
-            barangSewaInput.value = JSON.stringify(barangSewa);
-            jumlahSewaInput.value = JSON.stringify(jumlahSewa);
+            barangSewaInput.value = barangSewa;
+            jumlahSewaInput.value = jumlahSewa;
         }
 
-        // Fungsi untuk menghitung total bayar
-        // function updateTotalBayar() {
-        //     let totalBayar = 0;
-        //     const tglSewa = new Date(document.getElementById('tanggalSewa').value);
-        //     const tglKembali = new Date(document.getElementById('tanggalKembali').value);
 
-        //     // Hitung lama sewa dalam hari
-        //     const lamaSewa = Math.ceil((tglKembali - tglSewa) / (1000 * 3600 * 24));
-
-        //     if (lamaSewa < 1) {
-        //         alert('Tanggal kembali tidak valid!');
-        //         return;
-        //     }
-
-        //     // Kalkulasi total bayar
-        //     for (const [id, data] of Object.entries(selectedItems)) {
-        //         totalBayar += data.price * data.quantity * lamaSewa;
-        //     }
-
-        //     totalBayarDisplay.textContent = `Rp ${totalBayar.toFixed(2)}`;
-        // }
-
-        function updateTotalBayar() {
-            let totalBayar = 0;
-
-            for (const [id, data] of Object.entries(selectedItems)) {
-                totalBayar += data.price * data.quantity;
-            }
-
-            totalBayarDisplay.textContent = `Rp ${totalBayar.toFixed(2)}`;
-        }
-
-        console.log('Tanggal Sewa:', tglSewa);
-        //     console.log('Tanggal Kembali:', tglKembali);
-        //     console.log('Lama Sewa:', lamaSewa);
-            // console.log('Harga Sewa 1:', hargaSewa1);
-            // console.log('Harga Sewa 2:', hargaSewa2);
-            // console.log('Harga Sewa 3:', hargaSewa3);
-            // console.log('Harga Per Item:', hargaPerItem);
-            console.log('Selected Items:', selectedItems);
 
     </script>
 @endsection

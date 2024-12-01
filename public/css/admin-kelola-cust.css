@@ -135,10 +135,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    border: none;
     padding: 0;
-    outline: none;
-    background: none;
 }
 
 .btn-hapus, .btn-edit {

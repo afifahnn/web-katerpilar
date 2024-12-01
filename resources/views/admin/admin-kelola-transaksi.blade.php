@@ -53,21 +53,25 @@
                     @foreach($transaksi as $index => $item)
                     <tr>
                         <td>{{ $loop->iteration }}.</td>
-                        <td>{{ $item->tgl_sewa }}</td>
-                        <td>{{ $item->tgl_kembali }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
                         <td>
                             {{ $item->customer->nama_customer }}
                         </td>
                         <td>{{ $item->customer->alamat_customer }}</td>
                         <td>{{ $item->customer->telp_customer }}</td>
-                        <td>{{ $item->barang_sewa }}</td>
+                        <td class="col-barang">{{ $item->barang_sewa }}</td>
                         <td>{{ $item->jumlah_sewa }}</td>
                         <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                         <td>{{ ucwords($item->opsi_bayar) }}</td>
                         <td class="btn-aksi">
-                            <button class="btn-hapus">
-                                <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                            </button>
+                            <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                </button>
+                            </form>
                             <button class="btn-edit">
                                 <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
                             </button>
