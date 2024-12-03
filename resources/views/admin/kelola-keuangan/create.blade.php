@@ -14,59 +14,63 @@
                 <button>Logout</button>
             </div>
         </div>
-        <a href="{{ url('/kelola-keuangan') }}">
-            <div class="btn-back">
+        <div class="btn-back">
+            <a href="{{ url('/kelola-keuangan') }}">
                 <button>
                     <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
                     Back
                 </button>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="create-container">
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Tanggal Transaksi</div>
-                    <input type="date" placeholder="dd/mm/yyyy" required>
-                </div>
-                <div class="input-container">
-                    <div class="content">Jenis Transaksi</div>
-                    <div class="input-group">
-                        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                          <option selected>Pilih...</option>
-                          <option value="1">Pemasukan</option>
-                          <option value="2">Pengeluaran</option>
-                        </select>
+            <form action="{{ route('admin.kelola-keuangan.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="grid-container">
+                    <div class="input-container">
+                        <div class="content" for="tgl_transaksi">Tanggal Transaksi</div>
+                        <input type="date" name="tgl_transaksi" placeholder="dd/mm/yyyy" required>
+                    </div>
+                    <div class="input-container">
+                        <div class="content">Jenis Transaksi</div>
+                        <div class="input-group">
+                            <select class="form-select" id="inputGroupSelect04" name="jenis_transaksi" required>
+                            <option disabled selected>Pilih...</option>
+                            <option value="Pemasukan">Pemasukan</option>
+                            <option value="Pengeluaran">Pengeluaran</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="grid-container">
-                <div class="input-container">
-                    <div class="content">Nominal</div>
-                    <input type="text" class="currency-input" placeholder="Nominal" required>
+                <div class="grid-container">
+                    <div class="input-container">
+                        <div class="content" for="nominal">Nominal</div>
+                        <input type="text" name="nominal" id="nominal_display" class="currency-input" placeholder="Nominal" required>
+                        <input type="hidden" name="nominal" id="nominal">
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="deskripsi">Deskripsi</div>
+                        <input type="text" name="deskripsi" placeholder="Deskripsi" required>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <div class="content">Deskripsi</div>
-                    <input placeholder="Deskripsi" required>
-                </div>
-            </div>
 
-            <div class="btn-add-create">
-                <div class="btn-add-data">
-                    <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
-                    <button>Tambah Data</button>
+                <div class="btn-add-create">
+                    <div class="btn-add-data">
+                        <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
+                        <button type="submit">Tambah Data</button>
+                    </div>
                 </div>
-            </div>
-
+            </form>
         </div>
 
     </div>
 
     {{-- javascript --}}
     <script>
-        // format rupiah
-        function formatRupiah(value) {
-            const numberString = value.replace(/[^,\d]/g, '');
+        // FORMAT RUPIAH
+        // format rupiah untuk tampilan
+        function formatRupiah(angka, prefix = 'Rp ') {
+            const numberString = angka.replace(/[^,\d]/g, '');
             const split = numberString.split(',');
             const sisa = split[0].length % 3;
             let rupiah = split[0].substr(0, sisa);
@@ -76,26 +80,33 @@
                 const separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
-            return split[1] !== undefined ? 'Rp ' + rupiah + ',' + split[1] : 'Rp ' + rupiah;
+            return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
         }
 
+        // hapus format rupiah untuk mendapatkan angka mentah
+        function cleanRupiah(angka) {
+            return angka.replace(/\D/g, '');
+        }
+
+        // terapkan event listener pada semua input
         document.querySelectorAll('.currency-input').forEach(input => {
-            input.addEventListener('input', function (e) {
+            input.addEventListener('focus', function () {
+                this.value = cleanRupiah(this.value);
+            });
+
+            input.addEventListener('blur', function () {
                 this.value = formatRupiah(this.value);
             });
 
-            input.addEventListener('keypress', function (e) {
-                const charCode = e.which || e.keyCode;
-                if (charCode < 48 || charCode > 57) {
-                    e.preventDefault();
-                }
+            input.addEventListener('input', function (e) {
+                this.value = cleanRupiah(this.value);
             });
+        });
 
-            input.addEventListener('paste', function (e) {
-                const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
-                if (!/^\d+$/.test(clipboardData)) {
-                    e.preventDefault();
-                }
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelectorAll('.currency-input').forEach(input => {
+                const hiddenInput = document.getElementById(input.id.replace('_display', ''));
+                hiddenInput.value = cleanRupiah(input.value);
             });
         });
     </script>

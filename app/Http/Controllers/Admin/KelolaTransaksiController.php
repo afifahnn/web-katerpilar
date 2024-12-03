@@ -12,14 +12,14 @@ class KelolaTransaksiController extends Controller
 {
     public function kelolatransaksi()
     {
-        $transaksi = Transaksi::with('customer')->get();
+        $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
         return view('admin.admin-kelola-transaksi', compact('transaksi'));
     }
 
     // CREATE TRANSAKSI
     public function createTransaksi()
     {
-        $transaksi = Transaksi::with('customer')->get();
+        $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
         $barang = Barang::all();
         return view('admin.kelola-transaksi.create', ['barang' => $barang, 'transaksi' => $transaksi]);
     }
@@ -129,21 +129,53 @@ class KelolaTransaksiController extends Controller
         }
     }
 
+    // EDIT TRANSAKSI
+    public function editTransaksi($id)
+    {
+        $transaksi = Transaksi::with('customer')->findOrFail($id);
+        $barang = Barang::all();
+        return view('admin.kelola-transaksi.edit', ['barang' => $barang, 'transaksi' => $transaksi]);
+    }
+
+    // UPDATE TRANSAKSI
+    public function updateTransaksi(Request $request, $id)
+    {
+        $request->validate([
+            'nama_customer' => 'required',
+            'alamat_customer' => 'required',
+            'telp_customer' => 'required',
+            'tgl_sewa' => 'required',
+            'tgl_kembali' => 'required|date|after:tgl_sewa',
+            'barang_sewa' => 'required',
+            // 'barang_sewa' => 'required|array',
+            // 'barang_sewa.*' => 'required|string',
+            // 'jumlah_sewa' => 'required|array',
+            // 'jumlah_sewa.*' => 'required|integer|min:1',
+            // 'barang_sewa' => 'required|exists:barang,id',
+            'jumlah_sewa' => 'required',
+            'total_bayar' => 'required',
+            'opsi_bayar' => 'required|in:Cash,Non-Cash'
+        ]);
+
+        $transaksi = Transaksi::findOrFail($id);
+        $transaksi->update($request->all());
+
+        return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil diperbarui.');
+    }
+
     // DELETE TRANSAKSI
     public function deleteTransaksi($id)
     {
         $transaksi = Transaksi::findOrFail($id);
-        $barangSewa = json_decode($transaksi->barang_sewa, true); // Format: ['barang_id' => jumlah]
+        $barangSewa = json_decode($transaksi->barang_sewa, true);
+        $jumlahSewa = json_decode($transaksi->jumlah_sewa, true);
 
-        foreach ($barangSewa as $barangId => $jumlah) {
-            $barang = Barang::find($barangId);
+        foreach ($barangSewa as $index => $namaBarang) {
+            $barang = Barang::where('nama_barang', $namaBarang)->first();
             if ($barang) {
-                $barang->stok_barang += $jumlah;
+                $barang->stok_barang += $jumlahSewa[$index];
                 $barang->save();
             }
-
-
-
         }
 
         // Hapus transaksi

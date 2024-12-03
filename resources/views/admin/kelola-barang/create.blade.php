@@ -14,14 +14,14 @@
                 <button>Logout</button>
             </div>
         </div>
-        <a href="{{ url('/kelola-barang') }}">
-            <div class="btn-back">
+        <div class="btn-back">
+            <a href="{{ url('/kelola-barang') }}">
                 <button>
                     <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
                     Back
                 </button>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="create-container">
             <form action="{{ route('admin.kelola-barang.store') }}" method="post" enctype="multipart/form-data">
@@ -131,8 +131,6 @@
                 hiddenInput.value = cleanRupiah(input.value);
             });
         });
-
-
 
         // PREVIEW GAMBAR
         const imageInput = document.getElementById('imageInput');

@@ -96,7 +96,7 @@ class KelolaBarangController extends Controller
             }
             // Simpan gambar baru
             $filePath = $request->file('gambar_barang')->store('images/barang', 'public');
-            $barang->gambar_barang = $filePath; // Pastikan kolom ini benar
+            $barang->gambar_barang = $filePath;
             $barang->save();
         }
 

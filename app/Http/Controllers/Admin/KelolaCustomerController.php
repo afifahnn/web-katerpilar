@@ -10,14 +10,14 @@ class KelolaCustomerController extends Controller
 {
     public function kelolacustomer()
     {
-        $customer = Customer::all();
+        $customer = Customer::orderBy('nama_customer', 'asc')->get();
         return view('admin.admin-kelola-customer', ['customer' => $customer]);
     }
 
     // CREATE CUSTOMER
     public function createCustomer()
     {
-        $customer = Customer::all();
+        $customer = Customer::orderBy('nama_customer', 'asc')->get();
         return view('admin.kelola-customer.create', ['customer' => $customer]);
     }
 
@@ -31,12 +31,6 @@ class KelolaCustomerController extends Controller
         ]);
 
         Customer::create($request->all());
-
-        // $customer = new Customer();
-        // $customer->nama_customer = $request->input('nama_customer');
-        // $customer->alamat_customer = $request->input('alamat_customer');
-        // $customer->telp_customer = $request->input('telp_customer');
-        // $customer->save();
 
         return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil ditambahkan.');
     }

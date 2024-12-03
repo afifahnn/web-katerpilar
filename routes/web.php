@@ -23,6 +23,8 @@ Route::delete('/kelola-customer/{id}', [KelolaCustomerController::class, 'delete
 Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi'])->name('kelolatransaksi');
 Route::get('admin/kelola-transaksi/create', [KelolaTransaksiController::class, 'createTransaksi'])->name('admin.kelola-transaksi.create');
 Route::post('/kelola-transaksi', [KelolaTransaksiController::class, 'storeTransaksi'])->name('admin.kelola-transaksi.store');
+Route::get('admin/kelola-transaksi/{id}/edit', [KelolaTransaksiController::class, 'editTransaksi'])->name('admin.kelola-transaksi.edit');
+Route::put('/kelola-transaksi/{id}', [KelolaTransaksiController::class, 'updateTransaksi'])->name('admin.kelola-transaksi.update');
 Route::delete('/kelola-transaksi/{id}', [KelolaTransaksiController::class, 'deleteTransaksi'])->name('admin.kelola-transaksi.delete');
 
 // Kelola Barang
@@ -36,6 +38,13 @@ Route::delete('/kelola-barang/{id}', [KelolaBarangController::class, 'deleteBara
 // Kelola Keuangan
 Route::get('/kelola-keuangan', [KelolaUangController::class, 'kelolakeuangan'])->name('kelolakeuangan');
 Route::get('admin/kelola-keuangan/create', [KelolaUangController::class, 'createKeuangan'])->name('admin.kelola-keuangan.create');
+Route::post('/kelola-keuangan', [KelolaUangController::class, 'storeKeuangan'])->name('admin.kelola-keuangan.store');
+Route::get('admin/kelola-keuangan/{id}/edit', [KelolaUangController::class, 'editKeuangan'])->name('admin.kelola-keuangan.edit');
+Route::put('/kelola-keuangan/{id}', [KelolaUangController::class, 'updateKeuangan'])->name('admin.kelola-keuangan.update');
+Route::delete('/kelola-keuangan/{id}', [KelolaUangController::class, 'deleteKeuangan'])->name('admin.kelola-keuangan.delete');
+
+// Laporan Keuangan
+Route::get('admin/kelola-keuangan/laporan-keuangan', [KelolaUangController::class, 'laporanKeuangan'])->name('admin.kelola-keuangan.laporan-keuangan');
 
 // Profil Admin
 Route::get('/admin-profil', [AdminProfilController::class, 'adminprofil'])->name('adminprofil');

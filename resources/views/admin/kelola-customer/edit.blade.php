@@ -14,14 +14,14 @@
                 <button>Logout</button>
             </div>
         </div>
-        <a href="{{ url('/kelola-customer') }}">
-            <div class="btn-back">
+        <div class="btn-back">
+            <a href="{{ url('/kelola-customer') }}">
                 <button>
                     <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
                     Back
                 </button>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="create-container">
             <form action="{{ route('admin.kelola-customer.update', $customer->id) }}" method="post">

@@ -1,0 +1,41 @@
+#laporan-keuangan {
+    font-size: 13px;
+    padding-bottom: 80px;
+}
+
+.container-tabel {
+    padding: 20px;
+}
+
+.btn-cetak {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-cetak button {
+    background-color: #4A59FF;
+    border-radius: 18px;
+    padding: 8px 20px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.btn-cetak button:hover {
+    opacity: 80%;
+}
+
+.data-table .th-total th {
+    background-color: #00A431;
+    color: #FFFFFF;
+    text-align: start;
+    font-size: 14px;
+}
+
+.data-table .th-total th {
+    padding: 6px 10px;
+    border: 1px solid #e8ffef;
+}
