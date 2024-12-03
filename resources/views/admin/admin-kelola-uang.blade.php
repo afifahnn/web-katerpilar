@@ -106,9 +106,9 @@
                         <td>{{ $loop->iteration }}.</td>
                         <td>
                             @if ($item->transaksi)
-                                {{ $item->transaksi->tgl_sewa }}
+                                {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
                             @else
-                                {{ $item->tgl_transaksi }}
+                                {{ \Carbon\Carbon::parse($item->tgl_transaksi)->format('d/m/Y') }}
                             @endif
                         </td>
                         <td>{{ ucwords($item->jenis_transaksi) }}</td>
@@ -125,9 +125,11 @@
                             <button class="btn-hapus">
                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                             </button>
-                            <button class="btn-edit">
-                                <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                            </button>
+                            <a href="{{ route('admin.kelola-keuangan.edit', $item->id) }}">
+                                <button class="btn-edit">
+                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                </button>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
@@ -135,5 +137,19 @@
             </table>
         </div>
 
+        {{-- Lihat Laporan Keuangan --}}
+        <div class="laporan-container">
+            <div class="lihat-laporan">Lihat Laporan Keuangan :</div>
+            <div class="btn-laporan">
+                <div class="btn-bulan">
+                    <button>Lihat per Bulan</button>
+                </div>
+                <a href="{{ route('admin.kelola-keuangan.laporan-keuangan') }}">
+                    <div class="btn-lap">
+                        <button>Lihat Keseluruhan</button>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 @endsection

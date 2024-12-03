@@ -14,14 +14,14 @@
                 <button>Logout</button>
             </div>
         </div>
-        <a href="{{ url('/kelola-transaksi') }}">
-            <div class="btn-back">
+        <div class="btn-back">
+            <a href="{{ url('/kelola-transaksi') }}">
                 <button>
                     <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
                     Back
                 </button>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="create-container">
             <form action="{{ route('admin.kelola-transaksi.store') }}" method="post" enctype="multipart/form-data">
@@ -29,48 +29,30 @@
                 <div class="input-data">
                     <div class="content" for="nama_customer">Nama</div>
                     <input type="text" name="nama_customer" placeholder="Nama" required>
-                    @error('nama_customer')
-                        <small style="color: red;">{{ $message }}</small>
-                    @enderror
                 </div>
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="telp_customer">Nomor Telepon</div>
                         <input type="text" name="telp_customer" placeholder="e.g. 081234567890" required>
-                        @error('telp_customer')
-                            <small style="color: red;">{{ $message }}</small>
-                        @enderror
                     </div>
                     <div class="input-container">
                         <div class="content" for="alamat_customer">Alamat</div>
                         <input type="text" name="alamat_customer" placeholder="Alamat" required>
-                        @error('alamat_customer')
-                            <small style="color: red;">{{ $message }}</small>
-                        @enderror
                     </div>
                 </div>
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="tgl_sewa">Tanggal Sewa</div>
                         <input type="date" name="tgl_sewa" id="tanggalSewa" required>
-                        @error('tgl_sewa')
-                            <small style="color: red;">{{ $message }}</small>
-                        @enderror
                     </div>
                     <div class="input-container">
                         <div class="content" for="tgl_kembali">Tanggal Kembali</div>
                         <input type="date" name="tgl_kembali" id="tanggalKembali" required>
-                        @error('tgl_kembali')
-                            <small style="color: red;">{{ $message }}</small>
-                        @enderror
                     </div>
                 </div>
                 <div class="input-data">
                     <div class="input-container">
                         <div class="content" for="opsi_bayar">Opsi Bayar</div>
-                        @error('opsi_bayar')
-                            <small style="color: red;">{{ $message }}</small>
-                        @enderror
                         <div class="input-group">
                             <select class="form-select" id="inputGroupSelect" name="opsi_bayar" required>
                                 <option value="" disabled selected>Pilih...</option>
@@ -84,13 +66,6 @@
                 {{-- barang yang disewa --}}
                 <div class="input-data">
                     <div class="content" for="barang_sewa">Barang yang Disewa </div>
-                    {{-- <input type="text" name="barang_sewa"> --}}
-                    @error('barang_sewa')
-                        <small style="color: red;">{{ $message }}</small>
-                    @enderror
-                    @error('jumlah_sewa')
-                        <small style="color: red;">{{ $message }}</small>
-                    @enderror
                     <div class="input-group">
                         <select class="form-select" id="inputGroupSelect04">
                         <option value="" disabled selected>Pilih...</option>
@@ -119,9 +94,6 @@
                 <div class="input-data">
                     <div class="content" for="total_bayar">Total Bayar</div>
                     <input type="number" name="total_bayar">
-                    @error('total_bayar')
-                        <small style="color: red;">{{ $message }}</small>
-                    @enderror
                     {{-- <div id="totalBayar" class="form-control" readonly>Rp 0</div> --}}
                 </div>
 

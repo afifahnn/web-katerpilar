@@ -14,14 +14,14 @@
                 <button>Logout</button>
             </div>
         </div>
-        <a href="{{ url('/kelola-barang') }}">
-            <div class="btn-back">
+        <div class="btn-back">
+            <a href="{{ url('/kelola-barang') }}">
                 <button>
                     <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
                     Back
                 </button>
-            </div>
-        </a>
+            </a>
+        </div>
 
         <div class="create-container">
             <form action="{{ route('admin.kelola-barang.update', $barang->id) }}" method="post" enctype="multipart/form-data">
@@ -55,15 +55,18 @@
                 <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="harga_sewa1">1 Hari</div>
-                        <input type="text" name="harga_sewa1" id="harga_sewa1" value="{{ $barang->harga_sewa1 }}" required>
+                        <input type="text" id="harga_sewa1_display" class="currency-input" value="{{ $barang->harga_sewa1 }}" required>
+                        <input type="hidden" name="harga_sewa1" id="harga_sewa1">
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa2">2 Hari</div>
-                        <input type="text" name="harga_sewa2" id="harga_sewa2" value="{{ $barang->harga_sewa2 }}" required>
+                        <input type="text" id="harga_sewa2_display" class="currency-input" value="{{ $barang->harga_sewa2 }}" required>
+                        <input type="hidden" name="harga_sewa2" id="harga_sewa2">
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa3">3 Hari</div>
-                        <input type="text" name="harga_sewa3" id="harga_sewa3" value="{{ $barang->harga_sewa3 }}" required>
+                        <input type="text" id="harga_sewa3_display" class="currency-input" value="{{ $barang->harga_sewa3 }}" required>
+                        <input type="hidden" name="harga_sewa3" id="harga_sewa3">
                     </div>
                 </div>
                 <div class="input-data">
@@ -92,6 +95,49 @@
 
     {{-- JAVASCRIPT --}}
     <script>
+        // FORMAT RUPIAH
+        // format rupiah untuk tampilan
+        function formatRupiah(angka, prefix = 'Rp ') {
+            const numberString = angka.replace(/[^,\d]/g, '');
+            const split = numberString.split(',');
+            const sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            const ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+            if (ribuan) {
+                const separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
+        }
+
+        // hapus format rupiah untuk mendapatkan angka mentah
+        function cleanRupiah(angka) {
+            return angka.replace(/\D/g, '');
+        }
+
+        // terapkan event listener pada semua input harga sewa
+        document.querySelectorAll('.currency-input').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.value = cleanRupiah(this.value);
+            });
+
+            input.addEventListener('blur', function () {
+                this.value = formatRupiah(this.value);
+            });
+
+            input.addEventListener('input', function (e) {
+                this.value = cleanRupiah(this.value);
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            document.querySelectorAll('.currency-input').forEach(input => {
+                const hiddenInput = document.getElementById(input.id.replace('_display', ''));
+                hiddenInput.value = cleanRupiah(input.value);
+            });
+        });
+        
         // PREVIEW GAMBAR JIKA INPUT
         const imageInput = document.getElementById('imageInput');
         const preview = document.getElementById('preview');

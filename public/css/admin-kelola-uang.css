@@ -1,5 +1,6 @@
 #kelola-keuangan {
     font-size: 13px;
+    padding-bottom: 80px;
 }
 
 .bar-recap {
@@ -77,4 +78,39 @@
     width: 210px;
     word-wrap: break-word;
     white-space: normal;
+}
+
+.laporan-container {
+    padding: 20px;
+}
+
+.lihat-laporan {
+    padding-bottom: 15px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.btn-laporan {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-bulan button,
+.btn-lap button {
+    background-color: #4A59FF;
+    border-radius: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #FFFFFF;
+}
+
+.btn-bulan button:hover,
+.btn-lap button:hover {
+    opacity: 80%;
 }

@@ -34,7 +34,7 @@
                     <i class="fa-solid fa-toolbox"></i>
                     <a href="{{ url('/kelola-barang') }}">Kelola Data Barang</a>
                 </li>
-                <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') || Request::is('admin/kelola-keuangan/*/edit') ? 'active' : '' }}">
+                <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') || Request::is('admin/kelola-keuangan/*/edit') || Request::is('admin/kelola-keuangan/laporan-keuangan') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
                 </li>

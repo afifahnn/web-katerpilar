@@ -72,9 +72,11 @@
                                     <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                                 </button>
                             </form>
-                            <button class="btn-edit">
-                                <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                            </button>
+                            <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
+                                <button class="btn-edit">
+                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                </button>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
