@@ -5,8 +5,13 @@ use App\Http\Controllers\Admin\KelolaBarangController;
 use App\Http\Controllers\Admin\KelolaCustomerController;
 use App\Http\Controllers\Admin\KelolaTransaksiController;
 use App\Http\Controllers\Admin\KelolaUangController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
+
+// Auth
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
 
 // Dashboard Admin
 Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');

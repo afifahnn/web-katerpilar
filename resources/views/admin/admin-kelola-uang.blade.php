@@ -122,9 +122,13 @@
                         <td>Rp {{ number_format($item->laba, 0, ',', '.') }}</td>
                         <td class="col-deskripsi">{{ $item->deskripsi }}</td>
                         <td class="btn-aksi">
-                            <button class="btn-hapus">
-                                <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                            </button>
+                            <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                </button>
+                            </form>
                             <a href="{{ route('admin.kelola-keuangan.edit', $item->id) }}">
                                 <button class="btn-edit">
                                     <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>

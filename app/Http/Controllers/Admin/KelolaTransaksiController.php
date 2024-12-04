@@ -21,7 +21,8 @@ class KelolaTransaksiController extends Controller
     {
         $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
         $barang = Barang::all();
-        return view('admin.kelola-transaksi.create', ['barang' => $barang, 'transaksi' => $transaksi]);
+        $customer = Customer::all();
+        return view('admin.kelola-transaksi.create', ['barang' => $barang, 'transaksi' => $transaksi, 'customer' => $customer]);
     }
 
     // STORE TRANSAKSI
@@ -134,7 +135,20 @@ class KelolaTransaksiController extends Controller
     {
         $transaksi = Transaksi::with('customer')->findOrFail($id);
         $barang = Barang::all();
-        return view('admin.kelola-transaksi.edit', ['barang' => $barang, 'transaksi' => $transaksi]);
+        $customer = Customer::all();
+
+        $barang_sewa = explode(',', $transaksi->barang_sewa);
+        $jumlah_sewa = explode(',', $transaksi->jumlah_sewa);
+
+        $data_sewa = [];
+        foreach ($barang_sewa as $key => $barangs) {
+            $data_sewa[] = [
+                'barang' => $barangs,
+                'jumlah' => $jumlah_sewa[$key] ?? 0,
+            ];
+        }
+
+        return view('admin.kelola-transaksi.edit', compact('transaksi', 'customer', 'barang', 'data_sewa'));
     }
 
     // UPDATE TRANSAKSI
@@ -147,11 +161,6 @@ class KelolaTransaksiController extends Controller
             'tgl_sewa' => 'required',
             'tgl_kembali' => 'required|date|after:tgl_sewa',
             'barang_sewa' => 'required',
-            // 'barang_sewa' => 'required|array',
-            // 'barang_sewa.*' => 'required|string',
-            // 'jumlah_sewa' => 'required|array',
-            // 'jumlah_sewa.*' => 'required|integer|min:1',
-            // 'barang_sewa' => 'required|exists:barang,id',
             'jumlah_sewa' => 'required',
             'total_bayar' => 'required',
             'opsi_bayar' => 'required|in:Cash,Non-Cash'
