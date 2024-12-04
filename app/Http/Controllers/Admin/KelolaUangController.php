@@ -66,6 +66,15 @@ class KelolaUangController extends Controller
         return redirect()->route('kelolakeuangan')->with('success', 'Keuangan berhasil diperbarui.');
     }
 
+    // DELETE KEUANGAN
+    public function deleteKeuangan($id)
+    {
+        $keuangan = Keuangan::findOrFail($id);
+        $keuangan->delete();
+
+        return redirect()->route('kelolakeuangan')->with('success', 'Keuangan berhasil dihapus.');
+    }
+
     // LAPORAN KEUANGAN
     public function laporanKeuangan()
     {

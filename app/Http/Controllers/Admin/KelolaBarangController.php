@@ -11,14 +11,14 @@ class KelolaBarangController extends Controller
 {
     public function kelolabarang()
     {
-        $barang = Barang::all();
+        $barang = Barang::orderBy('jenis', 'asc')->get();
         return view('admin.admin-kelola-barang', ['barang' => $barang]);
     }
 
     // CREATE BARANG
     public function createBarang()
     {
-        $barang = Barang::all();
+        $barang = Barang::orderBy('jenis', 'asc')->get();
         return view('admin.kelola-barang.create', ['barang' => $barang]);
     }
 
