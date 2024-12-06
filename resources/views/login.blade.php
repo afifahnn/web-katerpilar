@@ -13,29 +13,32 @@
 <body>
     <div id="login-container">
         <img src="{{ asset('img/bg.jpg') }}" class="img-bg">
-        <div class="login-card">
-            <div class="logo-head">
-                <img src="{{ asset('img/logo-white.png') }}" alt="Logo">
-                <span class="span-login">LOGIN</span>
-                <span class="span-text">Katerpilar Outdoor Gear & Rental</span>
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
+            <div class="login-card">
+                <div class="logo-head">
+                    <img src="{{ asset('img/logo-white.png') }}" alt="Logo">
+                    <span class="span-login">LOGIN</span>
+                    <span class="span-text">Katerpilar Outdoor Gear & Rental</span>
+                </div>
+                <div class="us-container">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                </div>
+                <div class="pwd-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password-input" name="password" placeholder="Password" required>
+                    <i class="fa-solid fa-eye" id="toggle-password"></i>
+                </div>
+                <div class="btn-login">
+                    <button type="submit">Login</button>
+                </div>
+                <div class="link-regis">
+                    <span>Belum punya akun?</span>
+                    <a href="{{ url('/register') }}">Register</a>
+                </div>
             </div>
-            <div class="us-container">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="pwd-container">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="password-input" placeholder="Password">
-                <i class="fa-solid fa-eye" id="toggle-password"></i>
-            </div>
-            <div class="btn-login">
-                <button>Login</button>
-            </div>
-            <div class="link-regis">
-                <span>Belum punya akun?</span>
-                <a href="{{ url('/register') }}">Register</a>
-            </div>
-        </div>
+        </form>
     </div>
 </body>
 

@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('username_admin');
-            $table->string('password_admin');
+            $table->string('username');
+            $table->string('password');
             $table->string('nama_admin');
             $table->string('telp_admin');
-            $table->string('email_admin');
+            // $table->string('email_admin');
             $table->timestamps();
         });
     }

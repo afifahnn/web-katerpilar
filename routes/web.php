@@ -6,15 +6,29 @@ use App\Http\Controllers\Admin\KelolaCustomerController;
 use App\Http\Controllers\Admin\KelolaTransaksiController;
 use App\Http\Controllers\Admin\KelolaUangController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\UserHomeController;
+use App\Http\Controllers\User\UserRentalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 
 // Auth
 Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'storeRegister']);
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/dashboard', [AdminController::class, 'login']);
+// });
+
+// User Home
+Route::get('/', [UserHomeController::class, 'userHome'])->name('user.home');
+
+// User Pesan
+Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.rental');
 
 // Dashboard Admin
-Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
 // Kelola Customer
 Route::get('/kelola-customer', [KelolaCustomerController::class, 'kelolacustomer'])->name('kelolacustomer');

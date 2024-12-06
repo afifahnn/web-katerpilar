@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class KelolaCustomerController extends Controller
 {
     public function kelolacustomer()
     {
-        $customer = Customer::orderBy('nama_customer', 'asc')->get();
+        $customer = Customer::with('transaksi')->orderBy('nama_customer', 'asc')->get();
         return view('admin.admin-kelola-customer', ['customer' => $customer]);
     }
 

@@ -18,9 +18,9 @@
         </div>
         <div class="btn-sidebar">
             <ul>
-                <li class="{{ Request::is('/') ? 'active' : '' }}">
+                <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-grip"></i>
-                    <a href="{{ url('/') }}">Dashboard</a>
+                    <a href="{{ url('/dashboard') }}">Dashboard</a>
                 </li>
                 <li class="{{ Request::is('kelola-customer') || Request::is('admin/kelola-customer/create') || Request::is('admin/kelola-customer/*/edit') ? 'active' : '' }}">
                     <i class="fa-solid fa-headset"></i>
