@@ -40,6 +40,7 @@
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>Telp.</th>
+                        <th>Transaksi</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -50,6 +51,13 @@
                         <td>{{ $customer->nama_customer}}</td>
                         <td>{{ $customer->alamat_customer}}</td>
                         <td>{{ $customer->telp_customer}}</td>
+                        <td>
+                            @if($customer->transaksi->isEmpty())
+                                0 kali
+                            @else
+                                {{ $customer->transaksi->count() }} kali
+                            @endif
+                        </td>
                         <td class="btn-aksi">
                             <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
                                 @csrf

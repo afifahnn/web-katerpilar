@@ -13,46 +13,49 @@
 <body>
     <div id="login-container">
         <img src="{{ asset('img/bg.jpg') }}" class="img-bg">
-        <div class="login-card">
-            <div class="logo-head">
-                <img src="{{ asset('img/logo-white.png') }}" alt="Logo">
-                <span class="span-login">REGISTER</span>
-                <span class="span-text">Katerpilar Outdoor Gear & Rental</span>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+            <div class="login-card">
+                <div class="logo-head">
+                    <img src="{{ asset('img/logo-white.png') }}" alt="Logo">
+                    <span class="span-login">REGISTER</span>
+                    <span class="span-text">Katerpilar Outdoor Gear & Rental</span>
+                </div>
+                <div class="us-container">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="us-container">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <input type="text" name="nama_customer" placeholder="Nama" required>
+                </div>
+                <div class="us-container">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="text" name="telp_customer" placeholder="Nomor Telepon" required>
+                </div>
+                <div class="us-container">
+                    <i class="fa-solid fa-address-book"></i>
+                    <input type="text" name="alamat_customer" placeholder="Alamat" required>
+                </div>
+                <div class="pwd-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password" id="password-input" placeholder="Password" required>
+                    <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
+                </div>
+                <div class="pwd-container">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" name="password_confirm" id="confirm-password-input" placeholder="Confirm Password" required>
+                    <i class="fa-solid fa-eye-slash" id="confirm-toggle-password"></i>
+                </div>
+                <div class="btn-login">
+                    <button type="submit">Register</button>
+                </div>
+                <div class="link-regis">
+                    <span>Sudah punya akun?</span>
+                    <a href="{{ url('/login') }}">Login</a>
+                </div>
             </div>
-            <div class="us-container">
-                <i class="fa-solid fa-envelope"></i>
-                <input type="text" placeholder="Email">
-            </div>
-            <div class="us-container">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" placeholder="Username">
-            </div>
-            <div class="us-container">
-                <i class="fa-solid fa-id-badge"></i>
-                <input type="text" placeholder="Nama">
-            </div>
-            <div class="us-container">
-                <i class="fa-solid fa-phone"></i>
-                <input type="text" placeholder="Nomor Telepon">
-            </div>
-            <div class="pwd-container">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="password-input" placeholder="Password">
-                <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
-            </div>
-            <div class="pwd-container">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="confirm-password-input" placeholder="Confirm Password">
-                <i class="fa-solid fa-eye-slash" id="confirm-toggle-password"></i>
-            </div>
-            <div class="btn-login">
-                <button>Register</button>
-            </div>
-            <div class="link-regis">
-                <span>Sudah punya akun?</span>
-                <a href="{{ url('/login') }}">Login</a>
-            </div>
-        </div>
+        </form>
     </div>
 </body>
 

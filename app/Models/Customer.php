@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'customer';
-    protected $fillable = ['nama_customer', 'alamat_customer', 'telp_customer'];
-
-    // protected $hidden = ['password_customer'];
+    protected $fillable = ['username', 'password', 'nama_customer', 'alamat_customer', 'telp_customer'];
+    protected $hidden = ['password'];
 
     // public function barang(): HasMany
     // {
