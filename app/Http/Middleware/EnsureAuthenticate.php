@@ -11,13 +11,15 @@ class EnsureAuthenticate
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Cek apakah pengguna sudah login
-        if (!Auth::check()) {
-            // Arahkan ke halaman login jika belum login
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
+        dd('Middleware is working!');
+        // if (!Auth::guard('admin')->check() && !Auth::guard('customer')->check()) {
+        //     dd('Middleware triggered: Not authenticated');
+        //     \Log::info('Middleware: User not authenticated');
+        //     return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        // }
 
-        // Lanjutkan ke request berikutnya jika sudah login
-        return $next($request);
+        // dd('Middleware : Authenticated');
+        // \Log::info('Middleware: User authenticated');
+        // return $next($request);
     }
 }

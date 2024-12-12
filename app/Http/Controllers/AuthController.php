@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use Auth;
+// use Auth;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -20,30 +21,31 @@ class AuthController extends Controller
     {
         $request->validate([
             'username' => 'required',
+            // 'username' => 'required|string|unique:customer,username',
             'password' => 'required',
         ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
-        }
-
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
-        }
-
-        // // Cek login sebagai admin
-        // if (Auth::guard('admin')->attempt(['username' => $request->username, 'password_admin' => $request->password])) {
+        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
         //     $request->session()->regenerate();
         //     return redirect()->intended('/dashboard');
         // }
 
-        // // Cek login sebagai customer
-        // if (Auth::guard('customer')->attempt(['username' => $request->username, 'password_customer' => $request->password])) {
+        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
         //     $request->session()->regenerate();
         //     return redirect()->intended('/');
         // }
+
+        // Cek login sebagai admin
+        if (Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return redirect()->intended('/dashboard');
+        }
+
+        // Cek login sebagai customer
+        if (Auth::guard('customer')->attempt(['username' => $request->username, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return redirect()->intended('/');
+        }
 
         return back()->withErrors([
             'login' => 'Username atau Password tidak terdaftar.'
@@ -60,12 +62,16 @@ class AuthController extends Controller
     public function storeRegister(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|unique:users,username',
-            'password' => 'required|confirmed|min:6',
+            // 'username' => 'required|string|unique:customer,username',
+            'username' => 'required',
+            // 'password' => 'required|confirmed|min:6',
+            'password' => 'required',
             'nama_customer' => 'required|string',
             'alamat_customer' => 'required|string',
             'telp_customer' => 'required',
         ]);
+
+        // dd($request->all());
 
         Customer::create([
             'username' => $request->username,

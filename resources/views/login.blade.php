@@ -37,6 +37,13 @@
                     <span>Belum punya akun?</span>
                     <a href="{{ url('/register') }}">Register</a>
                 </div>
+
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
             </div>
         </form>
     </div>

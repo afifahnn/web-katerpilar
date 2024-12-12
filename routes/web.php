@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\KelolaUangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserRentalController;
+use App\Http\Middleware\EnsureAuthenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 
@@ -17,9 +18,13 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'storeRegister']);
 
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/dashboard', [AdminController::class, 'login']);
-// });
+Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(EnsureAuthenticate::class);
+
+Route::middleware([EnsureAuthenticate::class])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/kelola-barang', [KelolaBarangController::class, 'kelolabarang']);
+    Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi']);
+});
 
 // User Home
 Route::get('/', [UserHomeController::class, 'userHome'])->name('user.home');
