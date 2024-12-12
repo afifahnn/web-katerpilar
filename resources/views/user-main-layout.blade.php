@@ -15,5 +15,7 @@
     <div class="user-main-content">
         @yield('user-contents')
     </div>
+
+    @include('components.user-footer')
 </body>
 </html>

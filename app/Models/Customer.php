@@ -13,7 +13,7 @@ class Customer extends Authenticatable
 
     protected $table = 'customer';
     protected $fillable = ['username', 'password', 'nama_customer', 'alamat_customer', 'telp_customer'];
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token',];
 
     // public function barang(): HasMany
     // {
