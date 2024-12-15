@@ -9,7 +9,42 @@
 </head>
 <body>
     <div id="user-footer">
-        ini footer
+        <div class="content-footer">
+            <div class="logo-footer">
+                <img src="{{ asset('img/logo-black.png') }}">
+                <div class="logo-text">
+                    <div>Katerpilar Outdoor</div>
+                    <div>Gear & Rental</div>
+                </div>
+            </div>
+            <div class="right-footer">
+                <div class="contact">
+                    <div class="judul-footer">Kontak</div>
+                    <div class="name-footer">
+                        <a href="#">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            <div class="name">WhatsApp</div>
+                        </a>
+                        <a href="#">
+                            <i class="fa-brands fa-instagram"></i>
+                            <div class="name">Instagram</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="address">
+                    <div class="judul-footer">Alamat</div>
+                    <div class="address-footer">
+                        <a href="#">
+                            <div>Katerpilar Outdoor Gear & Rental, Kemiri</div>
+                            <div>006/008, Kemiri, Tulung, Klaten, Jawa Tengah</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="copyright">&copy; 2024 Katerpilar Outdoor Gear & Rental</div>
     </div>
 </body>
 </html>
