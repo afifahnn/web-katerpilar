@@ -9,20 +9,41 @@
 </head>
 <body>
     <div id="user-navbar">
-        <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-          </ul>
+        <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid mx-3">
+                <a class="navbar-brand" href="#">
+                    <div class="logo">
+                        <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                        <div class="logo-hi">
+                            <div>Katerpilar Outdoor</div>
+                            <div>Gear & Rental</div>
+                        </div>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item me-3 {{ Request::is('dashboard') ? 'active' : '' }}">
+                            <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="{{ url('/rental') }}">Pesan</a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="#">Riwayat</a>
+                        </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link" href="#">Profil</a>
+                        </li>
+                        <li class="nav-item me-3" id="btn-logout">
+                            <a class="nav-link" href="#">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 </body>
 </html>

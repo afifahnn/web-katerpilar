@@ -24,21 +24,51 @@
 
     {{-- KATALOG SECTION --}}
     <div class="katalog-section">
+        @foreach($barang->groupBy('jenis')->sortKeys() as $jenis => $barangs)
         <div class="jenis-barang">
-            Tenda
+            {{ $jenis }}
         </div>
+
         <div class="carousel-section">
-            <div class="card-container">
-                <img alt="barang"></img>
-                <div>Tenda Dome 6p</div>
-                <div>Stok : 6</div>
+            {{-- <button class="carousel-btn-left" onclick="scrollLeft()">&#10094;</button> --}}
+            <div class="scroll-container">
+                @foreach($barangs as $barang)
+                <div class="card-container">
+                    <div class="pic-barang">
+                        <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="barang">
+                    </div>
+                    <div class="product">
+                        <div class="name">{{ $barang->nama_barang }}</div>
+                        <div class="stok">
+                            Stok :
+                            @if($barang->stok_barang == 0)
+                                <span style="color: red;">Habis</span>
+                            @else
+                                {{ $barang->stok_barang }}
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
-            <div class="card-container">
-                <img alt="barang"></img>
-                <div>Tenda Dome 6p</div>
-                <div>Stok : 6</div>
-            </div>
+            {{-- <button class="carousel-btn-right" onclick="scrollRight()">&#10095;</button> --}}
         </div>
+        @endforeach
+
     </div>
 </div>
+
+<!-- JavaScript -->
+<script>
+    function scrollLeft() {
+        const container = document.querySelector('.scroll-container');
+        container.scrollBy({ left: -80, behavior: 'smooth' });
+    }
+
+    function scrollRight() {
+        const container = document.querySelector('.scroll-container');
+        container.scrollBy({ left: 80, behavior: 'smooth' });
+    }
+</script>
+
 @endsection
