@@ -140,7 +140,7 @@
     font-size: 13px;
 }
 
-.carousel-btn {
+/* .carousel-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -163,4 +163,45 @@
 
 .carousel-btn:hover {
     background-color: rgba(0, 0, 0, 0.8);
+} */
+
+#content-modal img {
+    width: 400px;
+    height: 300px;
+    margin: 15px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 0.5px solid rgb(180, 180, 180);
 }
+
+.judul-modal, .isi-modal {
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.judul-modal .nama-modal {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.judul-modal .stok-modal {
+    font-size: 14px;
+}
+
+.judul-desk {
+    padding: 10px 10px 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.harga-sewa {
+    font-weight: 600;
+}
+
+.harga-modal {
+    padding-left: 8px;
+}
+
+
