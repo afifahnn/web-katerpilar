@@ -1,0 +1,6 @@
+#user-profil{
+    padding-top: 120px;
+    padding-bottom: 40px;
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 9%, rgba(255,242,185,1) 25%, rgba(255,231,126,0.8799894957983193) 43%, rgba(255,222,77,0.8295693277310925) 67%, rgba(0,0,0,0.30015756302521013) 100%);
+}

@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\KelolaUangController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserRentalController;
+use App\Http\Controllers\User\UserRiwayatController;
+use App\Http\Controllers\User\UserProfilController;
 use App\Http\Middleware\EnsureAuthenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
@@ -31,6 +33,13 @@ Route::get('/', [UserHomeController::class, 'userHome'])->name('user.home');
 
 // User Pesan
 Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.rental');
+Route::post('/rental', [UserRentalController::class, 'storeRental'])->name('user.rental');
+
+// User Riwayat
+Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');
+
+// User Profil
+Route::get('/profil', [UserProfilController::class, 'userProfil'])->name('user.profil');
 
 // Dashboard Admin
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');

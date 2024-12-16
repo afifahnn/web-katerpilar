@@ -25,17 +25,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item me-3 {{ Request::is('dashboard') ? 'active' : '' }}">
+                        <li class="nav-item me-3 {{ Request::is('/') ? 'active' : '' }}">
                             <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
                         </li>
-                        <li class="nav-item me-3">
+                        <li class="nav-item me-3 {{ Request::is('rental') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ url('/rental') }}">Pesan</a>
                         </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Riwayat</a>
+                        <li class="nav-item me-3 {{ Request::is('riwayat') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/riwayat') }}">Riwayat</a>
                         </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Profil</a>
+                        <li class="nav-item me-3 {{ Request::is('profil') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ url('/profil') }}">Profil</a>
                         </li>
                         <li class="nav-item me-3" id="btn-logout">
                             <a class="nav-link" href="#">Logout</a>

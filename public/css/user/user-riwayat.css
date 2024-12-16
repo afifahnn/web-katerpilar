@@ -1,0 +1,73 @@
+#user-riwayat {
+    padding-top: 120px;
+    padding-bottom: 40px;
+    /* background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(242,245,208,1) 12%, rgba(255,222,77,0.9) 38%, rgba(255,167,86,0.8) 75%, rgba(237,146,94,0.8) 100%); */
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 9%, rgba(255,242,185,1) 25%, rgba(255,231,126,0.8799894957983193) 43%, rgba(255,222,77,0.8295693277310925) 67%, rgba(0,0,0,0.30015756302521013) 100%);
+}
+
+.riwayat-section {
+    padding: 0 20px;
+}
+
+.riwayat {
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+.card-riwayat {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.tanggal {
+    display: flex;
+    gap: 10px;
+}
+
+.barang, .total {
+    padding-bottom: 10px;
+}
+
+.tanggal .tgl-sewa {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.barang .brg-sewa,
+.total .total-bayar {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+.detail-riwayat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.items-sewa {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-upload {
+    background-color: #00A431;
+    border-radius: 10px;
+    padding: 6px 15px;
+    border: none;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+    font-weight: 600;
+    text-align: center;
+}
+
+.btn-upload:hover {
+    opacity: 80%;
+}

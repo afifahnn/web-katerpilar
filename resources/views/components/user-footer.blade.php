@@ -21,11 +21,11 @@
                 <div class="contact">
                     <div class="judul-footer">Kontak</div>
                     <div class="name-footer">
-                        <a href="#">
+                        <a href="https://wa.me/6281390986967" target="_blank" rel="noopener noreferrer">
                             <i class="fa-brands fa-whatsapp"></i>
                             <div class="name">WhatsApp</div>
                         </a>
-                        <a href="#">
+                        <a href="https://www.instagram.com/katerpilar.outdoor/profilecard/?igsh=aDA0MGJqNzd1YTFt" target="_blank" rel="noopener noreferrer">
                             <i class="fa-brands fa-instagram"></i>
                             <div class="name">Instagram</div>
                         </a>
@@ -34,9 +34,10 @@
                 <div class="address">
                     <div class="judul-footer">Alamat</div>
                     <div class="address-footer">
-                        <a href="#">
+                        <a href="https://maps.app.goo.gl/3Pk8wwyH8J3Yqaaf6" target="_blank" rel="noopener noreferrer">
                             <div>Katerpilar Outdoor Gear & Rental, Kemiri</div>
-                            <div>006/008, Kemiri, Tulung, Klaten, Jawa Tengah</div>
+                            <div>006/008, Kemiri, Tulung, Klaten,</div>
+                            <dov>Jawa Tengah, Kode Pos 57482</dov>
                         </a>
                     </div>
                 </div>

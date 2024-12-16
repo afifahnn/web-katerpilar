@@ -45,6 +45,7 @@
 
 .name-footer a {
     display: flex;
+    margin-bottom: 10px;
 }
 
 .name-footer a .name {
@@ -62,7 +63,6 @@
 .name-footer a i {
     font-size: 30px;
     margin-right: 7px;
-    margin-bottom: 8px;
 }
 
 a {

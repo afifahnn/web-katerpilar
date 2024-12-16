@@ -1,3 +1,6 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
 html, body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -71,7 +74,8 @@ a {
     font-weight: 600;
 }
 
-#navbarTogglerDemo02 ul li.active {
+#navbarTogglerDemo02 ul.navbar-nav li.active a {
     text-decoration: underline;
+    font-weight: 600 !important;
 }
 
