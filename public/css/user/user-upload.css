@@ -1,4 +1,4 @@
-#user-rental {
+#upload-bukti {
     padding-top: 120px;
     padding-bottom: 40px;
     background: rgb(255,255,255);
@@ -28,8 +28,7 @@
     padding: 10px 20px;
 }
 
-.input-data input,
-.input-data .form-control {
+.input-data input {
     border-radius: 10px;
     padding: 8px 15px;
     width: 100%;
@@ -43,65 +42,39 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 80px;
-    padding: 10px 20px;
-}
-
-.input-container input {
-    border-radius: 10px;
-    padding: 8px 15px;
-    width: 100%;
-    border: 1px solid #a7a7a7;
-    outline: none;
-    transition: border-color 0.3s ease;
-}
-
-.input-container input:focus {
-    border-color: #696969;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.content {
+.content, .content-tf {
     font-size: 14px;
-    font-weight: 600;
     margin-bottom: 5px;
 }
 
-.input-group {
+.content {
+    font-weight: 600;
+}
+
+.norek-content {
     display: flex;
-    align-items: center;
+    gap: 15px;
 }
 
-.input-group select {
+.bank-content, .norek {
+    font-size: 18px;
+}
+
+.bank-content {
+    font-weight: 600;
+}
+
+#imagePreview {
+    margin-top: 10px;
+}
+
+#preview {
+    height: 200px;
+    width: 200px;
+    display: none;
+    border: 1px solid #b9b9b9;
     border-radius: 10px;
-    padding: 8px 15px;
-    border: 1px solid #a7a7a7;
-    outline: none;
-    transition: border-color 0.3s ease;
-    flex-grow: 1;
-    cursor: pointer;
-}
-
-.input-group select:focus,
-.input-group button:focus {
-    border-color: #696969;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.input-group button {
-    border-radius: 10px;
-    padding: 8px 15px;
-    border: 1px solid #a7a7a7;
-    background-color: #f8f8f8;
-    cursor: pointer;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.input-group button:hover {
-    background-color: #e0e0e0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1)
 }
 
 .btn-add-create {
@@ -111,7 +84,7 @@
 }
 
 .btn-add-data {
-    background-color: #FFDE4D;
+    background-color: #00A431;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     padding: 8px 20px;
@@ -126,30 +99,10 @@
     border: none;
     background-color: transparent;
     font-weight: 550;
-    color: #000000;
+    color: #FFFFFF;
     font-size: 14px;
-}
-
-.btn-custom {
-    background-color: #FFDE4D;
-    color: #000;
-    border: none;
-    font-weight: 600;
-}
-
-.btn-custom:hover {
-    background-color: #E6C944;
-    color: #000;
 }
 
 a {
     text-decoration: none;
-}
-
-.modal {
-    z-index: 1055 !important;
-}
-
-.modal-backdrop {
-    z-index: 1050 !important;
 }

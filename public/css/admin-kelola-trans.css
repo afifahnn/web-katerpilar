@@ -37,3 +37,26 @@
 .data-table td.btn-aksi {
     border: none;
 }
+
+/* MODAL */
+.content-modals {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.isi-modals {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.isi-modals .judul-modal {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.items-modal {
+    display: flex;
+    gap: 10px;
+}

@@ -12,7 +12,7 @@ class Admin extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'admins';
-    protected $fillable = ['username', 'password', 'nama_admin', 'telp_admin'];
+    protected $fillable = ['username', 'password', 'nama_admin', 'telp_admin', 'jenis_rekening', 'no_rekening'];
     protected $hidden = ['password'];
 
     // public function barang()

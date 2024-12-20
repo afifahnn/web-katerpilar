@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('nama_admin');
             $table->string('telp_admin');
+            $table->string('jenis_rekening')->nullable();
+            $table->string('no_rekening')->nullable();
             // $table->string('email_admin');
             $table->timestamps();
         });

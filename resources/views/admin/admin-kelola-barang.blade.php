@@ -53,35 +53,41 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($barang as $index => $barang)
-                    <tr>
-                        <td>{{ $loop->iteration }}.</td>
-                        <td class="pic-barang">
-                            <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
-                        </td>
-                        <td>{{ $barang->jenis }}</td>
-                        <td>{{ $barang->nama_barang }}</td>
-                        <td>{{ $barang->stok_barang }}</td>
-                        <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
-                        <td class="col-deskripsi">{{ $barang->deskripsi_barang }}</td>
-                        <td class="btn-aksi">
-                            <form action="{{ route('admin.kelola-barang.delete', $barang->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                </button>
-                            </form>
-                            <a href="{{ route('admin.kelola-barang.edit', $barang->id) }}">
-                                <button type="submit" class="btn-edit">
-                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                </button>
-                            </a>
-                        </td>
-                    </tr>
-                    @endforeach
+                    @if($barang->isEmpty())
+                        <tr>
+                            <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
+                        </tr>
+                    @else
+                        @foreach($barang as $index => $barang)
+                            <tr>
+                                <td>{{ $loop->iteration }}.</td>
+                                <td class="pic-barang">
+                                    <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
+                                </td>
+                                <td>{{ $barang->jenis }}</td>
+                                <td>{{ $barang->nama_barang }}</td>
+                                <td>{{ $barang->stok_barang }}</td>
+                                <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
+                                <td class="col-deskripsi">{{ $barang->deskripsi_barang }}</td>
+                                <td class="btn-aksi">
+                                    <form action="{{ route('admin.kelola-barang.delete', $barang->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('admin.kelola-barang.edit', $barang->id) }}">
+                                        <button type="submit" class="btn-edit">
+                                            <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

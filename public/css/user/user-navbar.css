@@ -68,9 +68,20 @@ a {
     padding: 2px 8px;
     border: none;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
-#btn-logout a {
+#btn-logout form a {
+    font-weight: 600;
+}
+
+#btn-logout:hover {
+    opacity: 80%;
+}
+
+.btn-logout {
+    border: none;
+    background-color: #FFDE4D;
     font-weight: 600;
 }
 
