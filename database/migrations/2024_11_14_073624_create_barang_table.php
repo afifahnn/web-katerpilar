@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('harga_sewa3');
             $table->text('deskripsi_barang');
             $table->string('jenis');
+            $table->integer('kelipatan')->nullable();
             $table->timestamps();
         });
     }

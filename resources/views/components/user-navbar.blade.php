@@ -38,7 +38,15 @@
                             <a class="nav-link" href="{{ url('/profil') }}">Profil</a>
                         </li>
                         <li class="nav-item me-3" id="btn-logout">
-                            <a class="nav-link" href="#">Logout</a>
+                            @auth
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <a class="nav-link"><button type="submit" class="btn-logout">Logout</button></a>
+                                </form>
+                            @endauth
+                            @guest
+                                <a class="nav-link" href="{{ url('/login') }}"><b>Login</b></a>
+                            @endguest
                         </li>
                     </ul>
                 </div>

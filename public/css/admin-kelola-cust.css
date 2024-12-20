@@ -138,7 +138,7 @@
     padding: 0;
 }
 
-.btn-hapus, .btn-edit {
+.btn-info, .btn-hapus, .btn-edit {
     background-color: #FF4D4D;
     border: none;
     color: white;
@@ -149,10 +149,19 @@
     cursor: pointer;
 }
 
+.btn-info {
+    background-color: rgb(77, 77, 255);
+}
+
 .btn-edit {
     background-color: #28A745;
 }
 
 a {
     text-decoration: none;
+}
+
+.no-transactions {
+    font-size: 14px;
+    text-align: center;
 }

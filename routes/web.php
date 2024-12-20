@@ -10,6 +10,7 @@ use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserRentalController;
 use App\Http\Controllers\User\UserRiwayatController;
 use App\Http\Controllers\User\UserProfilController;
+use App\Http\Controllers\User\UserUploadController;
 use App\Http\Middleware\EnsureAuthenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
@@ -19,13 +20,15 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'storeRegister']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(EnsureAuthenticate::class);
+// Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(EnsureAuthenticate::class);
 
-Route::middleware([EnsureAuthenticate::class])->group(function () {
+Route::middleware(['auth.ensure'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/kelola-barang', [KelolaBarangController::class, 'kelolabarang']);
     Route::get('/kelola-transaksi', [KelolaTransaksiController::class, 'kelolatransaksi']);
+    Route::get('/profil', [UserProfilController::class, 'userProfil']);
 });
 
 // User Home
@@ -34,6 +37,9 @@ Route::get('/', [UserHomeController::class, 'userHome'])->name('user.home');
 // User Pesan
 Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.rental');
 Route::post('/rental', [UserRentalController::class, 'storeRental'])->name('user.rental');
+
+// Upload Bukti Bayar
+Route::get('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload');
 
 // User Riwayat
 Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');

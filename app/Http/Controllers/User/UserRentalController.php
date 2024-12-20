@@ -31,18 +31,10 @@ class UserRentalController extends Controller
                 'tgl_sewa' => 'required',
                 'tgl_kembali' => 'required|date|after:tgl_sewa',
                 'barang_sewa' => 'required',
-                // 'barang_sewa' => 'required|array',
-                // 'barang_sewa.*' => 'required|string',
-                // 'jumlah_sewa' => 'required|array',
-                // 'jumlah_sewa.*' => 'required|integer|min:1',
-                // 'barang_sewa' => 'required|exists:barang,id',
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
                 'opsi_bayar' => 'required|in:Cash,Non-Cash'
             ]);
-
-            // Customer::create($request->all());
-            // Transaksi::create($request->all());
 
             // Buat data customer
             $customer = Customer::firstOrCreate(
@@ -57,9 +49,6 @@ class UserRentalController extends Controller
             $jumlahSewa = isset($request->jumlah_sewa[0]) ? explode(',', $request->jumlah_sewa[0]) : [];
             $jumlahSewa = array_map('intval', $jumlahSewa);
 
-            // dd($barangSewa, $jumlahSewa);
-            // dd($request->all());
-
             // Buat data transaksi
             Transaksi::create([
                 'customer_id' => $customer->id,
@@ -69,7 +58,6 @@ class UserRentalController extends Controller
                 'jumlah_sewa' => json_encode($jumlahSewa),
                 'opsi_bayar' => $request->opsi_bayar,
                 'total_bayar' => $request->total_bayar,
-                // 'total_bayar' => $totalBayar,
             ]);
 
             foreach ($barangSewa as $index => $namaBarang) {
@@ -80,7 +68,9 @@ class UserRentalController extends Controller
                 }
             }
 
-            return redirect()->route('rental')->with('success', 'Transaksi berhasil ditambahkan.');
+            return redirect()->route('rental')
+                // ->with('show_modal', $request->opsi_bayar === 'Non-Cash')
+                ->with('success', 'Transaksi berhasil ditambahkan.');
         }
         catch (\Exception $e) {
             \Log::error('Error saat menyimpan transaksi: ' . $e->getMessage());

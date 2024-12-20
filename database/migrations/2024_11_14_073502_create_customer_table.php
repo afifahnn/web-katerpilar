@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string('nama_customer');
             $table->text('alamat_customer');
             $table->string('telp_customer');
+            $table->string('metode_bayar')->nullable();
+            $table->string('bukti_bayar')->nullable();
             $table->timestamps();
         });
     }

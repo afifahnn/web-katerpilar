@@ -1,6 +1,102 @@
-#user-profil{
+/* #user-profil{
     padding-top: 120px;
     padding-bottom: 40px;
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,1) 9%, rgba(255,242,185,1) 25%, rgba(255,231,126,0.8799894957983193) 43%, rgba(255,222,77,0.8295693277310925) 67%, rgba(0,0,0,0.30015756302521013) 100%);
+} */
+
+.profile {
+    height: 240px;
+    padding: 10px 0 0 0;
+    margin: 0;
+    background: rgb(255,242,185);
+    background: linear-gradient(36deg, rgba(255,242,185,1) 0%, rgba(255,231,126,1) 30%, rgba(255,222,77,1) 54%, rgba(205,179,62,1) 75%, rgba(0,0,0,1) 100%);
+    position: relative;
+}
+
+.profil-hero {
+    /* z-index: 1; */
+    text-align: center;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 550;
+    padding-top: 130px;
+    position: relative;
+}
+
+.foto-profil {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    box-shadow: 0 0 10px #bcbcd1;
+}
+
+.profil-container {
+    margin: 0 15%;
+    /* margin-top: 90px; */
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-judul {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.profil-user {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000000;
+    padding: 15px 0;
+}
+
+.profil-content {
+    display: flex;
+    gap: 20px;
+}
+
+.profil-email,
+.profil-alamat {
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    color: #707070;
+}
+
+.btn-edit-profil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-edit-profil a {
+    text-decoration: none;
+    background-color: #FFDE4D;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: #000000;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-edit-profil a:hover {
+    opacity: 80%;
 }
