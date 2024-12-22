@@ -9,7 +9,10 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Customer</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
 
@@ -58,19 +61,21 @@
                                 {{ $customer->transaksi->count() }} kali
                             @endif
                         </td>
-                        <td class="btn-aksi">
-                            <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                </button>
-                            </form>
-                            <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
-                                <button type="submit" class="btn-edit">
-                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                </button>
-                            </a>
+                        <td>
+                            <div class="btn-aksi">
+                                <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
+                                    <button type="submit" class="btn-edit">
+                                        <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                    </button>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     @endforeach

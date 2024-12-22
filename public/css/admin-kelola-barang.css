@@ -9,11 +9,6 @@
     white-space: normal;
 }
 
-.data-table td.btn-aksi,
-.data-table td.pic-barang {
-    border: none;
-}
-
 .pic-head,
 .pic-barang {
     width: 100px;

@@ -11,7 +11,10 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Tambah Data Barang</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
         <div class="btn-back">
@@ -26,7 +29,7 @@
         <div class="create-container">
             <form action="{{ route('admin.kelola-barang.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="grid-container">
+                <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="nama_barang">Nama Barang</div>
                         <input type="text" name="nama_barang" id="nama_barang" placeholder="Nama Barang" required>
@@ -35,16 +38,14 @@
                         <div class="content" for="jenis">Jenis Barang</div>
                         <input type="text" name="jenis" id="jenis" placeholder="Jenis Barang" required>
                     </div>
-                </div>
-                <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="stok_barang">Stok Barang</div>
                         <input type="number" name="stok_barang" id="stok_barang" placeholder="Stok Barang" required>
                     </div>
-                    <div class="input-container">
-                        <div class="content" for="deskripsi_barang">Deskripsi</div>
-                        <input type="text" name="deskripsi_barang" id="deskripsi_barang" placeholder="Deskripsi" required>
-                    </div>
+                </div>
+                <div class="input-data">
+                    <label class="content" for="deskripsi_barang">Deskripsi</label>
+                    <textarea name="deskripsi_barang" id="deskripsi_barang" placeholder="Deskripsi" required></textarea>
                 </div>
                 <div class="container-price">
                     <div class="input-container">

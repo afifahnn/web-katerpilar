@@ -36,7 +36,11 @@
                 </li>
                 <li class="{{ Request::is('kelola-keuangan') || Request::is('admin/kelola-keuangan/create') || Request::is('admin/kelola-keuangan/*/edit') || Request::is('admin/kelola-keuangan/laporan-keuangan') ? 'active' : '' }}">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
-                    <a href="{{ url('/kelola-keuangan') }}">Kelola Keuangan</a>
+                    <a href="{{ url('/kelola-keuangan') }}">Kelola Pengeluaran</a>
+                </li>
+                <li class="{{ Request::is('laporan-keuangan') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <a href="{{ url('/laporan-keuangan') }}">Laporan Keuangan</a>
                 </li>
                 <hr>
                 <li class="{{ Request::is('admin-profil') ? 'active' : '' }}">

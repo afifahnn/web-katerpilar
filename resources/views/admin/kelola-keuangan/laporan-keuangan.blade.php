@@ -9,18 +9,60 @@
 @section('contents')
 <div id="laporan-keuangan">
     <div class="kelola-cust-top">
-        <div class="kelola-cust-judul">Laporan Keuangan Keseluruhan</div>
+        <div class="kelola-cust-judul">Laporan Keuangan</div>
         <div class="btn-logout">
-            <button>Logout</button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <a class="nav-link"><button type="submit">Logout</button></a>
+            </form>
         </div>
     </div>
-    <div class="btn-back">
-        <a href="{{ url('/kelola-keuangan') }}">
-            <button>
-                <i class="fa-solid fa-arrow-left" style="padding-right: 5px;"></i>
-                Back
-            </button>
-        </a>
+
+    {{-- recap keuangan --}}
+    <div class="bar-recap">
+        <div class="recap-card-all">
+            <div class="recap-card">
+                <i class="fa-solid fa-money-bills"></i>
+                <div>
+                    <div class="recap-content">Laba</div>
+                    <div class="laba-omzet">Rp {{ number_format($totalLaba, 0, ',', '.') }}</div>
+                </div>
+            </div>
+            <div class="recap-card">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+                <div>
+                    <div class="recap-content">Omzet</div>
+                    <div class="laba-omzet">Rp {{ number_format($totalOmzet, 0, ',', '.') }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- filter tampilan per periode --}}
+    <div class="filter-date">
+        <div class="judul-filter">Laporan Keuangan per Periode</div>
+        <div class="top-btn">
+            <form method="GET" action="{{ route('laporankeuangan') }}">
+                <div class="display-tanggal">
+                    <div class="input-tgl">
+                        <div class="content-tgl">Tanggal Awal</div>
+                        <input type="date" name="tanggal_awal" id="tanggalAwal" value="{{ request('tanggal_awal') }}">
+                    </div>
+                    <div class="input-tgl">
+                        <div class="content-tgl">Tanggal Akhir</div>
+                        <input type="date" name="tanggal_akhir" id="tanggalAkhir" value="{{ request('tanggal_akhir') }}">
+                    </div>
+                    <div class="btn-apply">
+                        <button type="submit">Terapkan</button>
+                    </div>
+                </div>
+            </form>
+            <div class="btn-apply">
+                <a href="{{ route('laporankeuangan') }}">
+                    <button>Lihat Keseluruhan</button>
+                </a>
+            </div>
+        </div>
     </div>
 
     {{-- tabel --}}
@@ -37,38 +79,26 @@
                     <th>Omzet</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach($keuangan as $index => $item)
-                <tr>
-                    <td>{{ $loop->iteration }}.</td>
-                    <td>
-                        @if ($item->transaksi)
-                            {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
-                        @else
-                            {{ \Carbon\Carbon::parse($item->tgl_transaksi)->format('d/m/Y') }}
-                        @endif
-                    </td>
-                    <td class="col-deskripsi">{{ $item->deskripsi }}</td>
-                    <td>
-                        {{-- Rp {{ number_format($item->transaksi->total_bayar, 0, ',', '.') }} --}}
-                        Rp 20.000
-                    </td>
-                    <td>
-                        {{-- Rp {{ number_format($item->laba, 0, ',', '.') }} --}}
-                        Rp 20.000
-                    </td>
-                    <td>Rp {{ number_format($item->laba, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->omzet, 0, ',', '.') }}</td>
-                </tr>
+            <tbody style="text-align: center">
+                @foreach ($laporanKeuangan as $item)
+                    <tr>
+                        <td style="text-align: center">{{ $loop->iteration }}.</td>
+                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                        <td class="col-deskripsi">{{ $item->deskripsi }}</td>
+                        <td>{{ $item->masuk ? 'Rp ' . number_format($item->masuk, 0, ',', '.') : '-' }}</td>
+                        <td>{{ $item->keluar ? 'Rp ' . number_format($item->keluar, 0, ',', '.') : '-' }}</td>
+                        <td>{{ $item->laba ? 'Rp ' . number_format($item->laba, 0, ',', '.') : '-' }}</td>
+                        <td>{{ $item->omzet ? 'Rp ' . number_format($item->omzet, 0, ',', '.') : '-' }}</td>
+                    </tr>
                 @endforeach
             </tbody>
             <thead class="th-total">
                 <tr>
-                    <th style="text-align: end" colspan="3">Total</th>
-                    <th>Rp Masuk</th>
-                    <th>Rp Keluar</th>
-                    <th>Rp Laba</th>
-                    <th>Rp Omzet</th>
+                    <th style="text-align: center" colspan="3">Total</th>
+                    <th>Rp {{ number_format($totalMasuk, 0, ',', '.') }}</th>
+                    <th>Rp {{ number_format($totalKeluar, 0, ',', '.') }}</th>
+                    <th>Rp {{ number_format($totalLaba, 0, ',', '.') }}</th>
+                    <th>Rp {{ number_format($totalOmzet, 0, ',', '.') }}</th>
                 </tr>
             </thead>
         </table>

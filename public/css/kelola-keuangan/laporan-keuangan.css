@@ -3,6 +3,122 @@
     padding-bottom: 80px;
 }
 
+.bar-recap {
+    margin-top: 30px;
+    padding: 5px 20px;
+}
+
+.recap-card-all {
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 100px;
+}
+
+.recap-card {
+    display: flex;
+    background-color: #FFDE4D;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.recap-card i {
+    font-size: 25px;
+    padding-right: 13px;
+}
+
+.form-select {
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: #000;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.form-select option {
+    font-size: 14px;
+    background-color: #fffdf0;
+    color: #000;
+}
+
+.recap-content {
+    font-weight: 600;
+    font-size: 16px
+}
+
+.laba-omzet {
+    font-size: 15px;
+}
+
+.filter-date {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.top-btn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.judul-filter {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.display-tanggal {
+    display: flex;
+    gap: 40px;
+}
+
+.input-tgl {
+    padding-bottom: 5px;
+}
+
+.content-tgl {
+    font-size: 13px;
+}
+
+.input-tgl input {
+    border-radius: 10px;
+    padding: 8px 15px;
+    width: 100%;
+    border: 1px solid #a7a7a7;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-tgl input:focus {
+    border-color: #696969;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-apply {
+    display: flex;
+    align-items: center;
+}
+
+.btn-apply button {
+    background-color: #FFDE4D;
+    border-radius: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .container-tabel {
     padding: 20px;
 }
@@ -24,7 +140,8 @@
     color: #FFFFFF;
 }
 
-.btn-cetak button:hover {
+.btn-cetak button:hover,
+.btn-apply button:hover {
     opacity: 80%;
 }
 
@@ -33,9 +150,7 @@
     color: #FFFFFF;
     text-align: start;
     font-size: 14px;
-}
-
-.data-table .th-total th {
     padding: 6px 10px;
     border: 1px solid #e8ffef;
 }
+
