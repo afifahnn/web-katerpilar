@@ -10,7 +10,10 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Tambah Data Customer</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
         <div class="btn-back">

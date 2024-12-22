@@ -9,7 +9,7 @@
     {{-- HERO SECTION --}}
     <div class="hero-section">
         <div class="img-bg">
-            <img src="{{ asset('img/bg.jpg') }}" alt="Background">
+            <img src="{{ asset('img/bg1.jpg') }}" alt="Background">
         </div>
         <div class="span-text">
             <div>Selamat Datang</div>
@@ -75,7 +75,7 @@
                                 <hr>
                                 <div class="judul-desk">Deskripsi :</div>
                                 <div class="isi-modal">
-                                    <div class="desk-modal">{{ $barang->deskripsi_barang }}</div>
+                                    <div class="desk-modal">{!! nl2br(e($barang->deskripsi_barang)) !!}</div>
                                     <div class="harga-sewa">Harga Sewa :</div>
                                     <div class="harga-modal">
                                         <div>1 hari : Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</div>

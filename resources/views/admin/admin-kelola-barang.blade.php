@@ -10,7 +10,10 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Barang</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
 
@@ -61,8 +64,10 @@
                         @foreach($barang as $index => $barang)
                             <tr>
                                 <td>{{ $loop->iteration }}.</td>
-                                <td class="pic-barang">
-                                    <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
+                                <td>
+                                    <div class="pic-barang">
+                                        <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
+                                    </div>
                                 </td>
                                 <td>{{ $barang->jenis }}</td>
                                 <td>{{ $barang->nama_barang }}</td>
@@ -70,20 +75,22 @@
                                 <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
-                                <td class="col-deskripsi">{{ $barang->deskripsi_barang }}</td>
-                                <td class="btn-aksi">
-                                    <form action="{{ route('admin.kelola-barang.delete', $barang->id) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                        </button>
-                                    </form>
-                                    <a href="{{ route('admin.kelola-barang.edit', $barang->id) }}">
-                                        <button type="submit" class="btn-edit">
-                                            <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                        </button>
-                                    </a>
+                                <td class="col-deskripsi">{!! nl2br(e($barang->deskripsi_barang)) !!}</td>
+                                <td>
+                                    <div class="btn-aksi">
+                                        <form action="{{ route('admin.kelola-barang.delete', $barang->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                                <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                            </button>
+                                        </form>
+                                        <a href="{{ route('admin.kelola-barang.edit', $barang->id) }}">
+                                            <button type="submit" class="btn-edit">
+                                                <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                            </button>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

@@ -123,11 +123,11 @@
 }
 
 .data-table tr:nth-child(even) {
-    background-color: #FFE88A;
+    background-color: #fcf5c8;
 }
 
 .data-table tr:nth-child(odd) {
-    background-color: #FFF5B7;
+    background-color: #fffdf7;
 }
 
 .btn-aksi {

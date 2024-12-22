@@ -83,7 +83,7 @@ Route::put('/kelola-keuangan/{id}', [KelolaUangController::class, 'updateKeuanga
 Route::delete('/kelola-keuangan/{id}', [KelolaUangController::class, 'deleteKeuangan'])->name('admin.kelola-keuangan.delete');
 
 // Laporan Keuangan
-Route::get('admin/kelola-keuangan/laporan-keuangan', [KelolaUangController::class, 'laporanKeuangan'])->name('admin.kelola-keuangan.laporan-keuangan');
+Route::get('/laporan-keuangan', [KelolaUangController::class, 'laporanKeuangan'])->name('laporankeuangan');
 
 // Profil Admin
 Route::get('/admin-profil', [AdminProfilController::class, 'adminprofil'])->name('adminprofil');

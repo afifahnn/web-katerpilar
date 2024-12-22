@@ -10,7 +10,10 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Transaksi</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
 
@@ -48,34 +51,41 @@
                 </thead>
                 <tbody>
                     @foreach($transaksi as $index => $item)
-                    <tr>
+                    <tr style="text-align: center">
                         <td>{{ $loop->iteration }}.</td>
                         <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
                         <td>
                             {{ $item->customer->nama_customer }}
                         </td>
-                        <td>{{ $item->barang_sewa }}</td>
+                        <td>
+                            @php
+                                $jumlah_sewa = json_decode($item->jumlah_sewa, true);
+                            @endphp
+                            {{ array_sum($jumlah_sewa) }}
+                        </td>
                         <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
-                        <td class="btn-aksi">
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
-                                <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
-                            </button>
-                            <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                    <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                        <td>
+                            <div class="btn-aksi">
+                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
+                                    <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
                                 </button>
-                            </form>
-                            <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
-                                <button class="btn-edit">
-                                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                </button>
-                            </a>
+                                <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                    </button>
+                                </form>
+                                <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
+                                    <button class="btn-edit">
+                                        <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                    </button>
+                                </a>
+                            </div>
                         </td>
                     </tr>
-                    
+
                     <!-- Modal -->
                     <div class="modal fade" id="modalTransaksi{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -113,7 +123,7 @@
                                                     $barang_sewa = json_decode($item->barang_sewa, true);  // Decode JSON menjadi array
                                                     $jumlah_sewa = json_decode($item->jumlah_sewa, true);  // Decode JSON menjadi array
                                                 @endphp
-            
+
                                                 @foreach($barang_sewa as $key => $barang)
                                                     <li>
                                                         <div class="items-modal">
@@ -127,7 +137,7 @@
                                     </div>
                                     <div class="isi-modals">
                                         <div class="judul-modal">Total Bayar</div>
-                                        <div>Rp {{ $item->total_bayar }}</div>
+                                        <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
                                     </div>
                                     <div class="isi-modals">
                                         <div class="judul-modal">Metode Pembayaran</div>

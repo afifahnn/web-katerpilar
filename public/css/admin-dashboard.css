@@ -40,10 +40,17 @@
 
 .dashboard-card {
     display: flex;
-    background-color: #FFDE4D;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border: 0.5px solid #fae68f;
+    box-shadow: 2px 2px 5px #fae68f;
+    transition: box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 4px 4px 10px #fae68f;
 }
 
 .dashboard-card i {

@@ -9,9 +9,12 @@
 @section('contents')
     <div id="create-keuangan">
         <div class="kelola-cust-top">
-            <div class="kelola-cust-judul">Tambah Data Keuangan</div>
+            <div class="kelola-cust-judul">Tambah Data Pengeluaran</div>
             <div class="btn-logout">
-                <button>Logout</button>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a class="nav-link"><button type="submit">Logout</button></a>
+                </form>
             </div>
         </div>
         <div class="btn-back">
@@ -33,13 +36,14 @@
                     </div>
                     <div class="input-container">
                         <div class="content">Jenis Transaksi</div>
-                        <div class="input-group">
+                        <input type="text" name="jenis_transaksi" value="Pengeluaran" readonly required>
+                        {{-- <div class="input-group">
                             <select class="form-select" id="inputGroupSelect04" name="jenis_transaksi" required>
                             <option disabled selected>Pilih...</option>
                             <option value="Pemasukan">Pemasukan</option>
                             <option value="Pengeluaran">Pengeluaran</option>
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="grid-container">
