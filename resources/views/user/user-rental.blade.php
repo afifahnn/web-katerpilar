@@ -91,30 +91,44 @@
                 <input type="text" name="total_bayar1" id="totalBayar" readonly placeholder="Rp 0" onfocus="removeRupiahFormat(this)" onblur="applyRupiahFormat(this)">
             </div>
 
-            <div class="btn-add-create" id="addData">
-                <div class="btn-add-data">
-                    <button type="submit" id="submitBtn">Pesan</button>
-                    {{-- @if(session('show_modal'))
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                console.log('Modal should be shown');
-                                var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-                                modal.show();
-                            });
-                        </script>
-                    @endif --}}
+            <div class="bukti-bayar">
+                <div class="input-data">
+                    <div class="content-tf">Silahkan transfer di nomor rekening berikut :</div>
+                    <div class="norek-content">
+                        <div class="bank-content">BRI</div>
+                        <div class="norek">000192887466371817</div>
+                    </div>
+                </div>
+                <div class="input-data">
+                    <div class="content" for="metode_bayar">Metode Pembayaran</div>
+                    <input type="text" name="metode_bayar" placeholder="e.g. Transfer Bank B**"></input>
+                </div>
+                <div class="input-data">
+                    <div class="content" for="bukti_bayar">Upload Bukti Pembayaran</div>
+                    <input type="file" name="bukti_bayar" accept="image/*" id="imageInput">
+                    <div id="imagePreview">
+                        <img id="preview" src="" alt="Preview Gambar">
+                    </div>
                 </div>
             </div>
 
-            <!-- Button trigger modal -->
-            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Pesan
-            </button> --}}
+            {{-- <div class="btn-add-create" id="addData">
+                <div class="btn-add-data">
+                    <button type="submit" id="submitBtn">Pesan</button>
+                </div>
+            </div> --}}
+
+            <div class="btn-add-create" id="addData">
+                <div class="btn-add-data">
+                    <button type="submit">Pesan</button>
+                </div>
+            </div>
+
         </form>
     </div>
 
     {{-- MODAL --}}
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -131,7 +145,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 </div>
 
@@ -272,19 +286,39 @@
     });
 
     // Modal muncul saat non-cash
-    document.getElementById('submitBtn').addEventListener('click', function (e) {
-        const paymentOption = document.getElementById('inputGroupSelect').value;
+    // document.getElementById('submitBtn').addEventListener('click', function (e) {
+    //     const paymentOption = document.getElementById('inputGroupSelect').value;
 
-        if (paymentOption === "Non-Cash") {
-            // Tampilkan modal
-            const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-            modal.show();
-        } else if (paymentOption === "Cash") {
-            // Submit form
-            document.getElementById('rentalForm').submit();
-        } else {
-            alert('Pilih opsi bayar terlebih dahulu!');
-        }
+    //     if (paymentOption === "Non-Cash") {
+    //         // Tampilkan modal
+    //         const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+    //         modal.show();
+    //     } else if (paymentOption === "Cash") {
+    //         // Submit form
+    //         document.getElementById('rentalForm').submit();
+    //     } else {
+    //         alert('Pilih opsi bayar terlebih dahulu!');
+    //     }
+    // });
+
+    // Bukti bayar muncul saat non-cash
+    document.addEventListener('DOMContentLoaded', function () {
+        const opsiBayarSelect = document.querySelector('select[name="opsi_bayar"]');
+        const buktiBayarSection = document.querySelector('.bukti-bayar');
+
+        const toggleFields = () => {
+            const isNonCash = opsiBayarSelect.value === 'Non-Cash';
+
+            buktiBayarSection.style.display = isNonCash ? 'block' : 'none';
+
+            buktiBayarSection.querySelectorAll('input').forEach(input => {
+                input.required = isNonCash;
+            });
+        };
+
+        toggleFields();
+
+        opsiBayarSelect.addEventListener('change', toggleFields);
     });
 
     // Format angka menjadi Rupiah
@@ -331,5 +365,21 @@
         // Update hidden input dengan angka asli
         updateRawValue(totalHarga);
     }
+
+    // PREVIEW GAMBAR
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+
+    imageInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 @endsection

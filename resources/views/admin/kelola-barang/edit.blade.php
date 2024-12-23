@@ -56,18 +56,15 @@
                 <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="harga_sewa1">1 Hari</div>
-                        <input type="text" id="harga_sewa1_display" class="currency-input" value="{{ $barang->harga_sewa1 }}" required>
-                        <input type="hidden" name="harga_sewa1" id="harga_sewa1">
+                        <input type="text" name="harga_sewa1" id="harga_sewa1" class="currency-input" placeholder="Harga Sewa 1 Hari" value="{{ $barang->harga_sewa1 }}" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa2">2 Hari</div>
-                        <input type="text" id="harga_sewa2_display" class="currency-input" value="{{ $barang->harga_sewa2 }}" required>
-                        <input type="hidden" name="harga_sewa2" id="harga_sewa2">
+                        <input type="text" name="harga_sewa2" id="harga_sewa2" class="currency-input" placeholder="Harga Sewa 2 Hari" value="{{ $barang->harga_sewa2 }}" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="harga_sewa3">3 Hari</div>
-                        <input type="text" id="harga_sewa3_display" class="currency-input" value="{{ $barang->harga_sewa3 }}" required>
-                        <input type="hidden" name="harga_sewa3" id="harga_sewa3">
+                        <input type="text" name="harga_sewa3" id="harga_sewa3" class="currency-input" placeholder="Harga Sewa 3 Hari" value="{{ $barang->harga_sewa3 }}" required>
                     </div>
                 </div>
                 <div class="input-data">
@@ -96,10 +93,9 @@
 
     {{-- JAVASCRIPT --}}
     <script>
-        // FORMAT RUPIAH
-        // format rupiah untuk tampilan
-        function formatRupiah(angka, prefix = 'Rp ') {
-            const numberString = angka.replace(/[^,\d]/g, '');
+        // FORMAT RUPIAH UNTUK INPUT LANGSUNG
+        function formatRupiah(angka, prefix = '') {
+            const numberString = angka.replace(/[^,\d]/g, '').toString(); // Hanya angka
             const split = numberString.split(',');
             const sisa = split[0].length % 3;
             let rupiah = split[0].substr(0, sisa);
@@ -112,30 +108,19 @@
             return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
         }
 
-        // hapus format rupiah untuk mendapatkan angka mentah
         function cleanRupiah(angka) {
             return angka.replace(/\D/g, '');
         }
 
-        // terapkan event listener pada semua input harga sewa
         document.querySelectorAll('.currency-input').forEach(input => {
-            input.addEventListener('focus', function () {
-                this.value = cleanRupiah(this.value);
+            input.addEventListener('input', function () {
+                const rawValue = cleanRupiah(this.value); // Ambil angka mentah
+                this.value = formatRupiah(rawValue, 'Rp '); // Format ulang dengan Rupiah
             });
 
-            input.addEventListener('blur', function () {
-                this.value = formatRupiah(this.value);
-            });
-
-            input.addEventListener('input', function (e) {
-                this.value = cleanRupiah(this.value);
-            });
-        });
-
-        document.querySelector('form').addEventListener('submit', function (e) {
-            document.querySelectorAll('.currency-input').forEach(input => {
-                const hiddenInput = document.getElementById(input.id.replace('_display', ''));
-                hiddenInput.value = cleanRupiah(input.value);
+            // Pastikan value yang dikirim adalah angka mentah
+            input.closest('form').addEventListener('submit', function () {
+                input.value = cleanRupiah(input.value); // Hapus format sebelum submit
             });
         });
 

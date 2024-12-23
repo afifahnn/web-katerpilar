@@ -49,43 +49,49 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($keuangan as $index => $item)
-                    <tr>
-                        <td>{{ $loop->iteration }}.</td>
-                        <td>
-                            @if ($item->transaksi)
-                                {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
-                            @else
-                                {{ \Carbon\Carbon::parse($item->tgl_transaksi)->format('d/m/Y') }}
-                            @endif
-                        </td>
-                        <td>{{ ucwords($item->jenis_transaksi) }}</td>
-                        <td>
-                            @if ($item->transaksi)
-                                Rp {{ number_format($item->transaksi->total_bayar, 0, ',', '.') }}
-                            @else
-                                Rp {{ number_format($item->nominal, 0, ',', '.') }}
-                            @endif
-                        </td>
-                        <td class="col-deskripsi">{{ $item->deskripsi }}</td>
-                        <td>
-                            <div class="btn-aksi">
-                                <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                        <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                    </button>
-                                </form>
-                                <a href="{{ route('admin.kelola-keuangan.edit', $item->id) }}">
-                                    <button class="btn-edit">
-                                        <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                    </button>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
+                    @if($keuangan->isEmpty())
+                        <tr>
+                            <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
+                        </tr>
+                    @else
+                        @foreach($keuangan as $index => $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}.</td>
+                            <td>
+                                @if ($item->transaksi)
+                                    {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
+                                @else
+                                    {{ \Carbon\Carbon::parse($item->tgl_transaksi)->format('d/m/Y') }}
+                                @endif
+                            </td>
+                            <td>{{ ucwords($item->jenis_transaksi) }}</td>
+                            <td>
+                                @if ($item->transaksi)
+                                    Rp {{ number_format($item->transaksi->total_bayar, 0, ',', '.') }}
+                                @else
+                                    Rp {{ number_format($item->nominal, 0, ',', '.') }}
+                                @endif
+                            </td>
+                            <td class="col-deskripsi">{{ $item->deskripsi }}</td>
+                            <td>
+                                <div class="btn-aksi">
+                                    <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('admin.kelola-keuangan.edit', $item->id) }}">
+                                        <button class="btn-edit">
+                                            <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -52,9 +52,11 @@
 }
 
 .detail-riwayat {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
     align-items: center;
+    padding: 0 20px;
 }
 
 .items-sewa {
@@ -62,17 +64,38 @@
     gap: 10px;
 }
 
-.btn-upload {
-    background-color: #00A431;
-    border-radius: 10px;
-    padding: 6px 15px;
-    border: none;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    color: #ffffff;
-    font-weight: 600;
-    text-align: center;
+.pic-bukti {
+    width: 100px;
 }
 
-.btn-upload:hover {
+.pic-bukti {
+    width: 80px;
+    height: 100px;
+    margin: 10px;
+    overflow: hidden;
+}
+
+.pic-bukti img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cancel-rental {
+    text-align: end;
+}
+
+.btn-cancel {
+    background-color: #FF4D4D;
+    border: none;
+    color: white;
+    font-size: 14px;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
     opacity: 80%;
 }

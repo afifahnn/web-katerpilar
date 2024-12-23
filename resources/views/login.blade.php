@@ -12,7 +12,7 @@
 </head>
 <body>
     <div id="login-container">
-        <img src="{{ asset('img/bg1.jpg') }}" class="img-bg">
+        <img src="{{ asset('img/bg11.jpg') }}" class="img-bg">
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <div class="login-card">

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->json('jumlah_sewa')->nullable();
             $table->integer('total_bayar');
             $table->enum('opsi_bayar', ['cash', 'non-cash'])->default('cash');
+            $table->string('metode_bayar')->nullable();
+            $table->string('bukti_bayar')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable()->unsigned();
             $table->unsignedBigInteger('barang_id')->nullable()->unsigned();
             $table->foreign('customer_id')->references('id')->on('customer')->onUpdate('cascade')->onDelete('cascade');

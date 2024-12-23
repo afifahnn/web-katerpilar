@@ -8,8 +8,8 @@
 <div id="upload-bukti">
     <div class="container-rental">
         <div class="judul-rental">FORM UPLOAD BUKTI PEMBAYARAN</div>
-        {{-- <form action="{{ route('user.rental') }}" method="post" enctype="multipart/form-data"> --}}
-            {{-- @csrf --}}
+        <form action="{{ route('user.upload') }}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="input-data">
                 <div class="content-tf">Silahkan transfer di nomor rekening berikut :</div>
                 <div class="norek-content">
@@ -34,7 +34,7 @@
                     <button type="submit">Upload</button>
                 </div>
             </div>
-        {{-- </form> --}}
+        </form>
     </div>
 </div>
 

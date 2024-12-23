@@ -51,8 +51,7 @@
             <div class="grid-container">
                 <div class="input-container">
                     <div class="content" for="nominal">Nominal</div>
-                    <input type="text" name="nominal" id="nominal_display" class="currency-input" value="{{ $keuangan->nominal}}" required>
-                    <input type="hidden" name="nominal" id="nominal">
+                    <input type="text" name="nominal" id="nominal" class="currency-input" placeholder="Nominal" value="{{ $keuangan->nominal}}" required>
                 </div>
                 <div class="input-container">
                     <div class="content" for="deskripsi">Deskripsi</div>
@@ -71,47 +70,35 @@
 
 {{-- javascript --}}
 <script>
-    // FORMAT RUPIAH
-    // format rupiah untuk tampilan
-    function formatRupiah(angka, prefix = 'Rp ') {
-        const numberString = angka.replace(/[^,\d]/g, '');
-        const split = numberString.split(',');
-        const sisa = split[0].length % 3;
-        let rupiah = split[0].substr(0, sisa);
-        const ribuan = split[0].substr(sisa).match(/\d{3}/g);
+    // FORMAT RUPIAH UNTUK INPUT LANGSUNG
+    function formatRupiah(angka, prefix = '') {
+            const numberString = angka.replace(/[^,\d]/g, '').toString(); // Hanya angka
+            const split = numberString.split(',');
+            const sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            const ribuan = split[0].substr(sisa).match(/\d{3}/g);
 
-        if (ribuan) {
-            const separator = sisa ? '.' : '';
-            rupiah += separator + ribuan.join('.');
+            if (ribuan) {
+                const separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
         }
-        return prefix + (split[1] !== undefined ? rupiah + ',' + split[1] : rupiah);
-    }
 
-    // hapus format rupiah untuk mendapatkan angka mentah
-    function cleanRupiah(angka) {
-        return angka.replace(/\D/g, '');
-    }
+        function cleanRupiah(angka) {
+            return angka.replace(/\D/g, '');
+        }
 
-    // terapkan event listener pada semua input
-    document.querySelectorAll('.currency-input').forEach(input => {
-        input.addEventListener('focus', function () {
-            this.value = cleanRupiah(this.value);
-        });
-
-        input.addEventListener('blur', function () {
-            this.value = formatRupiah(this.value);
-        });
-
-        input.addEventListener('input', function (e) {
-            this.value = cleanRupiah(this.value);
-        });
-    });
-
-    document.querySelector('form').addEventListener('submit', function (e) {
         document.querySelectorAll('.currency-input').forEach(input => {
-            const hiddenInput = document.getElementById(input.id.replace('_display', ''));
-            hiddenInput.value = cleanRupiah(input.value);
+            input.addEventListener('input', function () {
+                const rawValue = cleanRupiah(this.value); // Ambil angka mentah
+                this.value = formatRupiah(rawValue, 'Rp '); // Format ulang dengan Rupiah
+            });
+
+            // Pastikan value yang dikirim adalah angka mentah
+            input.closest('form').addEventListener('submit', function () {
+                input.value = cleanRupiah(input.value); // Hapus format sebelum submit
+            });
         });
-    });
 </script>
 @endsection

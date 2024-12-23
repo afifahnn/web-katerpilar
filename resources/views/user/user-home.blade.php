@@ -9,7 +9,7 @@
     {{-- HERO SECTION --}}
     <div class="hero-section">
         <div class="img-bg">
-            <img src="{{ asset('img/bg1.jpg') }}" alt="Background">
+            <img src="{{ asset('img/bg11.jpg') }}" alt="Background">
         </div>
         <div class="span-text">
             <div>Selamat Datang</div>

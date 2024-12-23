@@ -50,114 +50,130 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transaksi as $index => $item)
-                    <tr style="text-align: center">
-                        <td>{{ $loop->iteration }}.</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
-                        <td>
-                            {{ $item->customer->nama_customer }}
-                        </td>
-                        <td>
-                            @php
-                                $jumlah_sewa = json_decode($item->jumlah_sewa, true);
-                            @endphp
-                            {{ array_sum($jumlah_sewa) }}
-                        </td>
-                        <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
-                        <td>
-                            <div class="btn-aksi">
-                                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
-                                    <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
-                                </button>
-                                <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                        <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                    @if($transaksi->isEmpty())
+                        <tr>
+                            <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
+                        </tr>
+                    @else
+                        @foreach($transaksi as $index => $item)
+                        <tr style="text-align: center">
+                            <td>{{ $loop->iteration }}.</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
+                            <td>
+                                {{ $item->customer->nama_customer }}
+                            </td>
+                            <td>
+                                @php
+                                    $jumlah_sewa = json_decode($item->jumlah_sewa, true);
+                                @endphp
+                                {{ array_sum($jumlah_sewa) }}
+                            </td>
+                            <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
+                            <td>
+                                <div class="btn-aksi">
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
+                                        <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
                                     </button>
-                                </form>
-                                <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
-                                    <button class="btn-edit">
-                                        <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                    </button>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalTransaksi{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Transaksi</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
+                                        <button class="btn-edit">
+                                            <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </a>
                                 </div>
-                                <div class="modal-body content-modals">
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Tanggal Sewa</div>
-                                        <div>{{ $item->tgl_sewa }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Tanggal Kembali</div>
-                                        <div>{{ $item->tgl_kembali }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Nama Penyewa</div>
-                                        <div>{{ $item->customer->nama_customer }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Alamat</div>
-                                        <div>{{ $item->customer->alamat_customer }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Nomor Telepon</div>
-                                        <div>{{ $item->customer->telp_customer }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Barang yang Disewa</div>
-                                        <div>
-                                            <ul>
-                                                @php
-                                                    $barang_sewa = json_decode($item->barang_sewa, true);  // Decode JSON menjadi array
-                                                    $jumlah_sewa = json_decode($item->jumlah_sewa, true);  // Decode JSON menjadi array
-                                                @endphp
+                            </td>
+                        </tr>
 
-                                                @foreach($barang_sewa as $key => $barang)
-                                                    <li>
-                                                        <div class="items-modal">
-                                                            <div>{{ $barang }}</div>
-                                                            <div>({{ $jumlah_sewa[$key] }})</div>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalTransaksi{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Transaksi</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body content-modals">
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Tanggal Sewa</div>
+                                            <div>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</div>
                                         </div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Total Bayar</div>
-                                        <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
-                                    </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Metode Pembayaran</div>
-                                        <div>
-                                            <div>{{ $item->opsi_bayar }}</div>
-                                            <div>Transfer Bank BRI</div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Tanggal Kembali</div>
+                                            <div>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</div>
                                         </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Nama Penyewa</div>
+                                            <div>{{ $item->customer->nama_customer }}</div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Alamat</div>
+                                            <div>{{ $item->customer->alamat_customer }}</div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Nomor Telepon</div>
+                                            <div>{{ $item->customer->telp_customer }}</div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Barang yang Disewa</div>
+                                            <div>
+                                                <ul>
+                                                    @php
+                                                        $barang_sewa = json_decode($item->barang_sewa, true);  // Decode JSON menjadi array
+                                                        $jumlah_sewa = json_decode($item->jumlah_sewa, true);  // Decode JSON menjadi array
+                                                    @endphp
+
+                                                    @foreach($barang_sewa as $key => $barang)
+                                                        <li>
+                                                            <div class="items-modal">
+                                                                <div>{{ $barang }}</div>
+                                                                <div>({{ $jumlah_sewa[$key] }})</div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Total Bayar</div>
+                                            <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Metode Pembayaran</div>
+                                            <div>
+                                                <div>{{ ucwords($item->opsi_bayar) }}</div>
+                                                <div>
+                                                    @if(strtolower($item->opsi_bayar) === 'non-cash')
+                                                        {{ $item->metode_bayar }}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @if(strtolower($item->opsi_bayar) === 'non-cash')
+                                            <div class="isi-modals">
+                                                <div class="judul-modal">Bukti Pembayaran</div>
+                                                <div>
+                                                    <div class="pic-bukti">
+                                                        <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
-                                    <div class="isi-modals">
-                                        <div class="judul-modal">Bukti Pembayaran</div>
-                                        <div>img</div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
