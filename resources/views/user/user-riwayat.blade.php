@@ -11,7 +11,12 @@
         <div class="riwayat-container">
             @if($transaksi->isEmpty())
                 <div class="no-transactions">
-                    Anda belum pernah melakukan pemesanan barang
+                    <div>Anda belum pernah melakukan pemesanan barang</div>
+                    <div class="btn-add-create">
+                        <div class="btn-add-data">
+                            <button type="button" onclick="window.location.href='/katalog'">Lihat Katalog</button>
+                        </div>
+                    </div>
                 </div>
             @else
                 @foreach($transaksi as $index => $item)
@@ -45,11 +50,22 @@
                                 <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
                             </div>
                             <div>{{ ucwords($item->opsi_bayar) }}</div>
-
                             <div>
                                 @if(strtolower($item->opsi_bayar) === 'non-cash')
-                                    <button class="btn-upload" onclick="window.location.href='/upload'">Upload bukti pembayaran</button>
+                                    <div class="pic-bukti">
+                                        <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
+                                    </div>
                                 @endif
+                            </div>
+                            <div class="cancel-rental">
+                                <form action="{{ route('user.riwayat.delete', $item->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-cancel" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <i class="fa-solid fa-ban" style="font-size: 15px; padding-right: 5px;"></i>
+                                        <span>Batalkan Pesanan</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

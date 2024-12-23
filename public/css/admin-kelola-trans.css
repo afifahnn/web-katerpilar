@@ -34,10 +34,6 @@
     opacity: 80%;
 }
 
-.data-table td.btn-aksi {
-    /* border: none; */
-}
-
 /* MODAL */
 .content-modals {
     display: flex;
@@ -59,4 +55,9 @@
 .items-modal {
     display: flex;
     gap: 10px;
+}
+
+.pic-bukti img {
+    height: 500px;
+    width: 300px;
 }

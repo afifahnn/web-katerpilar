@@ -39,10 +39,11 @@ Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.r
 Route::post('/rental', [UserRentalController::class, 'storeRental'])->name('user.rental');
 
 // Upload Bukti Bayar
-Route::get('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload');
+Route::post('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload');
 
 // User Riwayat
 Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');
+Route::delete('/riwayat/{id}', [UserRiwayatController::class, 'deleteRiwayat'])->name('user.riwayat.delete');
 
 // User Profil
 Route::get('/profil', [UserProfilController::class, 'userProfil'])->name('user.profil');

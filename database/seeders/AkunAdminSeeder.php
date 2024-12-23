@@ -13,7 +13,7 @@ class AkunAdminSeeder extends Seeder
     public function run(): void
     {
         DB::table('admins')->insert([
-            'username' => 'afifahnn',
+            'username' => 'admin',
             'password' => Hash::make('admin1234'),
             'nama_admin' => 'Afifah',
             'telp_admin' => '0812345',

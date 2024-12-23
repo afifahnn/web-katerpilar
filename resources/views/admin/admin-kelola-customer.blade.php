@@ -48,37 +48,43 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($customer as $index => $customer)
-                    <tr>
-                        <td>{{ $loop->iteration }}.</td>
-                        <td>{{ $customer->nama_customer}}</td>
-                        <td>{{ $customer->alamat_customer}}</td>
-                        <td>{{ $customer->telp_customer}}</td>
-                        <td>
-                            @if($customer->transaksi->isEmpty())
-                                0 kali
-                            @else
-                                {{ $customer->transaksi->count() }} kali
-                            @endif
-                        </td>
-                        <td>
-                            <div class="btn-aksi">
-                                <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
-                                        <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                    </button>
-                                </form>
-                                <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
-                                    <button type="submit" class="btn-edit">
-                                        <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
-                                    </button>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
+                    @if($customer->isEmpty())
+                        <tr>
+                            <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
+                        </tr>
+                    @else
+                        @foreach($customer as $index => $customer)
+                        <tr>
+                            <td>{{ $loop->iteration }}.</td>
+                            <td>{{ $customer->nama_customer}}</td>
+                            <td>{{ $customer->alamat_customer}}</td>
+                            <td>{{ $customer->telp_customer}}</td>
+                            <td>
+                                @if($customer->transaksi->isEmpty())
+                                    0 kali
+                                @else
+                                    {{ $customer->transaksi->count() }} kali
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-aksi">
+                                    <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
+                                        <button type="submit" class="btn-edit">
+                                            <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

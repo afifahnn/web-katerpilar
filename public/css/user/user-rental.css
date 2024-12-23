@@ -64,10 +64,39 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.content {
+.content, .content-tf {
     font-size: 14px;
-    font-weight: 600;
     margin-bottom: 5px;
+}
+
+.content {
+    font-weight: 600;
+}
+
+.norek-content {
+    display: flex;
+    gap: 15px;
+}
+
+.bank-content, .norek {
+    font-size: 18px;
+}
+
+.bank-content {
+    font-weight: 600;
+}
+
+#imagePreview {
+    margin-top: 10px;
+}
+
+#preview {
+    height: 200px;
+    width: 200px;
+    display: none;
+    border: 1px solid #b9b9b9;
+    border-radius: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1)
 }
 
 .input-group {

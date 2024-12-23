@@ -25,6 +25,8 @@ class KelolaBarangController extends Controller
     // STORE BARANG
     public function storeBarang(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
             'gambar_barang' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'nama_barang' => 'required',

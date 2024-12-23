@@ -33,8 +33,15 @@ class UserRentalController extends Controller
                 'barang_sewa' => 'required',
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
-                'opsi_bayar' => 'required|in:Cash,Non-Cash'
+                'opsi_bayar' => 'required|in:Cash,Non-Cash',
+                'metode_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required' : 'nullable',
+                'bukti_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048' : 'nullable',
             ]);
+
+            $fileImg = null;
+            if ($request->hasFile('bukti_bayar')) {
+                $fileImg = $request->file('bukti_bayar')->store('images/buktibayar', 'public');
+            }
 
             // Buat data customer
             $customer = Customer::firstOrCreate(
@@ -58,6 +65,8 @@ class UserRentalController extends Controller
                 'jumlah_sewa' => json_encode($jumlahSewa),
                 'opsi_bayar' => $request->opsi_bayar,
                 'total_bayar' => $request->total_bayar,
+                'metode_bayar' => $request->metode_bayar,
+                'bukti_bayar' => $fileImg,
             ]);
 
             foreach ($barangSewa as $index => $namaBarang) {
