@@ -56,3 +56,9 @@
     background-color: #e0e0e0;
 }
 
+.item-product,
+.item-quantity,
+.item-price {
+    margin-right: 10px;
+}
+

@@ -74,6 +74,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="bukti-bayar">
+                    <div class="input-data">
+                        <div class="content" for="metode_bayar">Metode Pembayaran</div>
+                        <input type="text" name="metode_bayar" id="metode_bayar" placeholder="e.g. Transfer Bank B**">
+                    </div>
+                </div>
 
                 {{-- barang yang disewa --}}
                 <div class="input-data">
@@ -86,14 +92,18 @@
                                 <option value="{{ $item->nama_barang }}"
                                         data-harga1="{{ $item->harga_sewa1 }}"
                                         data-harga2="{{ $item->harga_sewa2 }}"
-                                        data-harga3="{{ $item->harga_sewa3 }}" disabled>
+                                        data-harga3="{{ $item->harga_sewa3 }}"
+                                        data-kelipatan="{{ $item->kelipatan }}"
+                                        data-stok="{{ $item->stok_barang }}" disabled>
                                     {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                                 </option>
                             @else
                                 <option value="{{ $item->nama_barang }}"
                                         data-harga1="{{ $item->harga_sewa1 }}"
                                         data-harga2="{{ $item->harga_sewa2 }}"
-                                        data-harga3="{{ $item->harga_sewa3 }}">
+                                        data-harga3="{{ $item->harga_sewa3 }}"
+                                        data-kelipatan="{{ $item->kelipatan }}"
+                                        data-stok="{{ $item->stok_barang }}">
                                     {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                                 </option>
                             @endif
@@ -115,7 +125,7 @@
                     <input type="text" name="total_bayar1" id="totalBayar" readonly placeholder="Rp 0" onfocus="removeRupiahFormat(this)" onblur="applyRupiahFormat(this)">
                 </div>
 
-                <div class="btn-add-create">
+                <div class="btn-add-create"  id="addData">
                     <div class="btn-add-data">
                         <i class="fa-solid fa-plus" style="color: #FFFFFF; font-size: 20px;"></i>
                         <button type="submit">Tambah Data</button>
@@ -196,7 +206,7 @@
         const selectedItemsContainer = document.getElementById('selectedItems');
         const barangSewaInput = document.getElementById('barangSewaInput');
         const jumlahSewaInput = document.getElementById('jumlahSewaInput');
-        const selectedItems = {}; // Menyimpan data barang dan jumlah
+        const selectedItems = {};
 
         addItemBtn.addEventListener('click', function () {
             const selectedValue = selectBox.value;
@@ -204,13 +214,15 @@
             const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga1 || 0);
             const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga2 || 0);
             const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga3 || 0);
+            const kelipatan = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.kelipatan || 0);
+            const stokBarang = parseInt(selectBox.options[selectBox.selectedIndex]?.dataset.stok || 0);
 
             if (selectedValue === "" || !selectedValue) {
                 alert('Pilih barang terlebih dahulu!');
                 return;
             }
 
-            const totalHariText = totalHari.value.match(/\d+/); // Ambil angka dari total hari
+            const totalHariText = totalHari.value.match(/\d+/);
             const totalHariNumber = totalHariText ? parseInt(totalHariText[0]) : 0;
 
             let hargaPerItem;
@@ -220,15 +232,18 @@
                 hargaPerItem = hargaSewa2;
             } else if (totalHariNumber <= 3) {
                 hargaPerItem = hargaSewa3;
+            } else {
+                const extraDays = totalHariNumber - 3;
+                const additionalCost = extraDays * kelipatan;
+                hargaPerItem = hargaSewa3 + additionalCost;
             }
-            // else {
-            //     const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
-            //     const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
-            //     hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
-            // }
 
             // Jika barang sudah ada, tambahkan jumlahnya
             if (selectedItems[selectedValue]) {
+                if (selectedItems[selectedValue].quantity >= stokBarang) {
+                    alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
+                    return;
+                }
                 selectedItems[selectedValue].quantity += 1;
 
                 // Update tampilan jumlah
@@ -236,6 +251,10 @@
                 itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
                 itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
             } else {
+                if (stokBarang <= 0) {
+                    alert('Barang ini sudah habis stoknya!');
+                    return;
+                }
                 // Tambahkan barang baru
                 selectedItems[selectedValue] = {
                     name: selectedText,
@@ -243,17 +262,20 @@
                     price: hargaPerItem
                 };
 
+                const formattedPrice = formatRupiah(hargaPerItem);
+
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'selected-item';
                 itemDiv.dataset.value = selectedValue;
                 itemDiv.innerHTML = `
-                    ${selectedText} <span class="item-quantity">Jumlah: 1</span>
-                    <span class="item-price">Harga: Rp ${hargaPerItem}</span>
+                    <span class="item-product">${selectedText}</span>
+                    <span class="item-quantity">Jumlah: 1</span>
+                    <span class="item-price">Harga: ${formattedPrice}</span>
                 `;
 
                 const removeBtn = document.createElement('button');
                 removeBtn.className = 'btn btn-danger btn-sm ms-2';
-                removeBtn.textContent = 'Hapus';
+                removeBtn.textContent = 'X';
                 removeBtn.addEventListener('click', function () {
                     delete selectedItems[selectedValue];
                     selectedItemsContainer.removeChild(itemDiv);
@@ -267,12 +289,40 @@
             updateHiddenInputs();
         });
 
-        document.querySelector('form').addEventListener('submit', function (e) {
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+            }).format(number);
+        }
+
+        document.querySelector('#addData').addEventListener('click', function (e) {
             // Cek apakah ada barang yang ditambahkan
             if (Object.keys(selectedItems).length === 0) {
                 alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
                 e.preventDefault(); // Mencegah form dikirim
             }
+        });
+
+        // Bukti bayar muncul saat non-cash
+        document.addEventListener('DOMContentLoaded', function () {
+            const opsiBayarSelect = document.querySelector('select[name="opsi_bayar"]');
+            const buktiBayarSection = document.querySelector('.bukti-bayar');
+
+            const toggleFields = () => {
+                const isNonCash = opsiBayarSelect.value === 'Non-Cash';
+
+                buktiBayarSection.style.display = isNonCash ? 'block' : 'none';
+
+                buktiBayarSection.querySelectorAll('input').forEach(input => {
+                    input.required = isNonCash;
+                });
+            };
+
+            toggleFields();
+
+            opsiBayarSelect.addEventListener('change', toggleFields);
         });
 
         // Format angka menjadi Rupiah

@@ -23,7 +23,7 @@
                     <span class="input-group-text" id="addon-wrapping">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
                 </div>
             </div>
             <a href="{{ route('admin.kelola-customer.create') }}">
@@ -39,7 +39,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>No.</th>
+                        <th class="col-number">No.</th>
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>Telp.</th>
@@ -47,15 +47,15 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     @if($customer->isEmpty())
                         <tr>
                             <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
                         </tr>
                     @else
                         @foreach($customer as $index => $customer)
-                        <tr>
-                            <td>{{ $loop->iteration }}.</td>
+                        <tr class="data-row">
+                            <td class="col-number">{{ $loop->iteration }}.</td>
                             <td>{{ $customer->nama_customer}}</td>
                             <td>{{ $customer->alamat_customer}}</td>
                             <td>{{ $customer->telp_customer}}</td>
@@ -83,12 +83,31 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <p id="no-data" style="display: none; text-align: center;">Data tidak ditemukan</p>
                         @endforeach
                     @endif
                 </tbody>
             </table>
         </div>
-
     </div>
 
+{{-- JAVASCRIPT --}}
+<script>
+    // SEARCH
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#table-body .data-row');
+        let hasVisibleRow = false;
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+            if (match) hasVisibleRow = true;
+        });
+
+        document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
+    });
+</script>
 @endsection

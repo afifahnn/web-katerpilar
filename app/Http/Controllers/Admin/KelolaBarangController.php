@@ -40,6 +40,10 @@ class KelolaBarangController extends Controller
 
         $filePath = $request->file('gambar_barang')->store('images/barang', 'public');
 
+        $kelipatan1 = $request->harga_sewa2 - $request->harga_sewa1;
+        $kelipatan2 = $request->harga_sewa3 - $request->harga_sewa2;
+        $kelipatan = ($kelipatan1 + $kelipatan2) / 2;
+
         Barang::create([
             'gambar_barang' => $filePath,
             'nama_barang' => $request->nama_barang,
@@ -49,6 +53,7 @@ class KelolaBarangController extends Controller
             'harga_sewa3' => $request->harga_sewa3,
             'deskripsi_barang' => $request->deskripsi_barang,
             'jenis' => $request->jenis,
+            'kelipatan' => $kelipatan,
         ]);
 
 
@@ -79,6 +84,10 @@ class KelolaBarangController extends Controller
             'jenis' => 'required',
         ]);
 
+        $kelipatan1 = $request->harga_sewa2 - $request->harga_sewa1;
+        $kelipatan2 = $request->harga_sewa3 - $request->harga_sewa2;
+        $kelipatan = ($kelipatan1 + $kelipatan2) / 2;
+
         $barang->update([
             // 'gambar_barang' => $imagePath,
             // 'gambar_barang' => $request->gambar_barang,
@@ -89,6 +98,7 @@ class KelolaBarangController extends Controller
             'harga_sewa3' => $request->harga_sewa3,
             'deskripsi_barang' => $request->deskripsi_barang,
             'jenis' => $request->jenis,
+            'kelipatan' => $kelipatan,
         ]);
 
         if ($request->hasFile('gambar_barang')) {

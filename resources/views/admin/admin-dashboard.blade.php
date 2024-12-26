@@ -16,19 +16,20 @@
             </div>
         </div>
         <div style="padding: 20px;">
+            <div>{{ date('d F Y') }}</div>
             <div class="dashboard-container">
                 <div class="dashboard-card">
                     <i class="fa-solid fa-headset"></i>
                     <div>
                         <div style="font-weight: 600; font-size: 16px">Data Customer</div>
-                        <div>12 orang</div>
+                        <div>{{ $totalCustomer }} orang</div>
                     </div>
                 </div>
                 <div class="dashboard-card">
                     <i class="fa-solid fa-toolbox"></i>
                     <div>
                         <div style="font-weight: 600; font-size: 16px">Data Stok Barang</div>
-                        <div>50 barang</div>
+                        <div>{{ $totalBarang }} barang</div>
                     </div>
                 </div>
             </div>
@@ -36,15 +37,15 @@
                 <div class="dashboard-card">
                     <i class="fa-solid fa-money-bills"></i>
                     <div>
-                        <div style="font-weight: 600; font-size: 16px">Laba</div>
-                        <div>Rp 100.000</div>
+                        <div style="font-weight: 600; font-size: 16px">Laba Keseluruhan Tahun {{ date('Y') }}</div>
+                        <div>Rp {{ number_format($totalLaba, 0, ',', '.') }}</div>
                     </div>
                 </div>
                 <div class="dashboard-card">
                     <i class="fa-solid fa-money-bill-trend-up"></i>
                     <div>
-                        <div style="font-weight: 600; font-size: 16px">Omzet</div>
-                        <div>Rp 300.000</div>
+                        <div style="font-weight: 600; font-size: 16px">Omzet Keseluruhan Tahun {{ date('Y') }}</div>
+                        <div>Rp {{ number_format($totalOmzet, 0, ',', '.') }}</div>
                     </div>
                 </div>
             </div>

@@ -68,9 +68,10 @@
     padding: 8px;
 }
 
-.search-bar .form-control:focus {
-    box-shadow: none;
+.search-bar .input-group:focus-within {
+    box-shadow: 0 0 3px #FFDE4D;
     outline: none;
+    /* border-color: orange; */
 }
 
 .btn-add {
@@ -128,6 +129,11 @@
 
 .data-table tr:nth-child(odd) {
     background-color: #fffdf7;
+}
+
+.col-number {
+    width: 70px;
+    text-align: center;
 }
 
 .btn-aksi {

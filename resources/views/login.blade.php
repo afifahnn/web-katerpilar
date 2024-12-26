@@ -28,7 +28,7 @@
                 <div class="pwd-container">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password-input" name="password" placeholder="Password" required>
-                    <i class="fa-solid fa-eye" id="toggle-password"></i>
+                    <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
                 </div>
                 <div class="btn-login">
                     <button type="submit">Login</button>
@@ -59,8 +59,8 @@
         const isPassword = passwordInput.type === "password";
         passwordInput.type = isPassword ? "text" : "password";
 
-        togglePassword.classList.toggle("fa-eye");
         togglePassword.classList.toggle("fa-eye-slash");
+        togglePassword.classList.toggle("fa-eye");
     });
 </script>
 </html>

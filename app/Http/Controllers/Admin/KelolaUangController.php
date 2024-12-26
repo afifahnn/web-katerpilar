@@ -74,39 +74,6 @@ class KelolaUangController extends Controller
     }
 
     // LAPORAN KEUANGAN
-    // public function laporanKeuangan()
-    // {
-    //     $dataKeuangan = DB::table('keuangans')
-    //         ->select(
-    //             'keuangans.tgl_transaksi AS tanggal',
-    //             DB::raw('NULL AS tgl_sewa'),
-    //             DB::raw('NULL AS masuk'),
-    //             'keuangans.nominal AS keluar',
-    //             'keuangans.laba',
-    //             'keuangans.omzet',
-    //             'keuangans.deskripsi'
-    //         );
-
-    //     $dataTransaksi = DB::table('transaksis')
-    //         ->select(
-    //             'transaksis.tgl_sewa AS tanggal',
-    //             DB::raw('NULL AS tgl_transaksi'),
-    //             'transaksis.total_bayar AS masuk',
-    //             DB::raw('NULL AS keluar'),
-    //             DB::raw('NULL AS laba'),
-    //             DB::raw('NULL AS omzet'),
-    //             DB::raw("'Sewa alat' AS deskripsi")
-    //         );
-
-    //     $laporanKeuangan = $dataKeuangan
-    //         ->unionAll($dataTransaksi)
-    //         ->orderBy('tanggal', 'ASC')
-    //         ->get();
-
-    //     return view('admin.kelola-keuangan.laporan-keuangan', compact('laporanKeuangan'));
-
-    // }
-
     public function laporanKeuangan(Request $request)
     {
         $tanggalAwal = $request->query('tanggal_awal');

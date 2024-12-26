@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Transaksi;
@@ -15,7 +16,8 @@ class UserRentalController extends Controller
         $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
         $barang = Barang::all();
         $customer = Customer::all();
-        return view('user.user-rental', ['barang' => $barang, 'transaksi' => $transaksi, 'customer' => $customer]);
+        $admin = Admin::first();
+        return view('user.user-rental', ['barang' => $barang, 'transaksi' => $transaksi, 'customer' => $customer, 'admin' => $admin]);
     }
 
     // STORE RENTAL

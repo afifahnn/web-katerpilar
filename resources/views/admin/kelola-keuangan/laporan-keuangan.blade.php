@@ -94,7 +94,7 @@
             </tbody>
             <thead class="th-total">
                 <tr>
-                    <th style="text-align: center" colspan="3">Total</th>
+                    <th colspan="3">Total</th>
                     <th>Rp {{ number_format($totalMasuk, 0, ',', '.') }}</th>
                     <th>Rp {{ number_format($totalKeluar, 0, ',', '.') }}</th>
                     <th>Rp {{ number_format($totalLaba, 0, ',', '.') }}</th>

@@ -1,3 +1,42 @@
 #edit-transaksi {
     padding-bottom: 80px;
 }
+
+.metod {
+    padding: 5px 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.metod .metod-input {
+    border-radius: 10px;
+    padding: 8px 15px;
+    width: 240px;
+    border: 1px solid #a7a7a7;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.metod .metod-input:focus {
+    border-color: #696969;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#imagePreview,
+#imagePreviewImg {
+    margin-top: 10px;
+}
+
+#imagePreview img,
+#preview {
+    height: 370px;
+    width: 200px;
+    border: 1px solid #b9b9b9;
+    border-radius: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1)
+}
+
+#preview {
+    display: none;
+}

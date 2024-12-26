@@ -8,7 +8,7 @@
 @section('contents')
     <div id="admin-profil">
         <div class="kelola-cust-top">
-            <div class="kelola-cust-judul">Kelola Data Keuangan</div>
+            <div class="kelola-cust-judul">Profil Admin</div>
             <div class="btn-logout">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -19,36 +19,36 @@
 
         {{-- container --}}
         <div class="profil-container">
-            <div class="grid-container">
-                <div class="input-profil">
-                    <div class="data-profil">Nama</div>
-                    <input placeholder="Nama"></input>
+            <div class="info-profil">
+                <div style="font-weight: 600">
+                    <div>Nama</div>
+                    <div>Username</div>
+                    <div>Nomor Telepon</div>
+                    <div>Jenis Pembayaran</div>
+                    <div>Nomor Rekening</div>
                 </div>
-                <div class="input-profil">
-                    <div class="data-profil">Nomor Telepon</div>
-                    <input placeholder="Nomor Telepon"></input>
+                <div>
+                    <div>:</div>
+                    <div>:</div>
+                    <div>:</div>
+                    <div>:</div>
+                    <div>:</div>
                 </div>
-            </div>
-            <div class="grid-container">
-                <div class="input-profil">
-                    <div class="data-profil">Username</div>
-                    <input placeholder="Username"></input>
-                </div>
-                <div class="input-profil">
-                    <div class="data-profil">Email</div>
-                    <input placeholder="Email"></input>
-                </div>
-            </div>
-            <div class="grid-container">
-                <div class="input-profil">
-                    <div class="data-profil">Password</div>
-                    <input placeholder="Password"></input>
+                <div>
+                    <div>{{ $admin->nama_admin }}</div>
+                    <div>{{ $admin->username }}</div>
+                    <div>{{ $admin->telp_admin }}</div>
+                    <div>{{ $admin->jenis_rekening }}</div>
+                    <div>{{ $admin->no_rekening }}</div>
                 </div>
             </div>
-            <div class="btn-profil">
-                <div class="btn-edit-profil">
-                    <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF; font-size: 20px;"></i>
-                    <button>Edit</button>
+
+            <div class="btn-profil-2">
+                <div class="btn-edit-profil-2">
+                    <i class="fa-solid fa-pen-to-square" style="color: #000000; font-size: 20px;"></i>
+                    <a href="{{ url('/admin-update-profil') }}">
+                        <button>Edit Profil</button>
+                    </a>
                 </div>
             </div>
         </div>
