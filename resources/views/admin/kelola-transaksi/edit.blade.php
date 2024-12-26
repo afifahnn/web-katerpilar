@@ -70,8 +70,8 @@
                     <div class="input-group">
                         <select class="form-select" id="inputGroupSelect" name="opsi_bayar" required>
                             <option value="" disabled {{ $transaksi->opsi_bayar == null ? 'selected' : '' }}>Pilih...</option>
-                            <option value="Cash" {{ $transaksi->opsi_bayar == 'Cash' ? 'selected' : '' }}>Cash</option>
-                            <option value="Non-Cash" {{ $transaksi->opsi_bayar == 'Non-Cash' ? 'selected' : '' }}>Non-Cash</option>
+                            <option value="Cash" {{ $transaksi->opsi_bayar == 'cash' ? 'selected' : '' }}>Cash</option>
+                            <option value="Non-Cash" {{ $transaksi->opsi_bayar == 'non-cash' ? 'selected' : '' }}>Non-Cash</option>
                         </select>
                     </div>
                 </div>
@@ -83,19 +83,28 @@
                 <div class="input-group">
                     <select class="form-select" id="inputGroupSelect04">
                     <option value="" disabled selected>Pilih...</option>
+                    @php
+                        $isSelected = in_array($transaksi->nama_barang, array_column($data_sewa, 'barang'));
+                    @endphp
                     @foreach ($barang as $index => $item)
                         @if ($item->stok_barang == 0)
                             <option value="{{ $item->nama_barang }}"
                                     data-harga1="{{ $item->harga_sewa1 }}"
                                     data-harga2="{{ $item->harga_sewa2 }}"
-                                    data-harga3="{{ $item->harga_sewa3 }}" disabled>
+                                    data-harga3="{{ $item->harga_sewa3 }}"
+                                    data-kelipatan="{{ $item->kelipatan }}"
+                                    data-stok="{{ $item->stok_barang }}" disabled
+                                    @if($isSelected) selected @endif>
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @else
                             <option value="{{ $item->nama_barang }}"
                                     data-harga1="{{ $item->harga_sewa1 }}"
                                     data-harga2="{{ $item->harga_sewa2 }}"
-                                    data-harga3="{{ $item->harga_sewa3 }}">
+                                    data-harga3="{{ $item->harga_sewa3 }}"
+                                    data-kelipatan="{{ $item->kelipatan }}"
+                                    data-stok="{{ $item->stok_barang }}"
+                                    @if($isSelected) selected @endif>
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @endif
@@ -108,21 +117,38 @@
                 <input type="hidden" name="barang_sewa[]" id="barangSewaInput">
                 <input type="hidden" name="jumlah_sewa[]" id="jumlahSewaInput">
                 <div id="selectedItems" style="margin-top: 10px;">
-                    @foreach ($data_sewa as $sewa)
-                        <div class="selected-item" data-value="{{ $sewa['barang'] }}">
-                            <span>{{ $sewa['barang'] }} (Jumlah: {{ $sewa['jumlah'] }})</span>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeSelectedItem('{{ $sewa['barang'] }}')">Hapus</button>
+                    @foreach ($data_sewa as $item)
+                        <div class="selected-item" data-value="{{ $item['barang'] }}">
+                            <span>{{ $item['barang'] }} (Jumlah: {{ $item['jumlah'] }})</span>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeSelectedItem('{{ $item['barang'] }}')">Hapus</button>
                         </div>
                     @endforeach
                 </div>
             </div>
+
             <div class="input-data">
                 <div class="content" for="total_bayar">Total Bayar</div>
                 <input type="hidden" name="total_bayar" id="totalBayarRaw">
                 <input type="text" name="total_bayar1" id="totalBayar" value="{{ $transaksi->total_bayar }}" readonly placeholder="Rp 0" onfocus="removeRupiahFormat(this)" onblur="applyRupiahFormat(this)">
             </div>
+            <div class="bukti-bayar">
+                <div class="input-data">
+                    <div class="content">Bukti Pembayaran (jika pembayaran Non-Cash)</div>
+                    <div class="metod">
+                        <span>Metode Bayar :</span>
+                        <input class="metod-input" type="text" name="metode_bayar" value="{{ $transaksi->metode_bayar }}">
+                    </div>
+                    @if($transaksi->bukti_bayar)
+                        <div id="imagePreview">
+                            <img src="{{ asset('storage/' . $transaksi->bukti_bayar) }}" alt="{{ $transaksi->bukti_bayar }}">
+                        </div>
+                    @else
+                        <div>Tidak ada gambar saat ini.</div>
+                    @endif
+                </div>
+            </div>
 
-            <div class="btn-add-create">
+            <div class="btn-add-create"  id="addData">
                 <div class="btn-add-data">
                     <button type="submit">Edit Data</button>
                 </div>
@@ -192,6 +218,10 @@
         }
     }
 
+    window.addEventListener('DOMContentLoaded', function () {
+        calculateTotalHari();
+    });
+
     // ADD BARANG
     const addItemBtn = document.getElementById('addItemBtn');
     const selectBox = document.getElementById('inputGroupSelect04');
@@ -200,12 +230,83 @@
     const jumlahSewaInput = document.getElementById('jumlahSewaInput');
     const selectedItems = {}; // Menyimpan data barang dan jumlah
 
+    // addItemBtn.addEventListener('click', function () {
+    //     const selectedValue = selectBox.value;
+    //     const selectedText = selectBox.options[selectBox.selectedIndex]?.text;
+    //     const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga1 || 0);
+    //     const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga2 || 0);
+    //     const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga3 || 0);
+
+    //     if (selectedValue === "" || !selectedValue) {
+    //         alert('Pilih barang terlebih dahulu!');
+    //         return;
+    //     }
+
+    //     const totalHariText = totalHari.value.match(/\d+/); // Ambil angka dari total hari
+    //     const totalHariNumber = totalHariText ? parseInt(totalHariText[0]) : 0;
+
+    //     let hargaPerItem;
+    //     if (totalHariNumber <= 1) {
+    //         hargaPerItem = hargaSewa1;
+    //     } else if (totalHariNumber <= 2) {
+    //         hargaPerItem = hargaSewa2;
+    //     } else if (totalHariNumber <= 3) {
+    //         hargaPerItem = hargaSewa3;
+    //     }
+    //     // else {
+    //     //     const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
+    //     //     const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
+    //     //     hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
+    //     // }
+
+    //     // Jika barang sudah ada, tambahkan jumlahnya
+    //     if (selectedItems[selectedValue]) {
+    //         selectedItems[selectedValue].quantity += 1;
+
+    //         // Update tampilan jumlah
+    //         const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
+    //         itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
+    //         itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
+    //     } else {
+    //         // Tambahkan barang baru
+    //         selectedItems[selectedValue] = {
+    //             name: selectedText,
+    //             quantity: 1,
+    //             price: hargaPerItem
+    //         };
+
+    //         const itemDiv = document.createElement('div');
+    //         itemDiv.className = 'selected-item';
+    //         itemDiv.dataset.value = selectedValue;
+    //         itemDiv.innerHTML = `
+    //             ${selectedText} <span class="item-quantity">Jumlah: 1</span>
+    //             <span class="item-price">Harga: Rp ${hargaPerItem}</span>
+    //         `;
+
+    //         const removeBtn = document.createElement('button');
+    //         removeBtn.className = 'btn btn-danger btn-sm ms-2';
+    //         removeBtn.textContent = 'Hapus';
+    //         removeBtn.addEventListener('click', function () {
+    //             delete selectedItems[selectedValue];
+    //             selectedItemsContainer.removeChild(itemDiv);
+    //             updateHiddenInputs();
+    //         });
+
+    //         itemDiv.appendChild(removeBtn);
+    //         selectedItemsContainer.appendChild(itemDiv);
+    //     }
+
+    //     updateHiddenInputs();
+    // });
+
     addItemBtn.addEventListener('click', function () {
         const selectedValue = selectBox.value;
         const selectedText = selectBox.options[selectBox.selectedIndex]?.text;
         const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga1 || 0);
         const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga2 || 0);
         const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga3 || 0);
+        const kelipatan = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.kelipatan || 0);
+        const stokBarang = parseInt(selectBox.options[selectBox.selectedIndex]?.dataset.stok || 0);
 
         if (selectedValue === "" || !selectedValue) {
             alert('Pilih barang terlebih dahulu!');
@@ -222,22 +323,29 @@
             hargaPerItem = hargaSewa2;
         } else if (totalHariNumber <= 3) {
             hargaPerItem = hargaSewa3;
+        } else {
+            const extraDays = totalHariNumber - 3;
+            const additionalCost = extraDays * kelipatan;
+            hargaPerItem = hargaSewa3 + additionalCost;
         }
-        // else {
-        //     const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
-        //     const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
-        //     hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
-        // }
 
         // Jika barang sudah ada, tambahkan jumlahnya
         if (selectedItems[selectedValue]) {
+            if (selectedItems[selectedValue].quantity >= stokBarang) {
+                alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
+                return;
+            }
             selectedItems[selectedValue].quantity += 1;
 
-            // Update tampilan jumlah
+            // Update tampilan jumlah dan harga per item
             const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
             itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
             itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
         } else {
+            if (stokBarang <= 0) {
+                alert('Barang ini sudah habis stoknya!');
+                return;
+            }
             // Tambahkan barang baru
             selectedItems[selectedValue] = {
                 name: selectedText,
@@ -245,17 +353,20 @@
                 price: hargaPerItem
             };
 
+            const formattedPrice = formatRupiah(hargaPerItem);
+
             const itemDiv = document.createElement('div');
             itemDiv.className = 'selected-item';
             itemDiv.dataset.value = selectedValue;
             itemDiv.innerHTML = `
-                ${selectedText} <span class="item-quantity">Jumlah: 1</span>
-                <span class="item-price">Harga: Rp ${hargaPerItem}</span>
+                <span class="item-product">${selectedText}</span>
+                <span class="item-quantity">Jumlah: 1</span>
+                <span class="item-price">Harga: ${formattedPrice}</span>
             `;
 
             const removeBtn = document.createElement('button');
             removeBtn.className = 'btn btn-danger btn-sm ms-2';
-            removeBtn.textContent = 'Hapus';
+            removeBtn.textContent = 'X';
             removeBtn.addEventListener('click', function () {
                 delete selectedItems[selectedValue];
                 selectedItemsContainer.removeChild(itemDiv);
@@ -269,7 +380,15 @@
         updateHiddenInputs();
     });
 
-    document.querySelector('form').addEventListener('submit', function (e) {
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        }).format(number);
+    }
+
+    document.querySelector('#addData').addEventListener('click', function (e) {
         // Cek apakah ada barang yang ditambahkan
         if (Object.keys(selectedItems).length === 0) {
             alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');

@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class UserUploadController extends Controller
 {
+    public function getUpload()
+    {
+        $admin = Admin::first();
+        return view('user.user-upload', ['admin' => $admin ]);
+    }
     public function userUpload(Request $request)
     {
         $request->validate([

@@ -39,7 +39,8 @@ Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.r
 Route::post('/rental', [UserRentalController::class, 'storeRental'])->name('user.rental');
 
 // Upload Bukti Bayar
-Route::post('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload');
+Route::get('/upload', [UserUploadController::class, 'getUpload'])->name('user.upload');
+Route::post('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload.create');
 
 // User Riwayat
 Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');
@@ -88,3 +89,5 @@ Route::get('/laporan-keuangan', [KelolaUangController::class, 'laporanKeuangan']
 
 // Profil Admin
 Route::get('/admin-profil', [AdminProfilController::class, 'adminprofil'])->name('adminprofil');
+Route::get('/admin-update-profil', [AdminProfilController::class, 'editProfil'])->name('adminprofil.edit');
+Route::put('/admin-update-profil', [AdminProfilController::class, 'updateProfil'])->name('adminprofil.update');

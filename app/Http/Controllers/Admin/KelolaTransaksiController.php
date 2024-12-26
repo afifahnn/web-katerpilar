@@ -38,11 +38,6 @@ class KelolaTransaksiController extends Controller
                 'tgl_sewa' => 'required',
                 'tgl_kembali' => 'required|date|after:tgl_sewa',
                 'barang_sewa' => 'required',
-                // 'barang_sewa' => 'required|array',
-                // 'barang_sewa.*' => 'required|string',
-                // 'jumlah_sewa' => 'required|array',
-                // 'jumlah_sewa.*' => 'required|integer|min:1',
-                // 'barang_sewa' => 'required|exists:barang,id',
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
                 'opsi_bayar' => 'required|in:Cash,Non-Cash'
@@ -100,7 +95,7 @@ class KelolaTransaksiController extends Controller
                 'jumlah_sewa' => json_encode($jumlahSewa),
                 'opsi_bayar' => $request->opsi_bayar,
                 'total_bayar' => $request->total_bayar,
-                // 'total_bayar' => $totalBayar,
+                'metode_bayar' => $request->metode_bayar,
             ]);
 
             foreach ($barangSewa as $index => $namaBarang) {
@@ -110,17 +105,6 @@ class KelolaTransaksiController extends Controller
                     $barang->save();
                 }
             }
-
-            // foreach ($barangSewa as $index => $barangId) {
-            //     $transaksi->barangSewa()->create([
-            //         'barang_id' => $barangId,
-            //         'jumlah' => $jumlahSewa[$index],
-            //     ]);
-            // }
-
-            // $barang = Barang::findOrFail($request->barang_sewa);
-            // $barang->stok_barang -= $request->jumlah_sewa;
-            // $barang->save();
 
             return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil ditambahkan.');
         }
@@ -137,8 +121,11 @@ class KelolaTransaksiController extends Controller
         $barang = Barang::all();
         $customer = Customer::all();
 
-        $barang_sewa = explode(',', $transaksi->barang_sewa);
-        $jumlah_sewa = explode(',', $transaksi->jumlah_sewa);
+        // $barang_sewa = explode(',', $transaksi->barang_sewa);
+        // $jumlah_sewa = explode(',', $transaksi->jumlah_sewa);
+
+        $barang_sewa = json_decode($transaksi->barang_sewa, true);
+        $jumlah_sewa = json_decode($transaksi->jumlah_sewa, true);
 
         $data_sewa = [];
         foreach ($barang_sewa as $key => $barangs) {
@@ -154,6 +141,7 @@ class KelolaTransaksiController extends Controller
     // UPDATE TRANSAKSI
     public function updateTransaksi(Request $request, $id)
     {
+        // dd($request->all());
         $request->validate([
             'nama_customer' => 'required',
             'alamat_customer' => 'required',
@@ -167,7 +155,29 @@ class KelolaTransaksiController extends Controller
         ]);
 
         $transaksi = Transaksi::findOrFail($id);
-        $transaksi->update($request->all());
+
+        $transaksi->update([
+            'nama_customer' => $request->nama_customer,
+            'alamat_customer' => $request->alamat_customer,
+            'telp_customer' => $request->telp_customer,
+            'tgl_sewa' => $request->tgl_sewa,
+            'tgl_kembali' => $request->tgl_kembali,
+            'barang_sewa' => json_encode($request->barang_sewa),
+            'jumlah_sewa' => json_encode($request->jumlah_sewa),
+            'total_bayar' => $request->total_bayar,
+            'opsi_bayar' => $request->opsi_bayar,
+            'metode_bayar' => $request->metode_bayar,
+        ]);
+
+        foreach ($request->barang_sewa as $index => $namaBarang) {
+            $barang = Barang::where('nama_barang', $namaBarang)->first();
+
+            if ($barang) {
+                $jumlahSewa = $request->jumlah_sewa[$index];
+                $barang->stok_barang -= $jumlahSewa;
+                $barang->save();
+            }
+        }
 
         return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil diperbarui.');
     }

@@ -13,8 +13,8 @@
             <div class="input-data">
                 <div class="content-tf">Silahkan transfer di nomor rekening berikut :</div>
                 <div class="norek-content">
-                    <div class="bank-content">BRI</div>
-                    <div class="norek">000192887466371817</div>
+                    <div class="bank-content">{{ $admin->jenis_rekening }}</div>
+                    <div class="norek">{{ $admin->no_rekening }}</div>
                 </div>
             </div>
             <div class="input-data">

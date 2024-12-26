@@ -62,14 +62,18 @@
                             <option value="{{ $item->nama_barang }}"
                                     data-harga1="{{ $item->harga_sewa1 }}"
                                     data-harga2="{{ $item->harga_sewa2 }}"
-                                    data-harga3="{{ $item->harga_sewa3 }}" disabled>
+                                    data-harga3="{{ $item->harga_sewa3 }}"
+                                    data-kelipatan="{{ $item->kelipatan }}"
+                                    data-stok="{{ $item->stok_barang }}" disabled>
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @else
                             <option value="{{ $item->nama_barang }}"
                                     data-harga1="{{ $item->harga_sewa1 }}"
                                     data-harga2="{{ $item->harga_sewa2 }}"
-                                    data-harga3="{{ $item->harga_sewa3 }}">
+                                    data-harga3="{{ $item->harga_sewa3 }}"
+                                    data-kelipatan="{{ $item->kelipatan }}"
+                                    data-stok="{{ $item->stok_barang }}">
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @endif
@@ -95,8 +99,8 @@
                 <div class="input-data">
                     <div class="content-tf">Silahkan transfer di nomor rekening berikut :</div>
                     <div class="norek-content">
-                        <div class="bank-content">BRI</div>
-                        <div class="norek">000192887466371817</div>
+                        <div class="bank-content">{{ $admin->jenis_rekening }}</div>
+                        <div class="norek">{{ $admin->no_rekening }}</div>
                     </div>
                 </div>
                 <div class="input-data">
@@ -172,9 +176,9 @@
         if (kembaliDate < sewaDate) {
             alert('Tanggal kembali tidak boleh sebelum tanggal sewa!');
             this.value = '';
-            totalHari.value = ''; // Reset total hari
+            totalHari.value = '';
         } else {
-            calculateTotalHari(); // Hitung ulang total hari
+            calculateTotalHari();
         }
     });
 
@@ -206,6 +210,8 @@
         const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga1 || 0);
         const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga2 || 0);
         const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga3 || 0);
+        const kelipatan = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.kelipatan || 0);
+        const stokBarang = parseInt(selectBox.options[selectBox.selectedIndex]?.dataset.stok || 0);
 
         if (selectedValue === "" || !selectedValue) {
             alert('Pilih barang terlebih dahulu!');
@@ -223,14 +229,18 @@
         } else if (totalHariNumber <= 3) {
             hargaPerItem = hargaSewa3;
         }
-        // else {
-        //     const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
-        //     const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
-        //     hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
-        // }
+        else {
+            const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
+            const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
+            hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
+        }
 
         // Jika barang sudah ada, tambahkan jumlahnya
         if (selectedItems[selectedValue]) {
+            if (selectedItems[selectedValue].quantity >= stokBarang) {
+                alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
+                return;
+            }
             selectedItems[selectedValue].quantity += 1;
 
             // Update tampilan jumlah
@@ -238,6 +248,10 @@
             itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
             itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
         } else {
+            if (stokBarang <= 0) {
+                alert('Barang ini sudah habis stoknya!');
+                return;
+            }
             // Tambahkan barang baru
             selectedItems[selectedValue] = {
                 name: selectedText,
@@ -245,17 +259,20 @@
                 price: hargaPerItem
             };
 
+            const formattedPrice = formatRupiah(hargaPerItem);
+
             const itemDiv = document.createElement('div');
             itemDiv.className = 'selected-item';
             itemDiv.dataset.value = selectedValue;
             itemDiv.innerHTML = `
-                ${selectedText} <span class="item-quantity">Jumlah: 1</span>
-                <span class="item-price">Harga: Rp ${hargaPerItem}</span>
+                <span class="item-product">${selectedText}</span>
+                <span class="item-quantity">Jumlah: 1</span>
+                <span class="item-price">Harga: ${formattedPrice}</span>
             `;
 
             const removeBtn = document.createElement('button');
             removeBtn.className = 'btn btn-danger btn-sm ms-2';
-            removeBtn.textContent = 'Hapus';
+            removeBtn.textContent = 'X';
             removeBtn.addEventListener('click', function () {
                 delete selectedItems[selectedValue];
                 selectedItemsContainer.removeChild(itemDiv);
@@ -268,6 +285,14 @@
 
         updateHiddenInputs();
     });
+
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        }).format(number);
+    }
 
     // document.querySelector('form').addEventListener('submit', function (e) {
     //     // Cek apakah ada barang yang ditambahkan

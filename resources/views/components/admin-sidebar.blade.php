@@ -13,7 +13,7 @@
             <img src="{{ asset('img/logo.png') }}" alt="Logo">
             <div class="logo-hi">
                 <div class="logo-hello">Hello!</div>
-                <div style="font-size: 13px">Admin</div>
+                <div style="font-size: 13px">{{ Auth::guard('admin')->user()->nama_admin }}</div>
             </div>
         </div>
         <div class="btn-sidebar">
@@ -43,7 +43,7 @@
                     <a href="{{ url('/laporan-keuangan') }}">Laporan Keuangan</a>
                 </li>
                 <hr>
-                <li class="{{ Request::is('admin-profil') ? 'active' : '' }}">
+                <li class="{{ Request::is('admin-profil') || Request::is('admin-update-profil') ? 'active' : '' }}">
                     <i class="fa-solid fa-user"></i>
                     <a href="{{ url('/admin-profil') }}">Profil</a>
                 </li>

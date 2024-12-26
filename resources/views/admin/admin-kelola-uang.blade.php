@@ -24,7 +24,7 @@
                     <span class="input-group-text" id="addon-wrapping">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
                 </div>
             </div>
             <a href="{{ route('admin.kelola-keuangan.create') }}">
@@ -40,7 +40,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>No.</th>
+                        <th class="col-number">No.</th>
                         <th>Tgl Transaksi</th>
                         <th>Jenis Transaksi</th>
                         <th>Nominal</th>
@@ -48,15 +48,15 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     @if($keuangan->isEmpty())
                         <tr>
                             <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
                         </tr>
                     @else
                         @foreach($keuangan as $index => $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}.</td>
+                        <tr class="data-row">
+                            <td class="col-number">{{ $loop->iteration }}.</td>
                             <td>
                                 @if ($item->transaksi)
                                     {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
@@ -90,25 +90,31 @@
                                 </div>
                             </td>
                         </tr>
+
+                        <p id="no-data" style="display: none; text-align: center;">Data tidak ditemukan</p>
                         @endforeach
                     @endif
                 </tbody>
             </table>
         </div>
-
-        {{-- Lihat Laporan Keuangan --}}
-        {{-- <div class="laporan-container">
-            <div class="lihat-laporan">Lihat Laporan Keuangan :</div>
-            <div class="btn-laporan">
-                <div class="btn-bulan">
-                    <button>Lihat per Bulan</button>
-                </div>
-                <a href="{{ route('admin.kelola-keuangan.laporan-keuangan') }}">
-                    <div class="btn-lap">
-                        <button>Lihat Keseluruhan</button>
-                    </div>
-                </a>
-            </div>
-        </div> --}}
     </div>
+
+{{-- JAVASCRIPT --}}
+<script>
+    // SEARCH
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#table-body .data-row');
+        let hasVisibleRow = false;
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+            if (match) hasVisibleRow = true;
+        });
+
+        document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
+    });
+</script>
 @endsection

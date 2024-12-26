@@ -24,7 +24,7 @@
                     <span class="input-group-text" id="addon-wrapping">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
+                    <input type="text" id="search-input" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
                 </div>
             </div>
             <a href="{{ route('admin.kelola-transaksi.create') }}">
@@ -40,7 +40,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>No.</th>
+                        <th class="col-number">No.</th>
                         <th>Tgl Sewa</th>
                         <th>Tgl Kembali</th>
                         <th>Nama</th>
@@ -49,15 +49,15 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     @if($transaksi->isEmpty())
                         <tr>
                             <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
                         </tr>
                     @else
                         @foreach($transaksi as $index => $item)
-                        <tr style="text-align: center">
-                            <td>{{ $loop->iteration }}.</td>
+                        <tr style="text-align: center" class="data-row">
+                            <td class="col-number">{{ $loop->iteration }}.</td>
                             <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
                             <td>
@@ -125,8 +125,8 @@
                                             <div>
                                                 <ul>
                                                     @php
-                                                        $barang_sewa = json_decode($item->barang_sewa, true);  // Decode JSON menjadi array
-                                                        $jumlah_sewa = json_decode($item->jumlah_sewa, true);  // Decode JSON menjadi array
+                                                        $barang_sewa = json_decode($item->barang_sewa, true);
+                                                        $jumlah_sewa = json_decode($item->jumlah_sewa, true);
                                                     @endphp
 
                                                     @foreach($barang_sewa as $key => $barang)
@@ -158,11 +158,15 @@
                                         @if(strtolower($item->opsi_bayar) === 'non-cash')
                                             <div class="isi-modals">
                                                 <div class="judul-modal">Bukti Pembayaran</div>
+                                                @if($item->bukti_bayar)
                                                 <div>
                                                     <div class="pic-bukti">
                                                         <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
                                                     </div>
                                                 </div>
+                                                @else
+                                                    <div>Tidak ada gambar saat ini.</div>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>
@@ -172,11 +176,31 @@
                                 </div>
                             </div>
                         </div>
+
+                        <p id="no-data" style="display: none; text-align: center;">Data tidak ditemukan</p>
                         @endforeach
                     @endif
                 </tbody>
             </table>
         </div>
-
     </div>
+
+{{-- JAVASCRIPT --}}
+<script>
+    // SEARCH
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#table-body .data-row');
+        let hasVisibleRow = false;
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+            if (match) hasVisibleRow = true;
+        });
+
+        document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
+    });
+</script>
 @endsection
