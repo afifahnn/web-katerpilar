@@ -162,3 +162,10 @@ input:focus::placeholder {
     opacity: 90%;
     color: #FFFFFF;
 }
+
+.error-input {
+    color: red;
+    font-size: 14px;
+    margin: 2px 0 0 5px;
+    font-weight: 600;
+}
