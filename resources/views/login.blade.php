@@ -23,13 +23,28 @@
                 </div>
                 <div class="us-container">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <input type="text" id="username" name="username" placeholder="Username" value="{{ old('username') }}">
                 </div>
+                @if ($errors->has('username'))
+                    <div class="error-input">
+                        {{ $errors->first('username') }}
+                    </div>
+                @endif
                 <div class="pwd-container">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password-input" name="password" placeholder="Password" required>
+                    <input type="password" id="password-input" name="password" placeholder="Password">
                     <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
                 </div>
+                @if ($errors->has('password'))
+                    <div class="error-input">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
+                @if ($errors->has('login'))
+                    <div class="error-input">
+                        {{ $errors->first('login') }}
+                    </div>
+                @endif
                 <div class="btn-login">
                     <button type="submit">Login</button>
                 </div>

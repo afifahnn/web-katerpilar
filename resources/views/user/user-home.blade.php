@@ -92,7 +92,21 @@
             {{-- <button class="carousel-btn-right" onclick="scrollRight()">&#10095;</button> --}}
         </div>
         @endforeach
+    </div>
 
+    {{-- INFORMATION SECTION --}}
+    <div class="information-section">
+        <div><i class="fa-solid fa-circle-info" style="font-size: 24px; color: #000000"></i></div>
+        <div class="info-sk">
+            <span>Syarat & Ketentuan</span>
+            <ul>
+                <li>Penyewa meninggalkan identitas diri KTP/kartu pelajar berlaku sebagai jaminan.</li>
+                <li>Pemesanan alat dapat dilakukan via sistem atau datang langsung ke toko.</li>
+                <li>Pelunasan transaksi maksimal saat ambil alat.</li>
+                <li>Hitungan sewa 1 hari = 2 hari 1 malam.</li>
+                <li>Jika ada kehilangan atau kerusakan alat ditanggung penyewa.</li>
+            </ul>
+        </div>
     </div>
 </div>
 

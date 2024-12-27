@@ -29,7 +29,7 @@
         </div>
 
         <div class="btn-edit-profil">
-            <a href="">Edit Profil</a>
+            <a href="{{ url('/edit-profil')}}">Edit Profil</a>
         </div>
     </div>
 </div>

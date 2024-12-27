@@ -210,4 +210,27 @@
     padding-left: 8px;
 }
 
+/* INFORMATION SECTION */
+.information-section {
+    background-color: #00000013;
+    backdrop-filter: blur(20px);
+    display: flex;
+    gap: 15px;
+    margin: 10px 200px 40px 200px;
+    padding: 20px;
+    border-radius: 10px;
+}
 
+.info-sk span {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 3px 0;
+}
+
+.info-sk ul {
+    padding-top: 5px;
+}
+
+.info-sk ul li {
+    padding-bottom: 3px;
+}

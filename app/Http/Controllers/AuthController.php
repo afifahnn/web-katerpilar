@@ -21,19 +21,13 @@ class AuthController extends Controller
     {
         $request->validate([
             'username' => 'required',
-            // 'username' => 'required|string|unique:customer,username',
             'password' => 'required',
+        ], [
+            'required' => ':attribute wajib diisi.',
+        ], [
+            'username' => 'Username',
+            'password' => 'Password',
         ]);
-
-        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-        //     $request->session()->regenerate();
-        //     return redirect()->intended('/dashboard');
-        // }
-
-        // if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-        //     $request->session()->regenerate();
-        //     return redirect()->intended('/');
-        // }
 
         // Cek login sebagai admin
         if (Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password])) {
@@ -48,7 +42,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'login' => 'Username atau Password tidak terdaftar.'
+            'login' => 'Username atau Password tidak sesuai.'
         ])->onlyInput('username');
     }
 
@@ -62,13 +56,22 @@ class AuthController extends Controller
     public function storeRegister(Request $request)
     {
         $request->validate([
-            // 'username' => 'required|string|unique:customer,username',
-            'username' => 'required',
-            // 'password' => 'required|confirmed|min:6',
-            'password' => 'required',
+            'username' => 'required|unique:customer,username',
+            'password' => 'required|min:8|confirmed',
             'nama_customer' => 'required|string',
             'alamat_customer' => 'required|string',
-            'telp_customer' => 'required',
+            'telp_customer' => 'required|numeric',
+        ], [
+            'required' => ':attribute wajib diisi.',
+            'password.min' => 'Password harus minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'telp_customer.numeric' => 'Nomor telepon harus berupa angka.',
+        ], [
+            'username' => 'Username',
+            'password' => 'Password',
+            'nama_customer' => 'Nama customer',
+            'alamat_customer' => 'Alamat customer',
+            'telp_customer' => 'Nomor telepon',
         ]);
 
         // dd($request->all());

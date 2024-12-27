@@ -23,28 +23,53 @@
                 </div>
                 <div class="us-container">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="text" name="username" value="{{ old('username') }}" placeholder="Username">
                 </div>
+                @if ($errors->has('username'))
+                    <div class="error-input">
+                        {{ $errors->first('username') }}
+                    </div>
+                @endif
                 <div class="us-container">
                     <i class="fa-solid fa-id-badge"></i>
-                    <input type="text" name="nama_customer" placeholder="Nama" required>
+                    <input type="text" name="nama_customer" value="{{ old('nama_customer') }}" placeholder="Nama">
                 </div>
+                @if ($errors->has('nama_customer'))
+                    <div class="error-input">
+                        {{ $errors->first('nama_customer') }}
+                    </div>
+                @endif
                 <div class="us-container">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="text" name="telp_customer" placeholder="Nomor Telepon" required>
+                    <input type="text" name="telp_customer" value="{{ old('telp_customer') }}" placeholder="Nomor Telepon">
                 </div>
+                @if ($errors->has('telp_customer'))
+                    <div class="error-input">
+                        {{ $errors->first('telp_customer') }}
+                    </div>
+                @endif
                 <div class="us-container">
                     <i class="fa-solid fa-address-book"></i>
-                    <input type="text" name="alamat_customer" placeholder="Alamat" required>
+                    <input type="text" name="alamat_customer" value="{{ old('alamat_customer') }}" placeholder="Alamat">
                 </div>
+                @if ($errors->has('alamat_customer'))
+                    <div class="error-input">
+                        {{ $errors->first('alamat_customer') }}
+                    </div>
+                @endif
                 <div class="pwd-container">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="password" id="password-input" placeholder="Password" required>
+                    <input type="password" name="password" id="password-input" placeholder="Password">
                     <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
                 </div>
+                @if ($errors->has('password'))
+                    <div class="error-input">
+                        {{ $errors->first('password') }}
+                    </div>
+                @endif
                 <div class="pwd-container">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="password_confirm" id="confirm-password-input" placeholder="Confirm Password" required>
+                    <input type="password" name="password_confirmation" id="confirm-password-input" placeholder="Konfirmasi Password">
                     <i class="fa-solid fa-eye-slash" id="confirm-toggle-password"></i>
                 </div>
                 <div class="btn-login">
