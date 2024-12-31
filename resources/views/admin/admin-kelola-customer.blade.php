@@ -40,8 +40,18 @@
                 <thead>
                     <tr>
                         <th class="col-number">No.</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
+                        <th>
+                            Nama
+                            <button id="sort-name" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
+                        <th>
+                            Alamat
+                            <button id="sort-address" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th>Telp.</th>
                         <th>Transaksi</th>
                         <th>Aksi</th>
@@ -109,5 +119,55 @@
 
         document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
     });
+
+    // SORTING
+    let sortOrderName = 'asc';
+    let sortOrderAddress = 'asc';
+
+    // Nama
+    document.getElementById('sort-name').addEventListener('click', function () {
+        sortTableByColumn(2, 'sort-name', 'asc');
+    });
+
+    // Alamat
+    document.getElementById('sort-address').addEventListener('click', function () {
+        sortTableByColumn(3, 'sort-address', 'asc');
+    });
+
+    function sortTableByColumn(columnIndex, buttonId, defaultOrder) {
+        const rows = Array.from(document.querySelectorAll('#table-body .data-row'));
+        const button = document.getElementById(buttonId);
+        const arrowIcon = button.querySelector('i');
+
+        let sortOrder;
+        if (buttonId === 'sort-name') {
+            sortOrder = sortOrderName;
+        } else if (buttonId === 'sort-address') {
+            sortOrder = sortOrderAddress;
+        }
+
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        arrowIcon.classList.toggle('fa-sort-down', sortOrder === 'asc');
+        arrowIcon.classList.toggle('fa-sort-up', sortOrder === 'desc');
+
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+            const valueB = b.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+
+            if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
+            if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+        rows.forEach((row, index) => {
+            row.querySelector('.col-number').textContent = `${index + 1}.`;
+            tableBody.appendChild(row);
+        });
+
+        if (buttonId === 'sort-name') sortOrderName = sortOrder;
+        if (buttonId === 'sort-address') sortOrderAddress = sortOrder;
+    }
 </script>
 @endsection

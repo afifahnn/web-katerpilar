@@ -116,12 +116,6 @@
                 </div>
             </div>
 
-            {{-- <div class="btn-add-create" id="addData">
-                <div class="btn-add-data">
-                    <button type="submit" id="submitBtn">Pesan</button>
-                </div>
-            </div> --}}
-
             <div class="btn-add-create" id="addData">
                 <div class="btn-add-data">
                     <button type="submit">Pesan</button>
@@ -294,14 +288,6 @@
         }).format(number);
     }
 
-    // document.querySelector('form').addEventListener('submit', function (e) {
-    //     // Cek apakah ada barang yang ditambahkan
-    //     if (Object.keys(selectedItems).length === 0) {
-    //         alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
-    //         e.preventDefault(); // Mencegah form dikirim
-    //     }
-    // });
-
     document.querySelector('#addData').addEventListener('click', function (e) {
         // Cek apakah ada barang yang ditambahkan
         if (Object.keys(selectedItems).length === 0) {
@@ -309,22 +295,6 @@
             e.preventDefault(); // Mencegah form dikirim
         }
     });
-
-    // Modal muncul saat non-cash
-    // document.getElementById('submitBtn').addEventListener('click', function (e) {
-    //     const paymentOption = document.getElementById('inputGroupSelect').value;
-
-    //     if (paymentOption === "Non-Cash") {
-    //         // Tampilkan modal
-    //         const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
-    //         modal.show();
-    //     } else if (paymentOption === "Cash") {
-    //         // Submit form
-    //         document.getElementById('rentalForm').submit();
-    //     } else {
-    //         alert('Pilih opsi bayar terlebih dahulu!');
-    //     }
-    // });
 
     // Bukti bayar muncul saat non-cash
     document.addEventListener('DOMContentLoaded', function () {

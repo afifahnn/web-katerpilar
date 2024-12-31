@@ -32,12 +32,14 @@ class AuthController extends Controller
         // Cek login sebagai admin
         if (Auth::guard('admin')->attempt(['username' => $request->username, 'password' => $request->password])) {
             $request->session()->regenerate();
+            // dd('Admin berhasil login');
             return redirect()->intended('/dashboard');
         }
 
         // Cek login sebagai customer
         if (Auth::guard('customer')->attempt(['username' => $request->username, 'password' => $request->password])) {
             $request->session()->regenerate();
+            // dd('Customer berhasil login');
             return redirect()->intended('/');
         }
 

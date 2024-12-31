@@ -52,14 +52,19 @@
                         <div class="input-profil password-container">
                             <div class="data-profil">Password Baru</div>
                             <div class="password-wrapper">
-                                <input type="password" id="password-input" placeholder="Password">
+                                <input type="password" name="password" id="password-input" placeholder="Password">
                                 <i class="fa-solid fa-eye-slash" style="font-size: 16px" id="toggle-password"></i>
                             </div>
+                            @if ($errors->has('password'))
+                                <div class="error-input">
+                                    {{ $errors->first('password') }}
+                                </div>
+                            @endif
                         </div>
                         <div class="input-profil password-container">
                             <div class="data-profil">Konfirmasi Password</div>
                             <div class="password-wrapper">
-                                <input type="password" id="confirm-password-input" placeholder="Konfirmasi Password">
+                                <input type="password" name="password_confirmation" id="confirm-password-input" placeholder="Konfirmasi Password">
                                 <i class="fa-solid fa-eye-slash" style="font-size: 16px" id="confirm-toggle-password"></i>
                             </div>
                         </div>
@@ -71,7 +76,7 @@
                         <div class="input-profil">
                             <div class="data-profil">Jenis Pembayaran</div>
                             <div style="margin-bottom: 3px">*jenis pembayaran untuk informasi customer</div>
-                            <input value="{{ $admin->jenis_pembayaran }}" name="jenis_rekening" placeholder="Jenis Pembayaran"></input>
+                            <input value="{{ $admin->jenis_rekening }}" name="jenis_rekening" placeholder="Jenis Pembayaran"></input>
                         </div>
                         <div class="input-profil">
                             <div class="data-profil">Nomor Rekening</div>

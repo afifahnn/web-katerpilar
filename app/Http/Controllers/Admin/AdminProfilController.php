@@ -31,24 +31,32 @@ class AdminProfilController extends Controller
             'telp_admin' => 'required',
             'jenis_rekening' => 'required',
             'no_rekening' => 'required',
+            'password' => 'nullable|min:8|confirmed',
+        ], [
+            'password.min' => 'Password harus minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.'
         ]);
 
         $admin = Admin::first();
-
-        if ($request->filled('password')) {
-            // Validasi password baru
-            $request->validate([
-                'password' => 'required|min:8|confirmed',
-            ]);
-            // Hash dan simpan password baru
-            $admin->password = bcrypt($request->password);
-        }
 
         $admin->nama_admin = $request->nama_admin;
         $admin->username = $request->username;
         $admin->telp_admin = $request->telp_admin;
         $admin->jenis_rekening = $request->jenis_rekening;
         $admin->no_rekening = $request->no_rekening;
+
+        if ($request->filled('password')) {
+            $admin->password = bcrypt($request->password);
+        }
+
+        // if ($request->filled('password')) {
+        //     // Validasi password baru
+        //     $request->validate([
+        //         'password' => 'required|min:8|confirmed',
+        //     ]);
+        //     // Hash dan simpan password baru
+        //     $admin->password = bcrypt($request->password);
+        // }
 
         $admin->save();
 

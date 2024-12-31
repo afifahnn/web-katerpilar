@@ -14,6 +14,7 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        // dd('masuk dashboard');
         $currentYear = Carbon::now()->year;
         $combinedData = DB::query()
         ->fromSub(function ($query) use ($currentYear) {
@@ -33,7 +34,7 @@ class AdminController extends Controller
                             DB::raw('NULL AS keluar'),
                             DB::raw("'Sewa alat' AS deskripsi")
                         )
-                        ->whereYear('transaksis.tgl_sewa', $currentYear) 
+                        ->whereYear('transaksis.tgl_sewa', $currentYear)
                 );
         }, 'combined_data')
         ->orderBy('tanggal', 'ASC')

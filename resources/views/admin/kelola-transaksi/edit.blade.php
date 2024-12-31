@@ -83,9 +83,9 @@
                 <div class="input-group">
                     <select class="form-select" id="inputGroupSelect04">
                     <option value="" disabled selected>Pilih...</option>
-                    @php
+                    {{-- @php
                         $isSelected = in_array($transaksi->nama_barang, array_column($data_sewa, 'barang'));
-                    @endphp
+                    @endphp --}}
                     @foreach ($barang as $index => $item)
                         @if ($item->stok_barang == 0)
                             <option value="{{ $item->nama_barang }}"
@@ -93,8 +93,7 @@
                                     data-harga2="{{ $item->harga_sewa2 }}"
                                     data-harga3="{{ $item->harga_sewa3 }}"
                                     data-kelipatan="{{ $item->kelipatan }}"
-                                    data-stok="{{ $item->stok_barang }}" disabled
-                                    @if($isSelected) selected @endif>
+                                    data-stok="{{ $item->stok_barang }}" disabled>
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @else
@@ -103,8 +102,7 @@
                                     data-harga2="{{ $item->harga_sewa2 }}"
                                     data-harga3="{{ $item->harga_sewa3 }}"
                                     data-kelipatan="{{ $item->kelipatan }}"
-                                    data-stok="{{ $item->stok_barang }}"
-                                    @if($isSelected) selected @endif>
+                                    data-stok="{{ $item->stok_barang }}">
                                 {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
                             </option>
                         @endif
@@ -117,12 +115,12 @@
                 <input type="hidden" name="barang_sewa[]" id="barangSewaInput">
                 <input type="hidden" name="jumlah_sewa[]" id="jumlahSewaInput">
                 <div id="selectedItems" style="margin-top: 10px;">
-                    @foreach ($data_sewa as $item)
+                    {{-- @foreach ($data_sewa as $item)
                         <div class="selected-item" data-value="{{ $item['barang'] }}">
                             <span>{{ $item['barang'] }} (Jumlah: {{ $item['jumlah'] }})</span>
                             <button type="button" class="btn btn-danger btn-sm" onclick="removeSelectedItem('{{ $item['barang'] }}')">Hapus</button>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
 
@@ -228,76 +226,78 @@
     const selectedItemsContainer = document.getElementById('selectedItems');
     const barangSewaInput = document.getElementById('barangSewaInput');
     const jumlahSewaInput = document.getElementById('jumlahSewaInput');
-    const selectedItems = {}; // Menyimpan data barang dan jumlah
+    const selectedItems = {};
+    console.log(selectedItems);
 
-    // addItemBtn.addEventListener('click', function () {
-    //     const selectedValue = selectBox.value;
-    //     const selectedText = selectBox.options[selectBox.selectedIndex]?.text;
-    //     const hargaSewa1 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga1 || 0);
-    //     const hargaSewa2 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga2 || 0);
-    //     const hargaSewa3 = parseFloat(selectBox.options[selectBox.selectedIndex]?.dataset.harga3 || 0);
+    // EDIT
+    // Ambil data dari hidden inputs dan tampilkan di halaman
+    const dataSewa = @json($data_sewa);
+    console.log(document.getElementById('totalBayar').value);
 
-    //     if (selectedValue === "" || !selectedValue) {
-    //         alert('Pilih barang terlebih dahulu!');
-    //         return;
-    //     }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inisialisasi selectedItems
+        // const selectedItems = {};
+        const selectedItemsContainer = document.getElementById('selectedItems');
 
-    //     const totalHariText = totalHari.value.match(/\d+/); // Ambil angka dari total hari
-    //     const totalHariNumber = totalHariText ? parseInt(totalHariText[0]) : 0;
+        dataSewa.forEach(item => {
+            const selectedValue = item.barang;
+            const quantity = item.jumlah;
+            console.log(selectedValue);
+            console.log(quantity);
 
-    //     let hargaPerItem;
-    //     if (totalHariNumber <= 1) {
-    //         hargaPerItem = hargaSewa1;
-    //     } else if (totalHariNumber <= 2) {
-    //         hargaPerItem = hargaSewa2;
-    //     } else if (totalHariNumber <= 3) {
-    //         hargaPerItem = hargaSewa3;
-    //     }
-    //     // else {
-    //     //     const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
-    //     //     const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
-    //     //     hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
-    //     // }
+            // Ambil elemen berdasarkan ID barang (selectedValue)
+            const selectedText = document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.text;
+            const hargaSewa1 = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.harga1 || 0);
+            const hargaSewa2 = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.harga2 || 0);
+            const hargaSewa3 = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.harga3 || 0);
+            const kelipatan = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.kelipatan || 0);
+            const totalHariNumber = totalHari.value.match(/\d+/) ? parseInt(totalHari.value.match(/\d+/)[0]) : 0;
 
-    //     // Jika barang sudah ada, tambahkan jumlahnya
-    //     if (selectedItems[selectedValue]) {
-    //         selectedItems[selectedValue].quantity += 1;
+            let hargaPerItem;
+            if (totalHariNumber <= 1) {
+                hargaPerItem = hargaSewa1;
+            } else if (totalHariNumber <= 2) {
+                hargaPerItem = hargaSewa2;
+            } else if (totalHariNumber <= 3) {
+                hargaPerItem = hargaSewa3;
+            } else {
+                const extraDays = totalHariNumber - 3;
+                const additionalCost = extraDays * kelipatan;
+                hargaPerItem = hargaSewa3 + additionalCost;
+            }
 
-    //         // Update tampilan jumlah
-    //         const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
-    //         itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
-    //         itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
-    //     } else {
-    //         // Tambahkan barang baru
-    //         selectedItems[selectedValue] = {
-    //             name: selectedText,
-    //             quantity: 1,
-    //             price: hargaPerItem
-    //         };
+            // Masukkan data ke dalam selectedItems
+            selectedItems[selectedValue] = {
+                name: selectedText,
+                quantity: quantity,
+                price: hargaPerItem
+            };
 
-    //         const itemDiv = document.createElement('div');
-    //         itemDiv.className = 'selected-item';
-    //         itemDiv.dataset.value = selectedValue;
-    //         itemDiv.innerHTML = `
-    //             ${selectedText} <span class="item-quantity">Jumlah: 1</span>
-    //             <span class="item-price">Harga: Rp ${hargaPerItem}</span>
-    //         `;
+            // Tambahkan item ke container tampilan
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'selected-item';
+            itemDiv.dataset.value = selectedValue;
+            itemDiv.innerHTML = `
+                <span class="item-product">${selectedText}</span>
+                <span class="item-quantity">Jumlah: ${quantity}</span>
+                <span class="item-price">Harga: ${formatRupiah(hargaPerItem * quantity)}</span>
+            `;
 
-    //         const removeBtn = document.createElement('button');
-    //         removeBtn.className = 'btn btn-danger btn-sm ms-2';
-    //         removeBtn.textContent = 'Hapus';
-    //         removeBtn.addEventListener('click', function () {
-    //             delete selectedItems[selectedValue];
-    //             selectedItemsContainer.removeChild(itemDiv);
-    //             updateHiddenInputs();
-    //         });
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'btn btn-danger btn-sm ms-2';
+            removeBtn.textContent = 'X';
+            removeBtn.addEventListener('click', function () {
+                delete selectedItems[selectedValue];
+                selectedItemsContainer.removeChild(itemDiv);
+                updateHiddenInputs();
+            });
 
-    //         itemDiv.appendChild(removeBtn);
-    //         selectedItemsContainer.appendChild(itemDiv);
-    //     }
+            itemDiv.appendChild(removeBtn);
+            selectedItemsContainer.appendChild(itemDiv);
+        });
 
-    //     updateHiddenInputs();
-    // });
+        updateHiddenInputs();
+    });
 
     addItemBtn.addEventListener('click', function () {
         const selectedValue = selectBox.value;
@@ -346,6 +346,7 @@
                 alert('Barang ini sudah habis stoknya!');
                 return;
             }
+
             // Tambahkan barang baru
             selectedItems[selectedValue] = {
                 name: selectedText,
@@ -380,19 +381,11 @@
         updateHiddenInputs();
     });
 
-    function formatRupiah(number) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0,
-        }).format(number);
-    }
-
     document.querySelector('#addData').addEventListener('click', function (e) {
-        // Cek apakah ada barang yang ditambahkan
+        console.log('Isi selectedItems:', selectedItems);
         if (Object.keys(selectedItems).length === 0) {
             alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
-            e.preventDefault(); // Mencegah form dikirim
+            e.preventDefault();
         }
     });
 
@@ -403,20 +396,20 @@
 
     // Hilangkan format Rupiah untuk nilai asli
     function removeRupiahFormat(input) {
-        input.value = input.value.replace(/[^0-9]/g, ''); // Hanya angka
-        updateRawValue(input.value); // Perbarui nilai murni
+        input.value = input.value.replace(/[^0-9]/g, '');
+        updateRawValue(input.value);
     }
 
     // Terapkan kembali format Rupiah
     function applyRupiahFormat(input) {
-        const value = parseInt(input.value || 0); // Konversi ke angka
-        input.value = formatRupiah(value); // Tambahkan format Rupiah
+        const value = parseInt(input.value || 0);
+        input.value = formatRupiah(value);
     }
 
     // Fungsi untuk memperbarui nilai murni di hidden input
     function updateRawValue(value) {
         const totalBayarRaw = document.getElementById('totalBayarRaw');
-        totalBayarRaw.value = value; // Simpan nilai asli
+        totalBayarRaw.value = value;
     }
 
     // Fungsi untuk memperbarui input tersembunyi
@@ -431,11 +424,22 @@
             totalHarga += data.price * data.quantity;
         }
 
-        barangSewaInput.value = barangSewa;
-        jumlahSewaInput.value = jumlahSewa;
+        // barangSewaInput.value = barangSewa;
+        // jumlahSewaInput.value = jumlahSewa;
+
+        barangSewaInput.value = barangSewa.join(',');
+        jumlahSewaInput.value = jumlahSewa.join(',');
 
         const totalBayarInput = document.getElementById('totalBayar');
-        totalBayarInput.value = formatRupiah(totalHarga); // Tambahkan format Rupiah untuk tampilan
+        totalBayarInput.value = formatRupiah(totalHarga);
+
+        // Log untuk debug
+        console.log("Total Harga: ", totalHarga);
+        console.log("Total Bayar Value: ", totalBayarInput.value);
+
+        // Update hidden input dengan angka asli
+        // const totalBayarRawInput = document.getElementById('totalBayarRaw');
+        // totalBayarRawInput.value = totalHarga;
 
         // Update hidden input dengan angka asli
         updateRawValue(totalHarga);
@@ -443,23 +447,43 @@
 
     // VIEW BARANG EDIT
     // remove function
-    function removeSelectedItem(barang) {
-        // Hapus elemen dari tampilan
-        document.querySelector(`.selected-item[data-value="${barang}"]`).remove();
+    // function removeSelectedItem(barang) {
+    //     // Hapus elemen dari tampilan
+    //     document.querySelector(`.selected-item[data-value="${barang}"]`).remove();
 
-        // Perbarui input tersembunyi untuk barang_sewa dan jumlah_sewa
-        const barangInput = document.getElementById('barangSewaInput').value.split(',');
-        const jumlahInput = document.getElementById('jumlahSewaInput').value.split(',');
+    //     // Perbarui input tersembunyi untuk barang_sewa dan jumlah_sewa
+    //     const barangInput = document.getElementById('barangSewaInput').value.split(',');
+    //     const jumlahInput = document.getElementById('jumlahSewaInput').value.split(',');
 
-        const index = barangInput.indexOf(barang);
-        if (index > -1) {
-            barangInput.splice(index, 1);
-            jumlahInput.splice(index, 1); // Hapus jumlah yang sesuai
-        }
+    //     const index = barangInput.indexOf(barang);
+    //     if (index > -1) {
+    //         barangInput.splice(index, 1);
+    //         jumlahInput.splice(index, 1);
+    //     }
 
-        document.getElementById('barangSewaInput').value = barangInput.join(',');
-        document.getElementById('jumlahSewaInput').value = jumlahInput.join(',');
-    }
+    //     document.getElementById('barangSewaInput').value = barangInput.join(',');
+    //     document.getElementById('jumlahSewaInput').value = jumlahInput.join(',');
+    // }
+
+    // Bukti bayar muncul saat non-cash
+    document.addEventListener('DOMContentLoaded', function () {
+        const opsiBayarSelect = document.querySelector('select[name="opsi_bayar"]');
+        const buktiBayarSection = document.querySelector('.bukti-bayar');
+
+        const toggleFields = () => {
+            const isNonCash = opsiBayarSelect.value === 'Non-Cash';
+
+            buktiBayarSection.style.display = isNonCash ? 'block' : 'none';
+
+            buktiBayarSection.querySelectorAll('input').forEach(input => {
+                input.required = isNonCash;
+            });
+        };
+
+        toggleFields();
+
+        opsiBayarSelect.addEventListener('change', toggleFields);
+    });
 
 </script>
 @endsection

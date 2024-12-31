@@ -45,7 +45,7 @@
 .content, .content-tf {
     font-size: 14px;
     margin-bottom: 5px;
-} 
+}
 
 .content {
     font-weight: 600;
@@ -64,13 +64,15 @@
     font-weight: 600;
 }
 
-#imagePreview {
+#imagePreview,
+#imagePreviewImg {
     margin-top: 10px;
 }
 
+#imagePreview img,
 #preview {
-    height: 200px;
-    width: 200px;
+    height: 300px;
+    width: 190px;
     display: none;
     border: 1px solid #b9b9b9;
     border-radius: 10px;

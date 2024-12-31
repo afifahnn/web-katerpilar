@@ -42,9 +42,24 @@
                     <tr>
                         <th rowspan="2" class="col-number">No.</th>
                         <th class="pic-head" rowspan="2">Gambar</th>
-                        <th rowspan="2">Jenis</th>
-                        <th rowspan="2">Nama Barang</th>
-                        <th rowspan="2">Stok</th>
+                        <th rowspan="2">
+                            Jenis
+                            <button id="sort-jenis" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
+                        <th rowspan="2">
+                            Nama Barang
+                            <button id="sort-name" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
+                        <th rowspan="2">
+                            Stok
+                            <button id="sort-stok" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th colspan="3">Harga Sewa</th>
                         <th class="col-deskripsi" rowspan="2">Deskripsi</th>
                         <th rowspan="2">Aksi</th>
@@ -71,7 +86,7 @@
                                 </td>
                                 <td>{{ $barang->jenis }}</td>
                                 <td>{{ $barang->nama_barang }}</td>
-                                <td>{{ $barang->stok_barang }}</td>
+                                <td style="text-align: center">{{ $barang->stok_barang }}</td>
                                 <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
@@ -119,5 +134,72 @@
 
         document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
     });
+
+    // SORTING
+    let sortOrderName = 'asc';
+    let sortOrderJenis = 'asc';
+    let sortOrderStok = 'asc';
+
+    // Nama
+    document.getElementById('sort-name').addEventListener('click', function () {
+        sortTableByColumn(4, 'sort-name', 'asc');
+    });
+
+    // Jenis
+    document.getElementById('sort-jenis').addEventListener('click', function () {
+        sortTableByColumn(3, 'sort-jenis', 'asc');
+    });
+
+    // Stok
+    document.getElementById('sort-stok').addEventListener('click', function () {
+        sortTableByColumn(5, 'sort-stok', 'asc');
+    });
+
+    function sortTableByColumn(columnIndex, buttonId, defaultOrder) {
+        const rows = Array.from(document.querySelectorAll('#table-body .data-row'));
+        const button = document.getElementById(buttonId);
+        const arrowIcon = button.querySelector('i');
+
+        let sortOrder;
+        if (buttonId === 'sort-jenis') {
+            sortOrder = sortOrderJenis;
+        } else if (buttonId === 'sort-name') {
+            sortOrder = sortOrderName;
+        } else if (buttonId === 'sort-stok') {
+            sortOrder = sortOrderStok;
+        }
+
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        arrowIcon.classList.toggle('fa-sort-down', sortOrder === 'asc');
+        arrowIcon.classList.toggle('fa-sort-up', sortOrder === 'desc');
+
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+            const valueB = b.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+
+            let compareValueA = valueA;
+            let compareValueB = valueB;
+
+            if (columnIndex === 5) {
+                compareValueA = parseInt(valueA.replace(/[^0-9]/g, ''), 10);
+                compareValueB = parseInt(valueB.replace(/[^0-9]/g, ''), 10);
+            }
+
+            if (compareValueA < compareValueB) return sortOrder === 'asc' ? -1 : 1;
+            if (compareValueA > compareValueB) return sortOrder === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+        rows.forEach((row, index) => {
+            row.querySelector('.col-number').textContent = `${index + 1}.`;
+            tableBody.appendChild(row);
+        });
+
+        if (buttonId === 'sort-jenis') sortOrderJenis = sortOrder;
+        if (buttonId === 'sort-name') sortOrderName = sortOrder;
+        if (buttonId === 'sort-stok') sortOrderStok = sortOrder;
+    }
 </script>
 @endsection

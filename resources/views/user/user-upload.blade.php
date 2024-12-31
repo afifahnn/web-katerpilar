@@ -8,8 +8,9 @@
 <div id="upload-bukti">
     <div class="container-rental">
         <div class="judul-rental">FORM UPLOAD BUKTI PEMBAYARAN</div>
-        <form action="{{ route('user.upload') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('user.upload.update', $transaksi->id) }}" method="post" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="input-data">
                 <div class="content-tf">Silahkan transfer di nomor rekening berikut :</div>
                 <div class="norek-content">
@@ -19,17 +20,24 @@
             </div>
             <div class="input-data">
                 <div class="content" for="metode_bayar">Metode Pembayaran</div>
-                <input type="text" name="metode_bayar" placeholder="e.g. Transfer Bank B**"></input>
+                <input type="text" name="metode_bayar" value="{{ $transaksi->metode_bayar }}" placeholder="e.g. Transfer Bank B**" required></input>
             </div>
             <div class="input-data">
                 <div class="content" for="bukti_bayar">Upload Bukti Pembayaran</div>
-                <input type="file" name="bukti_bayar" accept="image/*" required id="imageInput">
+                <input type="file" name="bukti_bayar" accept="image/*" required id="imageInput" required>
+                @if($transaksi->bukti_bayar)
+                    <div id="imagePreview">
+                        <img src="{{ asset('storage/' . $transaksi->bukti_bayar) }}" alt="{{ $transaksi->metode_bayar }}">
+                    </div>
+                @else
+                    <div>Tidak ada gambar saat ini.</div>
+                @endif
                 <div id="imagePreview">
                     <img id="preview" src="" alt="Preview Gambar">
                 </div>
             </div>
 
-            <div class="btn-add-create" id="addData">
+            <div class="btn-add-create">
                 <div class="btn-add-data">
                     <button type="submit">Upload</button>
                 </div>

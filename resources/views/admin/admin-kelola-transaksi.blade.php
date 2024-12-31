@@ -41,9 +41,19 @@
                 <thead>
                     <tr>
                         <th class="col-number">No.</th>
-                        <th>Tgl Sewa</th>
+                        <th>
+                            Tgl Sewa
+                            <button id="sort-tglsewa" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th>Tgl Kembali</th>
-                        <th>Nama</th>
+                        <th>
+                            Nama
+                            <button id="sort-name" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th>Total Barang Sewa</th>
                         <th>Total Bayar</th>
                         <th>Aksi</th>
@@ -202,5 +212,65 @@
 
         document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
     });
+
+    // SORTING
+    let sortOrderName = 'asc';
+    let sortOrderTglSewa = 'asc';
+
+    // Nama
+    document.getElementById('sort-name').addEventListener('click', function () {
+        sortTableByColumn(4, 'sort-name', 'asc');
+    });
+
+    // Tanggal Sewa
+    document.getElementById('sort-tglsewa').addEventListener('click', function () {
+        sortTableByColumn(2, 'sort-tglsewa', 'asc');
+    });
+
+    function sortTableByColumn(columnIndex, buttonId, defaultOrder) {
+        const rows = Array.from(document.querySelectorAll('#table-body .data-row'));
+        const button = document.getElementById(buttonId);
+        const arrowIcon = button.querySelector('i');
+
+        let sortOrder;
+        if (buttonId === 'sort-tglsewa') {
+            sortOrder = sortOrderTglSewa;
+        } else if (buttonId === 'sort-name') {
+            sortOrder = sortOrderName;
+        }
+
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        arrowIcon.classList.toggle('fa-sort-down', sortOrder === 'asc');
+        arrowIcon.classList.toggle('fa-sort-up', sortOrder === 'desc');
+
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+            const valueB = b.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+
+            if (columnIndex === 2) {
+                const dateA = new Date(valueA.split('/').reverse().join('-'));
+                const dateB = new Date(valueB.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            } else if (columnIndex === 3) {
+                const dateA = new Date(valueA.split('/').reverse().join('-'));
+                const dateB = new Date(valueB.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            } else {
+                if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
+                if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            }
+        });
+
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+        rows.forEach((row, index) => {
+            row.querySelector('.col-number').textContent = `${index + 1}.`;
+            tableBody.appendChild(row);
+        });
+
+        if (buttonId === 'sort-tglsewa') sortOrderTglSewa = sortOrder;
+        if (buttonId === 'sort-name') sortOrderName = sortOrder;
+    }
 </script>
 @endsection
