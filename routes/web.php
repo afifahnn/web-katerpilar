@@ -31,8 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/rental', [UserRentalController::class, 'storeRental'])->name('user.rental');
 
     // Upload Bukti Bayar
-    Route::get('/upload', [UserUploadController::class, 'getUpload'])->name('user.upload');
-    Route::post('/upload', [UserUploadController::class, 'userUpload'])->name('user.upload.create');
+    Route::get('/upload/{id}/edit', [UserUploadController::class, 'getUpload'])->name('user.upload');
+    Route::put('/upload/{id}', [UserUploadController::class, 'userUpload'])->name('user.upload.update');
 
     // User Riwayat
     Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');
@@ -42,7 +42,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [UserProfilController::class, 'userProfil'])->name('user.profil');
     Route::get('/edit-profil', [UserProfilController::class, 'editProfil'])->name('user.profil.edit');
     Route::put('/edit-profil', [UserProfilController::class, 'updateProfil'])->name('user.profil.update');
+});
 
+Route::middleware(['auth:admin'])->group(function () {
     // Dashboard Admin
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
@@ -86,5 +88,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin-update-profil', [AdminProfilController::class, 'editProfil'])->name('adminprofil.edit');
     Route::put('/admin-update-profil', [AdminProfilController::class, 'updateProfil'])->name('adminprofil.update');
 });
+
 
 

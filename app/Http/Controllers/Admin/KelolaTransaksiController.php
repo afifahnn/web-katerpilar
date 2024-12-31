@@ -43,9 +43,6 @@ class KelolaTransaksiController extends Controller
                 'opsi_bayar' => 'required|in:Cash,Non-Cash'
             ]);
 
-            // Customer::create($request->all());
-            // Transaksi::create($request->all());
-
             // Buat data customer
             $customer = Customer::firstOrCreate(
                 ['telp_customer' => $request->telp_customer],
@@ -55,36 +52,9 @@ class KelolaTransaksiController extends Controller
                 ]
             );
 
-            // Menghitung total bayar
-            // $barangIds = json_decode($request->barang_sewa);
-            // $jumlahBarang = json_decode($request->jumlah_sewa);
-            // $totalBayar = 0;
-
-            // foreach ($barangIds as $index => $barangId) {
-            //     $barang = Barang::find($barangId);
-
-            //     // Menentukan harga berdasarkan lama sewa
-            //     $tglSewa = new \DateTime($request->tgl_sewa);
-            //     $tglKembali = new \DateTime($request->tgl_kembali);
-            //     $lamaSewa = $tglSewa->diff($tglKembali)->days;
-
-            //     if ($lamaSewa <= 1) {
-            //         $hargaPerItem = $barang->harga_sewa1;
-            //     } elseif ($lamaSewa <= 3) {
-            //         $hargaPerItem = $barang->harga_sewa2;
-            //     } else {
-            //         $hargaPerItem = $barang->harga_sewa3;
-            //     }
-
-            //     $totalBayar += $hargaPerItem * $jumlahBarang[$index];
-            // }
-
             $barangSewa = isset($request->barang_sewa[0]) ? explode(',', $request->barang_sewa[0]) : [];
             $jumlahSewa = isset($request->jumlah_sewa[0]) ? explode(',', $request->jumlah_sewa[0]) : [];
             $jumlahSewa = array_map('intval', $jumlahSewa);
-
-            // dd($barangSewa, $jumlahSewa);
-            // dd($request->all());
 
             // Buat data transaksi
             Transaksi::create([
@@ -121,9 +91,6 @@ class KelolaTransaksiController extends Controller
         $barang = Barang::all();
         $customer = Customer::all();
 
-        // $barang_sewa = explode(',', $transaksi->barang_sewa);
-        // $jumlah_sewa = explode(',', $transaksi->jumlah_sewa);
-
         $barang_sewa = json_decode($transaksi->barang_sewa, true);
         $jumlah_sewa = json_decode($transaksi->jumlah_sewa, true);
 
@@ -155,27 +122,64 @@ class KelolaTransaksiController extends Controller
         ]);
 
         $transaksi = Transaksi::findOrFail($id);
+        $barangSewa = isset($request->barang_sewa[0]) ? explode(',', $request->barang_sewa[0]) : [];
+        $jumlahSewa = isset($request->jumlah_sewa[0]) ? explode(',', $request->jumlah_sewa[0]) : [];
+        $jumlahSewa = array_map('intval', $jumlahSewa);
+
+        $barangSewaLama = json_decode($transaksi->barang_sewa);
+        $jumlahSewaLama = json_decode($transaksi->jumlah_sewa);
 
         $transaksi->update([
+            'customer_id' => $transaksi->customer_id,
             'nama_customer' => $request->nama_customer,
             'alamat_customer' => $request->alamat_customer,
             'telp_customer' => $request->telp_customer,
             'tgl_sewa' => $request->tgl_sewa,
             'tgl_kembali' => $request->tgl_kembali,
-            'barang_sewa' => json_encode($request->barang_sewa),
-            'jumlah_sewa' => json_encode($request->jumlah_sewa),
             'total_bayar' => $request->total_bayar,
             'opsi_bayar' => $request->opsi_bayar,
             'metode_bayar' => $request->metode_bayar,
         ]);
 
-        foreach ($request->barang_sewa as $index => $namaBarang) {
+        $transaksi->barang_sewa = json_encode($barangSewa);
+        $transaksi->jumlah_sewa = json_encode($jumlahSewa);
+        $transaksi->save();
+
+        foreach ($barangSewaLama as $index => $namaBarang) {
             $barang = Barang::where('nama_barang', $namaBarang)->first();
 
             if ($barang) {
-                $jumlahSewa = $request->jumlah_sewa[$index];
-                $barang->stok_barang -= $jumlahSewa;
+                // Ambil jumlah sewa lama untuk barang yang akan dihapus
+                $jumlahSewaLamaBarang = $jumlahSewaLama[$index];
+
+                // Cek apakah barang ini ada dalam transaksi yang baru
+                $key = array_search($namaBarang, $barangSewa); // Cek apakah barang ini ada dalam barang_sewa yang baru
+                if ($key !== false) {
+                    // Barang ada, jadi hitung perubahan jumlahnya
+                    $jumlahSewaBaru = $jumlahSewa[$key];
+                    if ($jumlahSewaBaru > $jumlahSewaLamaBarang) {
+                        // Jika jumlah sewa baru lebih banyak, kurangi stok
+                        $barang->stok_barang -= ($jumlahSewaBaru - $jumlahSewaLamaBarang);
+                    } elseif ($jumlahSewaBaru < $jumlahSewaLamaBarang) {
+                        // Jika jumlah sewa baru lebih sedikit, tambah stok
+                        $barang->stok_barang += ($jumlahSewaLamaBarang - $jumlahSewaBaru);
+                    }
+                } else {
+                    // Jika barang dihapus dari transaksi, tambah stok
+                    $barang->stok_barang += $jumlahSewaLamaBarang;
+                }
                 $barang->save();
+            }
+        }
+
+        // barang baru ditambah ke transaksi
+        foreach ($barangSewa as $index => $namaBarang) {
+            if (!in_array($namaBarang, $barangSewaLama)) {
+                $barang = Barang::where('nama_barang', $namaBarang)->first();
+                if ($barang) {
+                    $barang->stok_barang -= $jumlahSewa[$index];
+                    $barang->save();
+                }
             }
         }
 

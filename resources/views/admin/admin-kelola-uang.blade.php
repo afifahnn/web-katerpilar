@@ -41,7 +41,12 @@
                 <thead>
                     <tr>
                         <th class="col-number">No.</th>
-                        <th>Tgl Transaksi</th>
+                        <th>
+                            Tgl Transaksi
+                            <button id="sort-tgl" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th>Jenis Transaksi</th>
                         <th>Nominal</th>
                         <th class="col-deskripsi" rowspan="2">Deskripsi</th>
@@ -116,5 +121,56 @@
 
         document.getElementById('no-data').style.display = hasVisibleRow ? 'none' : '';
     });
+
+    // SORTING
+    let sortOrderTgl = 'asc';
+
+    // Tanggal
+    document.getElementById('sort-tgl').addEventListener('click', function () {
+        sortTableByColumn(2, 'sort-tgl', 'asc');
+    });
+
+    function sortTableByColumn(columnIndex, buttonId, defaultOrder) {
+        const rows = Array.from(document.querySelectorAll('#table-body .data-row'));
+        const button = document.getElementById(buttonId);
+        const arrowIcon = button.querySelector('i');
+
+        let sortOrder;
+        if (buttonId === 'sort-tgl') {
+            sortOrder = sortOrderTgl;
+        }
+
+        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        arrowIcon.classList.toggle('fa-sort-down', sortOrder === 'asc');
+        arrowIcon.classList.toggle('fa-sort-up', sortOrder === 'desc');
+
+        rows.sort((a, b) => {
+            const valueA = a.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+            const valueB = b.querySelector(`td:nth-child(${columnIndex})`).textContent.trim().toLowerCase();
+
+            if (columnIndex === 2) {
+                const dateA = new Date(valueA.split('/').reverse().join('-'));
+                const dateB = new Date(valueB.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            } else if (columnIndex === 3) {
+                const dateA = new Date(valueA.split('/').reverse().join('-'));
+                const dateB = new Date(valueB.split('/').reverse().join('-'));
+                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+            } else {
+                if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
+                if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            }
+        });
+
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = '';
+        rows.forEach((row, index) => {
+            row.querySelector('.col-number').textContent = `${index + 1}.`;
+            tableBody.appendChild(row);
+        });
+
+        if (buttonId === 'sort-tgl') sortOrderTgl = sortOrder;
+    }
 </script>
 @endsection

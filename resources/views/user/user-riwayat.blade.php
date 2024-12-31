@@ -49,12 +49,22 @@
                                 <div class="total-bayar">Total bayar :</div>
                                 <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
                             </div>
-                            <div>{{ ucwords($item->opsi_bayar) }}</div>
+                            <div class="total">
+                                <div class="total-bayar">Opsi bayar :</div>
+                                <div>{{ ucwords($item->opsi_bayar) }}</div>
+                                @if(strtolower($item->opsi_bayar) === 'non-cash')
+                                    <div>{{ $item->metode_bayar }}</div>
+                                @endif
+                            </div>
                             <div>
                                 @if(strtolower($item->opsi_bayar) === 'non-cash')
-                                    <div class="pic-bukti">
-                                        <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
-                                    </div>
+                                    @if($item->bukti_bayar)
+                                        <div class="pic-bukti">
+                                            <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
+                                        </div>
+                                    @else
+                                        <a href="{{ route('user.upload', $item->id) }}" class="btn btn-primary">Upload Bukti Bayar</a>
+                                    @endif
                                 @endif
                             </div>
                             <div class="cancel-rental">
