@@ -47,7 +47,12 @@
                                 <i class="fa-solid fa-sort-down"></i>
                             </button>
                         </th>
-                        <th>Tgl Kembali</th>
+                        <th>
+                            Tgl Kembali
+                            <button id="sort-tglkembali" class="btn-sort" style="border: none; background: none;">
+                                <i class="fa-solid fa-sort-down"></i>
+                            </button>
+                        </th>
                         <th>
                             Nama
                             <button id="sort-name" class="btn-sort" style="border: none; background: none;">
@@ -219,6 +224,7 @@
     // SORTING
     let sortOrderName = 'asc';
     let sortOrderTglSewa = 'asc';
+    let sortOrderTglKembali = 'asc';
 
     // Nama
     document.getElementById('sort-name').addEventListener('click', function () {
@@ -230,6 +236,11 @@
         sortTableByColumn(2, 'sort-tglsewa', 'asc');
     });
 
+    // Tanggal Kembali
+    document.getElementById('sort-tglkembali').addEventListener('click', function () {
+        sortTableByColumn(3, 'sort-tglkembali', 'asc');
+    });
+
     function sortTableByColumn(columnIndex, buttonId, defaultOrder) {
         const rows = Array.from(document.querySelectorAll('#table-body .data-row'));
         const button = document.getElementById(buttonId);
@@ -238,6 +249,8 @@
         let sortOrder;
         if (buttonId === 'sort-tglsewa') {
             sortOrder = sortOrderTglSewa;
+        } else if (buttonId === 'sort-tglkembali') {
+            sortOrder = sortOrderTglKembali;
         } else if (buttonId === 'sort-name') {
             sortOrder = sortOrderName;
         }
@@ -273,6 +286,7 @@
         });
 
         if (buttonId === 'sort-tglsewa') sortOrderTglSewa = sortOrder;
+        if (buttonId === 'sort-tglkembali') sortOrderTglKembali = sortOrder;
         if (buttonId === 'sort-name') sortOrderName = sortOrder;
     }
 
