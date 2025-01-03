@@ -157,3 +157,28 @@
     color: red;
     margin: 2px 0;
 }
+
+@media only screen and (max-width: 500px) {
+    .edit-profil-top {
+        padding: 10px;
+        margin-left: 10px;
+    }
+
+    .btn-back-profil {
+        margin-left: 15px;
+    }
+
+    .profil-container {
+        margin: 20px 10px;
+        padding: 12px 8px;
+    }
+
+    .grid-container {
+        display: block;
+        padding: 0 20px;
+    }
+
+    .input-profil {
+        padding: 10px 0;
+    }
+}

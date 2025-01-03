@@ -11,7 +11,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Tambah Data Pengeluaran</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -37,13 +37,6 @@
                     <div class="input-container">
                         <div class="content">Jenis Transaksi</div>
                         <input type="text" name="jenis_transaksi" value="Pengeluaran" readonly required>
-                        {{-- <div class="input-group">
-                            <select class="form-select" id="inputGroupSelect04" name="jenis_transaksi" required>
-                            <option disabled selected>Pilih...</option>
-                            <option value="Pemasukan">Pemasukan</option>
-                            <option value="Pengeluaran">Pengeluaran</option>
-                            </select>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="grid-container">
@@ -100,5 +93,45 @@
                 input.value = cleanRupiah(input.value); // Hapus format sebelum submit
             });
         });
+
+        // SWAL REQUIRED
+        document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+            input.addEventListener('invalid', function () {
+                Swal.fire({
+                    position: 'bottom-end',
+                    title: 'Peringatan!',
+                    text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                    icon: 'warning',
+                    toast: true,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: false,
+                });
+            });
+        });
+
+        // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
     </script>
 @endsection

@@ -39,7 +39,7 @@
                         </li>
                         <li class="nav-item me-3" id="btn-logout">
                             @auth
-                                <form action="{{ route('logout') }}" method="POST">
+                                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                                     @csrf
                                     <a class="nav-link"><button type="submit" class="btn-logout">Logout</button></a>
                                 </form>
@@ -53,5 +53,31 @@
             </div>
         </nav>
     </div>
+
+    <script>
+        // ALERT LOGOUT
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    var formElement = this;
+
+                    Swal.fire({
+                        text: "Apakah anda yakin akan Logout?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formElement.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>

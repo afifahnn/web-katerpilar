@@ -11,7 +11,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Edit Data Customer</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -32,16 +32,16 @@
                 @method('PUT')
                 <div class="input-data">
                     <div class="content" for="nama_customer">Nama</div>
-                    <input type="text" name="nama_customer" id="nama_customer" value="{{ $customer->nama_customer }}" required>
+                    <input type="text" name="nama_customer" id="nama_customer" value="{{ $customer->nama_customer }}" placeholder="Nama" required>
                 </div>
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="alamat_customer">Alamat</div>
-                        <input type="text" name="alamat_customer" id="alamat_customer" value="{{ $customer->alamat_customer }}" required>
+                        <input type="text" name="alamat_customer" id="alamat_customer" value="{{ $customer->alamat_customer }}" placeholder="Alamat" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="telp_customer">Nomor Telepon</div>
-                        <input type="text" name="telp_customer" id="telp_customer" value="{{ $customer->telp_customer }}" required>
+                        <input type="number" name="telp_customer" id="telp_customer" value="{{ $customer->telp_customer }}" placeholder="e.g. 081234567890" required>
                     </div>
                 </div>
 
@@ -53,4 +53,46 @@
             </form>
         </div>
     </div>
+
+<script>
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endsection

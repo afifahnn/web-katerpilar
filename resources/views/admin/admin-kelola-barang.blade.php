@@ -10,7 +10,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Barang</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -76,31 +76,31 @@
                             <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
                         </tr>
                     @else
-                        @foreach($barang as $index => $barang)
+                        @foreach($barang as $index => $barangs)
                             <tr class="data-row">
-                                <td class="col-number">{{ $loop->iteration }}.</td>
+                                <td class="col-number">{{ ($barang->currentPage() - 1) * $barang->perPage() + $loop->iteration }}.</td>
                                 <td>
                                     <div class="pic-barang">
-                                        <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="{{ $barang->nama_barang }}">
+                                        <img src="{{ asset('storage/' . $barangs->gambar_barang) }}" alt="{{ $barangs->nama_barang }}">
                                     </div>
                                 </td>
-                                <td>{{ $barang->jenis }}</td>
-                                <td>{{ $barang->nama_barang }}</td>
-                                <td style="text-align: center">{{ $barang->stok_barang }}</td>
-                                <td>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</td>
-                                <td class="col-deskripsi">{!! nl2br(e($barang->deskripsi_barang)) !!}</td>
+                                <td>{{ $barangs->jenis }}</td>
+                                <td>{{ $barangs->nama_barang }}</td>
+                                <td style="text-align: center">{{ $barangs->stok_barang }}</td>
+                                <td>Rp {{ number_format($barangs->harga_sewa1, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($barangs->harga_sewa2, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($barangs->harga_sewa3, 0, ',', '.') }}</td>
+                                <td class="col-deskripsi">{!! nl2br(e($barangs->deskripsi_barang)) !!}</td>
                                 <td>
                                     <div class="btn-aksi">
-                                        <form action="{{ route('admin.kelola-barang.delete', $barang->id) }}" method="post">
+                                        <form action="{{ route('admin.kelola-barang.delete', $barangs->id) }}" method="post" class="delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                            <button type="submit" class="btn-hapus">
                                                 <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ route('admin.kelola-barang.edit', $barang->id) }}">
+                                        <a href="{{ route('admin.kelola-barang.edit', $barangs->id) }}">
                                             <button type="submit" class="btn-edit">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
                                             </button>
@@ -114,6 +114,11 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+
+        {{-- pagination --}}
+        <div class="pagination">
+            {{ $barang->links() }}
         </div>
     </div>
 
@@ -201,5 +206,79 @@
         if (buttonId === 'sort-name') sortOrderName = sortOrder;
         if (buttonId === 'sort-stok') sortOrderStok = sortOrder;
     }
+
+    // ALERT DELETE
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
 </script>
 @endsection

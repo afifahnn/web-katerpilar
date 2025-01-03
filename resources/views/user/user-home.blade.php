@@ -30,7 +30,6 @@
         </div>
 
         <div class="carousel-section">
-            {{-- <button class="carousel-btn-left" onclick="scrollLeft()">&#10094;</button> --}}
             <div class="scroll-container">
                 @foreach($barangs as $barang)
                 <button type="button" class="btn p-0 shadow-none" data-bs-toggle="modal" data-bs-target="#modalBarang{{ $barang->id }}">
@@ -89,7 +88,6 @@
                 </div>
                 @endforeach
             </div>
-            {{-- <button class="carousel-btn-right" onclick="scrollRight()">&#10095;</button> --}}
         </div>
         @endforeach
     </div>
@@ -104,6 +102,7 @@
                 <li>Pemesanan alat dapat dilakukan via sistem atau datang langsung ke toko.</li>
                 <li>Pelunasan transaksi maksimal saat ambil alat.</li>
                 <li>Hitungan sewa 1 hari = 2 hari 1 malam.</li>
+                <li>Harga sewa jika lebih dari 3 hari menyesuaikan.</li>
                 <li>Jika ada kehilangan atau kerusakan alat ditanggung penyewa.</li>
             </ul>
         </div>

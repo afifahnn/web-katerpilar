@@ -10,7 +10,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Transaksi</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -67,12 +67,10 @@
                     @else
                         @foreach($transaksi as $index => $item)
                         <tr style="text-align: center" class="data-row">
-                            <td class="col-number">{{ $loop->iteration }}.</td>
+                            <td class="col-number">{{ ($transaksi->currentPage() - 1) * $transaksi->perPage() + $loop->iteration }}.</td>
                             <td>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</td>
-                            <td>
-                                {{ $item->customer->nama_customer }}
-                            </td>
+                            <td>{{ $item->customer->nama_customer }}</td>
                             <td>
                                 @php
                                     $jumlah_sewa = json_decode($item->jumlah_sewa, true);
@@ -85,10 +83,10 @@
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
                                         <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
                                     </button>
-                                    <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post">
+                                    <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <button type="submit" class="btn-hapus">
                                             <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                                         </button>
                                     </form>
@@ -193,6 +191,11 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- pagination --}}
+        <div class="pagination">
+            {{ $transaksi->links() }}
+        </div>
     </div>
 
 {{-- JAVASCRIPT --}}
@@ -272,5 +275,79 @@
         if (buttonId === 'sort-tglsewa') sortOrderTglSewa = sortOrder;
         if (buttonId === 'sort-name') sortOrderName = sortOrder;
     }
+
+    // ALERT DELETE
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
 </script>
 @endsection

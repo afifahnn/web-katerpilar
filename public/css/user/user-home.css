@@ -146,31 +146,6 @@
     font-size: 13px;
 }
 
-/* .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
-}
-
-.carousel-btn-left {
-    left: 10px;
-}
-
-.carousel-btn-right {
-    right: 10px;
-}
-
-.carousel-btn:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-} */
-
 #content-modal img {
     width: 400px;
     height: 300px;
@@ -233,4 +208,35 @@
 
 .info-sk ul li {
     padding-bottom: 3px;
+}
+
+@media only screen and (max-width: 500px) {
+    /* HERO SECTION */
+    .hero-section {
+        height: 100vh;
+    }
+
+    .img-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* KATALOG SECTION */
+    .katalog-section {
+        padding: 30px 10px;
+    }
+
+    /* MODAL */
+    #content-modal img {
+        width: 200px;
+        height: 200px;
+        margin: 10px;
+    }
+
+    /* INFORMATION SECTION */
+    .information-section {
+        margin: 20px 10px;
+        padding: 15px;
+    }
 }

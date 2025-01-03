@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\KelolaBarangController;
 use App\Http\Controllers\Admin\KelolaCustomerController;
 use App\Http\Controllers\Admin\KelolaTransaksiController;
 use App\Http\Controllers\Admin\KelolaUangController;
+use App\Http\Controllers\Admin\PdfExportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\User\UserHomeController;
 use App\Http\Controllers\User\UserRentalController;
@@ -82,6 +83,9 @@ Route::middleware(['auth:admin'])->group(function () {
 
     // Laporan Keuangan
     Route::get('/laporan-keuangan', [KelolaUangController::class, 'laporanKeuangan'])->name('laporankeuangan');
+
+    // Cetak PDF
+    Route::get('/generate-pdf', [PdfExportController::class, 'generatePDF'])->name('cetakpdf');
 
     // Profil Admin
     Route::get('/admin-profil', [AdminProfilController::class, 'adminprofil'])->name('adminprofil');

@@ -37,7 +37,7 @@
                         <a href="https://maps.app.goo.gl/3Pk8wwyH8J3Yqaaf6" target="_blank" rel="noopener noreferrer">
                             <div>Katerpilar Outdoor Gear & Rental, Kemiri</div>
                             <div>006/008, Kemiri, Tulung, Klaten,</div>
-                            <dov>Jawa Tengah, Kode Pos 57482</dov>
+                            <div>Jawa Tengah, Kode Pos 57482</div>
                         </a>
                     </div>
                 </div>

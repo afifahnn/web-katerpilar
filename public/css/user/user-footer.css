@@ -79,3 +79,38 @@ a:hover {
     justify-content: center;
     font-weight: 600;
 }
+
+@media only screen and (max-width: 500px) {
+    #user-footer {
+        margin: 5px;
+    }
+
+    .content-footer {
+        display: block;
+        padding: 10px;
+    }
+
+    .logo-footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .right-footer {
+        display: block;
+        margin: 20px 10px;
+    }
+
+    .contact {
+        margin-bottom: 20px;
+    }
+
+    .contact, .address {
+        text-align: center;
+    }
+
+    .name-footer a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

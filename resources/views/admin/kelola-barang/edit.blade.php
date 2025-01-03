@@ -11,7 +11,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Edit Data Barang</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -33,15 +33,15 @@
                 <div class="grid-container-2">
                     <div class="input-container">
                         <div class="content" for="nama_barang">Nama Barang</div>
-                        <input type="text" name="nama_barang" id="nama_barang" value="{{ $barang->nama_barang }}" required>
+                        <input type="text" name="nama_barang" id="nama_barang" value="{{ $barang->nama_barang }}" placeholder="Nama Barang" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="jenis">Jenis Barang</div>
-                        <input type="text" name="jenis" id="jenis" value="{{ $barang->jenis }}" required>
+                        <input type="text" name="jenis" id="jenis" value="{{ $barang->jenis }}" placeholder="Jenis Barang" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="stok_barang">Stok Barang</div>
-                        <input type="number" name="stok_barang" id="stok_barang" value="{{ $barang->stok_barang }}" required>
+                        <input type="number" name="stok_barang" id="stok_barang" value="{{ $barang->stok_barang }}" placeholder="Stok Barang" required>
                     </div>
                 </div>
                 <div class="input-data">
@@ -155,5 +155,45 @@
                 imagePreview.style.display = 'block';
             }
         });
+
+        // SWAL REQUIRED
+        document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+            input.addEventListener('invalid', function () {
+                Swal.fire({
+                    position: 'bottom-end',
+                    title: 'Peringatan!',
+                    text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                    icon: 'warning',
+                    toast: true,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: false,
+                });
+            });
+        });
+
+        // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
     </script>
 @endsection

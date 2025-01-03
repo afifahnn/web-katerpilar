@@ -49,17 +49,10 @@ class AdminProfilController extends Controller
             $admin->password = bcrypt($request->password);
         }
 
-        // if ($request->filled('password')) {
-        //     // Validasi password baru
-        //     $request->validate([
-        //         'password' => 'required|min:8|confirmed',
-        //     ]);
-        //     // Hash dan simpan password baru
-        //     $admin->password = bcrypt($request->password);
-        // }
-
         $admin->save();
 
-        return redirect()->route('adminprofil')->with('success', 'Profil admin berhasil diperbarui.');
+        session()->flash('success', 'Profil admin berhasil diperbarui.');
+
+        return redirect()->route('adminprofil');
     }
 }

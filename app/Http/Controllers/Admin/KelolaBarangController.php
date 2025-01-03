@@ -11,7 +11,9 @@ class KelolaBarangController extends Controller
 {
     public function kelolabarang()
     {
-        $barang = Barang::orderBy('jenis', 'asc')->get();
+        $barang = Barang::orderBy('jenis', 'asc')
+        ->paginate(20);
+        // ->get();
         return view('admin.admin-kelola-barang', ['barang' => $barang]);
     }
 
@@ -25,8 +27,6 @@ class KelolaBarangController extends Controller
     // STORE BARANG
     public function storeBarang(Request $request)
     {
-        // dd($request->all());
-
         $request->validate([
             'gambar_barang' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'nama_barang' => 'required',
@@ -56,8 +56,9 @@ class KelolaBarangController extends Controller
             'kelipatan' => $kelipatan,
         ]);
 
+        session()->flash('success', 'Barang berhasil ditambahkan.');
 
-        return redirect()->route('kelolabarang')->with('success', 'Barang berhasil ditambahkan.');
+        return redirect()->route('kelolabarang');
     }
 
     // EDIT BARANG
@@ -89,8 +90,6 @@ class KelolaBarangController extends Controller
         $kelipatan = ($kelipatan1 + $kelipatan2) / 2;
 
         $barang->update([
-            // 'gambar_barang' => $imagePath,
-            // 'gambar_barang' => $request->gambar_barang,
             'nama_barang' => $request->nama_barang,
             'stok_barang' => $request->stok_barang,
             'harga_sewa1' => $request->harga_sewa1,
@@ -112,9 +111,9 @@ class KelolaBarangController extends Controller
             $barang->save();
         }
 
-        // $barang->update($request->all());
+        session()->flash('success', 'Barang berhasil diperbarui.');
 
-        return redirect()->route('kelolabarang')->with('success', 'Barang berhasil diperbarui.');
+        return redirect()->route('kelolabarang');
     }
 
     // DELETE BARANG
