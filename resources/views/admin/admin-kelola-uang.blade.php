@@ -157,10 +157,6 @@
                 const dateA = new Date(valueA.split('/').reverse().join('-'));
                 const dateB = new Date(valueB.split('/').reverse().join('-'));
                 return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-            } else if (columnIndex === 3) {
-                const dateA = new Date(valueA.split('/').reverse().join('-'));
-                const dateB = new Date(valueB.split('/').reverse().join('-'));
-                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             } else {
                 if (valueA < valueB) return sortOrder === 'asc' ? -1 : 1;
                 if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
