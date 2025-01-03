@@ -7,11 +7,7 @@
 @section('user-contents')
 <div id="user-profil">
     <div class="profile">
-        <p class="profil-hero">Selamat Datang</p>
-        {{-- @php
-            $profilePictureUrl = Auth::user()->profile_picture ? asset(Auth::user()->profile_picture) : asset('images/default.jpg');
-        @endphp --}}
-        {{-- <img class="foto-profil" src="{{ asset('img/default.jpg') }}" alt="Foto Profil Pengguna"> --}}
+        <p class="profil-hero">Hello!</p>
     </div>
     <div class="profil-container">
         <div class="profile-judul">
@@ -33,4 +29,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+</script>
 @endsection

@@ -11,7 +11,9 @@ class KelolaCustomerController extends Controller
 {
     public function kelolacustomer()
     {
-        $customer = Customer::with('transaksi')->orderBy('nama_customer', 'asc')->get();
+        $customer = Customer::with('transaksi')->orderBy('nama_customer', 'asc')
+        ->paginate(30);
+        // ->get();
         return view('admin.admin-kelola-customer', ['customer' => $customer]);
     }
 
@@ -33,7 +35,9 @@ class KelolaCustomerController extends Controller
 
         Customer::create($request->all());
 
-        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil ditambahkan.');
+        session()->flash('success', 'Customer berhasil ditambahkan.');
+
+        return redirect()->route('kelolacustomer');
     }
 
     // EDIT CUSTOMER
@@ -55,7 +59,9 @@ class KelolaCustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->update($request->all());
 
-        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil diperbarui.');
+        session()->flash('success', 'Customer berhasil diperbarui.');
+
+        return redirect()->route('kelolacustomer');
     }
 
     // DELETE CUSTOMER

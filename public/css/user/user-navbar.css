@@ -35,16 +35,6 @@ a {
     color: #555 !important;
 }
 
-/* Navbar Toggler */
-/* .navbar-toggler {
-    border-color: rgba(128, 128, 128, 0.5);
-}
-
-.navbar-toggler-icon {
-    background-color: rgba(128, 128, 128, 0.8);
-    border-radius: 4px;
-} */
-
 .logo {
     display: flex;
 }
@@ -91,3 +81,9 @@ a {
     font-weight: 600 !important;
 }
 
+@media only screen and (max-width: 500px) {
+    #btn-logout {
+        width: 40%;
+        text-align: center;
+    }
+}

@@ -23,7 +23,6 @@
 
 .card-riwayat {
     background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     padding: 20px;
@@ -37,6 +36,10 @@
 
 .barang, .total {
     padding-bottom: 10px;
+}
+
+.barang ul {
+    margin: 0;
 }
 
 .tanggal .tgl-sewa {
@@ -99,3 +102,51 @@
 .btn-cancel:hover {
     opacity: 80%;
 }
+
+/* PAGINATION */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-item .page-link {
+    background-color: #FFFFFF;
+    border: 1px solid #D3D3D3;
+    border-radius: 3px;
+    color: #000;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #fff8dd;
+    color: #000;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FFC700;
+    color: #000;
+}
+
+@media only screen and (max-width: 500px) {
+    .riwayat-section {
+        padding: 0 10px;
+    }
+
+    .card-riwayat {
+        padding: 10px;
+        margin: 8px 3px;
+    }
+
+    .detail-riwayat {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: start;
+        padding: 0 8px;
+    }
+
+    .btn-cancel {
+        margin: 0;
+    }
+}
+

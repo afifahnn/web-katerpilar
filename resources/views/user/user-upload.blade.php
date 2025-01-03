@@ -30,7 +30,7 @@
                         <img src="{{ asset('storage/' . $transaksi->bukti_bayar) }}" alt="{{ $transaksi->metode_bayar }}">
                     </div>
                 @else
-                    <div>Tidak ada gambar saat ini.</div>
+                    <div id="noImageText">Tidak ada gambar saat ini.</div>
                 @endif
                 <div id="imagePreview">
                     <img id="preview" src="" alt="Preview Gambar">
@@ -51,6 +51,8 @@
     // PREVIEW GAMBAR
     const imageInput = document.getElementById('imageInput');
     const preview = document.getElementById('preview');
+    const noImageText = document.getElementById('noImageText');
+    const imagePreview = document.getElementById('imagePreview');
 
     imageInput.addEventListener('change', function () {
         const file = this.files[0];
@@ -59,9 +61,29 @@
             reader.onload = function (e) {
                 preview.src = e.target.result;
                 preview.style.display = 'block';
+
+                if (noImageText) {
+                    noImageText.style.display = 'none';
+                }
             }
             reader.readAsDataURL(file);
         }
+    });
+
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
     });
 </script>
 

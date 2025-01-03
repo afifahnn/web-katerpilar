@@ -32,6 +32,8 @@ class UserUploadController extends Controller
             'bukti_bayar' => $fileImg,
         ]);
 
-        return redirect()->route('user.riwayat')->with('success', 'Berhasil upload bukti bayar.');
+        session()->flash('success', 'Berhasil upload bukti bayar.');
+
+        return redirect()->route('user.riwayat');
     }
 }

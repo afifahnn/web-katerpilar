@@ -10,7 +10,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Keuangan</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -61,7 +61,7 @@
                     @else
                         @foreach($keuangan as $index => $item)
                         <tr class="data-row">
-                            <td class="col-number">{{ $loop->iteration }}.</td>
+                            <td class="col-number">{{ ($keuangan->currentPage() - 1) * $keuangan->perPage() + $loop->iteration }}.</td>
                             <td>
                                 @if ($item->transaksi)
                                     {{ \Carbon\Carbon::parse($item->transaksi->tgl_sewa)->format('d/m/Y') }}
@@ -80,10 +80,10 @@
                             <td class="col-deskripsi">{{ $item->deskripsi }}</td>
                             <td>
                                 <div class="btn-aksi">
-                                    <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post">
+                                    <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <button type="submit" class="btn-hapus">
                                             <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                                         </button>
                                     </form>
@@ -101,6 +101,11 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+
+        {{-- pagination --}}
+        <div class="pagination">
+            {{ $keuangan->links() }}
         </div>
     </div>
 
@@ -172,5 +177,79 @@
 
         if (buttonId === 'sort-tgl') sortOrderTgl = sortOrder;
     }
+
+    // ALERT DELETE
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
 </script>
 @endsection

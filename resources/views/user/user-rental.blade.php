@@ -121,30 +121,8 @@
                     <button type="submit">Pesan</button>
                 </div>
             </div>
-
         </form>
     </div>
-
-    {{-- MODAL --}}
-    {{-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Pembayaran Non Cash</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                    <div class="mb-2 text-center">Terima kasih telah memilih pembayaran non-tunai. Harap selesaikan pembayaran Anda.</div>
-                    <div class="mb-4">Silahkan upload bukti pembayaran di sini!!</div>
-                    <button type="button" class="btn btn-custom" onclick="window.location.href='/upload'">Upload Bukti Pembayaran</button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
 </div>
 
 {{-- JAVASCRIPT --}}
@@ -289,10 +267,18 @@
     }
 
     document.querySelector('#addData').addEventListener('click', function (e) {
-        // Cek apakah ada barang yang ditambahkan
         if (Object.keys(selectedItems).length === 0) {
-            alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
-            e.preventDefault(); // Mencegah form dikirim
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Tambahkan minimal satu barang sebelum menyimpan transaksi!',
+                icon: 'warning',
+                position: 'bottom-end',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+            e.preventDefault();
         }
     });
 
@@ -323,14 +309,14 @@
 
     // Hilangkan format Rupiah untuk nilai asli
     function removeRupiahFormat(input) {
-        input.value = input.value.replace(/[^0-9]/g, ''); // Hanya angka
-        updateRawValue(input.value); // Perbarui nilai murni
+        input.value = input.value.replace(/[^0-9]/g, '');
+        updateRawValue(input.value);
     }
 
     // Terapkan kembali format Rupiah
     function applyRupiahFormat(input) {
-        const value = parseInt(input.value || 0); // Konversi ke angka
-        input.value = formatRupiah(value); // Tambahkan format Rupiah
+        const value = parseInt(input.value || 0);
+        input.value = formatRupiah(value);
     }
 
     // Fungsi untuk memperbarui nilai murni di hidden input
@@ -355,9 +341,8 @@
         jumlahSewaInput.value = jumlahSewa;
 
         const totalBayarInput = document.getElementById('totalBayar');
-        totalBayarInput.value = formatRupiah(totalHarga); // Tambahkan format Rupiah untuk tampilan
+        totalBayarInput.value = formatRupiah(totalHarga);
 
-        // Update hidden input dengan angka asli
         updateRawValue(totalHarga);
     }
 
@@ -375,6 +360,41 @@
             }
             reader.readAsDataURL(file);
         }
+    });
+
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    @endif
+
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
     });
 </script>
 @endsection

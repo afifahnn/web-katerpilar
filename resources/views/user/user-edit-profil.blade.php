@@ -92,5 +92,21 @@
         confirmPasswordInput.type = type;
         confirmTogglePassword.classList.toggle('fa-eye');
     });
+
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
+    });
 </script>
 @endsection

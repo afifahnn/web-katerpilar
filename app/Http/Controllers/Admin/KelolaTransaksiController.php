@@ -12,7 +12,9 @@ class KelolaTransaksiController extends Controller
 {
     public function kelolatransaksi()
     {
-        $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
+        $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')
+        ->paginate(30);
+        // ->get();
         return view('admin.admin-kelola-transaksi', compact('transaksi'));
     }
 
@@ -76,7 +78,9 @@ class KelolaTransaksiController extends Controller
                 }
             }
 
-            return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil ditambahkan.');
+            session()->flash('success', 'Transaksi berhasil ditambahkan.');
+
+            return redirect()->route('kelolatransaksi');
         }
         catch (\Exception $e) {
             \Log::error('Error saat menyimpan transaksi: ' . $e->getMessage());
@@ -183,7 +187,9 @@ class KelolaTransaksiController extends Controller
             }
         }
 
-        return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil diperbarui.');
+        session()->flash('success', 'Transaksi berhasil diperbarui.');
+
+        return redirect()->route('kelolatransaksi');
     }
 
     // DELETE TRANSAKSI

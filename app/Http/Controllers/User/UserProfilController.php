@@ -48,7 +48,8 @@ class UserProfilController extends Controller
 
         $customer->save();
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('user.profil')->with('success', 'Profil berhasil diperbarui.');
+        session()->flash('success', 'Profil berhasil diperbarui.');
+
+        return redirect()->route('user.profil');
     }
 }

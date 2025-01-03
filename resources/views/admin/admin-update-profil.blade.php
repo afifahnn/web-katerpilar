@@ -10,7 +10,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Edit Profil Admin</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -33,7 +33,7 @@
                 <div class="grid-container">
                     <div class="input-profil">
                         <div class="data-profil">Nama</div>
-                        <input value="{{ $admin->nama_admin }}" name="nama_admin" placeholder="Nama"></input>
+                        <input value="{{ $admin->nama_admin }}" name="nama_admin" placeholder="Nama" required></input>
                     </div>
                     <div class="input-profil">
                         <div class="data-profil">Nomor Telepon</div>
@@ -76,12 +76,12 @@
                         <div class="input-profil">
                             <div class="data-profil">Jenis Pembayaran</div>
                             <div style="margin-bottom: 3px">*jenis pembayaran untuk informasi customer</div>
-                            <input value="{{ $admin->jenis_rekening }}" name="jenis_rekening" placeholder="Jenis Pembayaran"></input>
+                            <input value="{{ $admin->jenis_rekening }}" name="jenis_rekening" placeholder="Jenis Pembayaran" required></input>
                         </div>
                         <div class="input-profil">
                             <div class="data-profil">Nomor Rekening</div>
                             <div style="margin-bottom: 3px">*nomor rekening untuk informasi customer</div>
-                            <input value="{{ $admin->no_rekening }}" name="no_rekening" placeholder="Nomor Rekening"></input>
+                            <input value="{{ $admin->no_rekening }}" name="no_rekening" placeholder="Nomor Rekening" required></input>
                         </div>
                     </div>
                 </div>
@@ -111,6 +111,46 @@
         const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
         confirmPasswordInput.type = type;
         confirmTogglePassword.classList.toggle('fa-eye');
+    });
+
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
     });
 </script>
 @endsection

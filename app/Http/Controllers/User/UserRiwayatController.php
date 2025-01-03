@@ -14,10 +14,15 @@ class UserRiwayatController extends Controller
     {
         $user = Auth::guard('customer')->user();
 
+        if (!$user) {
+            return redirect()->route('login')->with('alert', 'Silakan login terlebih dahulu');
+        }
+
         $transaksi = Transaksi::with('customer')
             ->where('customer_id', $user->id)
             ->orderBy('tgl_sewa', 'asc')
-            ->get();
+            ->paginate(8);
+            // ->get();
         return view('user.user-riwayat', compact('transaksi'));
     }
 

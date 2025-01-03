@@ -9,7 +9,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Kelola Data Customer</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -63,29 +63,29 @@
                             <td colspan="10" class="no-transactions">Belum ada data yang ditambahkan</td>
                         </tr>
                     @else
-                        @foreach($customer as $index => $customer)
+                        @foreach($customer as $index => $customers)
                         <tr class="data-row">
-                            <td class="col-number">{{ $loop->iteration }}.</td>
-                            <td>{{ $customer->nama_customer}}</td>
-                            <td>{{ $customer->alamat_customer}}</td>
-                            <td>{{ $customer->telp_customer}}</td>
+                            <td class="col-number">{{ ($customer->currentPage() - 1) * $customer->perPage() + $loop->iteration }}.</td>
+                            <td>{{ $customers->nama_customer}}</td>
+                            <td>{{ $customers->alamat_customer}}</td>
+                            <td>{{ $customers->telp_customer}}</td>
                             <td>
-                                @if($customer->transaksi->isEmpty())
+                                @if($customers->transaksi->isEmpty())
                                     0 kali
                                 @else
-                                    {{ $customer->transaksi->count() }} kali
+                                    {{ $customers->transaksi->count() }} kali
                                 @endif
                             </td>
                             <td>
                                 <div class="btn-aksi">
-                                    <form action="{{ route('admin.kelola-customer.delete', $customer->id) }}" method="post">
+                                    <form action="{{ route('admin.kelola-customer.delete', $customers->id) }}" method="post" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-hapus" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                        <button type="submit" class="btn-hapus">
                                             <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
                                         </button>
                                     </form>
-                                    <a href="{{ route('admin.kelola-customer.edit', $customer->id) }}">
+                                    <a href="{{ route('admin.kelola-customer.edit', $customers->id) }}">
                                         <button type="submit" class="btn-edit">
                                             <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
                                         </button>
@@ -99,6 +99,11 @@
                     @endif
                 </tbody>
             </table>
+        </div>
+
+        {{-- pagination --}}
+        <div class="pagination">
+            {{ $customer->links() }}
         </div>
     </div>
 
@@ -169,5 +174,79 @@
         if (buttonId === 'sort-name') sortOrderName = sortOrder;
         if (buttonId === 'sort-address') sortOrderAddress = sortOrder;
     }
+
+    // ALERT DELETE
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.delete-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+
+    // SWAL
+    @if(session('success'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'error',
+            title: '{{ session('error') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    @endif
 </script>
 @endsection

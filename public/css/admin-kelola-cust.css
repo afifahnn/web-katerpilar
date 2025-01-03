@@ -71,7 +71,6 @@
 .search-bar .input-group:focus-within {
     box-shadow: 0 0 3px #FFDE4D;
     outline: none;
-    /* border-color: orange; */
 }
 
 .btn-add {
@@ -170,4 +169,28 @@ a {
 .no-transactions {
     font-size: 14px;
     text-align: center;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination .page-item .page-link {
+    background-color: #FFFFFF;
+    border: 1px solid #D3D3D3;
+    border-radius: 3px;
+    color: #000;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #fff8dd;
+    color: #000;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #FFC700;
+    color: #000;
 }

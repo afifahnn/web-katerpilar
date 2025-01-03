@@ -12,10 +12,9 @@ class KelolaUangController extends Controller
 {
     public function kelolakeuangan()
     {
-        $keuangan = Keuangan::with('transaksi')->get();
-
-        // dd($keuangan);
-
+        $keuangan = Keuangan::with('transaksi')
+        ->paginate(10);
+        // ->get();
         return view('admin.admin-kelola-uang', compact('keuangan'));
     }
 
@@ -38,7 +37,9 @@ class KelolaUangController extends Controller
 
         Keuangan::create($request->all());
 
-        return redirect()->route('kelolakeuangan')->with('success', 'Keuangan berhasil ditambahkan.');
+        session()->flash('success', 'Pengeluaran berhasil ditambahkan.');
+
+        return redirect()->route('kelolakeuangan');
     }
 
     // EDIT KEUANGAN
@@ -61,7 +62,9 @@ class KelolaUangController extends Controller
         $keuangan = Keuangan::findOrFail($id);
         $keuangan->update($request->all());
 
-        return redirect()->route('kelolakeuangan')->with('success', 'Keuangan berhasil diperbarui.');
+        session()->flash('success', 'Pengeluaran berhasil diperbarui.');
+
+        return redirect()->route('kelolakeuangan');
     }
 
     // DELETE KEUANGAN
@@ -107,7 +110,6 @@ class KelolaUangController extends Controller
         ->orderBy('tanggal', 'ASC')
         ->get();
 
-        // Initialize variables for laba and omzet calculations
         $currentLaba = 0;
         $currentOmzet = 0;
         $totalMasuk = 0;

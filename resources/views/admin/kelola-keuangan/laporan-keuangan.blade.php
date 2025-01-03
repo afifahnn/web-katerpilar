@@ -11,7 +11,7 @@
     <div class="kelola-cust-top">
         <div class="kelola-cust-judul">Laporan Keuangan</div>
         <div class="btn-logout">
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST" class="logout-form">
                 @csrf
                 <a class="nav-link"><button type="submit">Logout</button></a>
             </form>
@@ -105,9 +105,37 @@
     </div>
 
     {{-- Cetak Laporan Keuangan --}}
-    <div class="btn-cetak">
-        <button>Cetak</button>
-    </div>
+    <a href="{{ route('cetakpdf', ['tanggal_awal' => request('tanggal_awal'), 'tanggal_akhir' => request('tanggal_akhir')]) }}">
+        <div class="btn-cetak">
+            <button>Cetak</button>
+        </div>
+    </a>
 
 </div>
+
+<script>
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endsection

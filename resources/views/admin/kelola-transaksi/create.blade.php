@@ -11,7 +11,7 @@
         <div class="kelola-cust-top">
             <div class="kelola-cust-judul">Tambah Data Transaksi</div>
             <div class="btn-logout">
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
                     <a class="nav-link"><button type="submit">Logout</button></a>
                 </form>
@@ -41,7 +41,7 @@
                 <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="telp_customer">Nomor Telepon</div>
-                        <input type="text" id="telp_customer" name="telp_customer" placeholder="e.g. 081234567890" required>
+                        <input type="number" id="telp_customer" name="telp_customer" placeholder="e.g. 081234567890" required>
                     </div>
                     <div class="input-container">
                         <div class="content" for="alamat_customer">Alamat</div>
@@ -298,10 +298,18 @@
         }
 
         document.querySelector('#addData').addEventListener('click', function (e) {
-            // Cek apakah ada barang yang ditambahkan
             if (Object.keys(selectedItems).length === 0) {
-                alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
-                e.preventDefault(); // Mencegah form dikirim
+                Swal.fire({
+                    title: 'Peringatan!',
+                    text: 'Tambahkan minimal satu barang sebelum menyimpan transaksi!',
+                    icon: 'warning',
+                    position: 'bottom-end',
+                    toast: true,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: false,
+                });
+                e.preventDefault();
             }
         });
 
@@ -369,5 +377,45 @@
             // Update hidden input dengan angka asli
             updateRawValue(totalHarga);
         }
+
+        // SWAL REQUIRED
+        document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+            input.addEventListener('invalid', function () {
+                Swal.fire({
+                    position: 'bottom-end',
+                    title: 'Peringatan!',
+                    text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                    icon: 'warning',
+                    toast: true,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: false,
+                });
+            });
+        });
+
+        // ALERT LOGOUT
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    var formElement = this;
+
+                    Swal.fire({
+                        text: "Apakah anda yakin akan Logout?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formElement.submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 @endsection

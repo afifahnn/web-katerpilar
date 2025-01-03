@@ -12,7 +12,7 @@
     <div class="kelola-cust-top">
         <div class="kelola-cust-judul">Edit Data Transaksi</div>
         <div class="btn-logout">
-            <form action="{{ route('logout') }}" method="POST">
+            <form action="{{ route('logout') }}" method="POST" class="logout-form">
                 @csrf
                 <a class="nav-link"><button type="submit">Logout</button></a>
             </form>
@@ -33,7 +33,7 @@
             @method('PUT')
             <div class="input-data">
                 <div class="content" for="nama_customer">Nama</div>
-                <input class="form-control" name="nama_customer" list="datalistOptions" id="nama_customer" value="{{ $transaksi->customer->nama_customer }}">
+                <input class="form-control" name="nama_customer" list="datalistOptions" id="nama_customer" value="{{ $transaksi->customer->nama_customer }}" placeholder="Nama" required>
                 <datalist id="datalistOptions">
                     @foreach ($customer as $index => $customer )
                         <option value="{{ $customer->nama_customer }}" data-telp="{{ $customer->telp_customer }}" data-alamat="{{ $customer->alamat_customer }}">
@@ -43,11 +43,11 @@
             <div class="grid-container">
                 <div class="input-container">
                     <div class="content" for="telp_customer">Nomor Telepon</div>
-                    <input type="text" name="telp_customer" id="telp_customer" value="{{ $transaksi->customer->telp_customer }}" required>
+                    <input type="text" name="telp_customer" id="telp_customer" value="{{ $transaksi->customer->telp_customer }}" placeholder="e.g 081234567890" required>
                 </div>
                 <div class="input-container">
                     <div class="content" for="alamat_customer">Alamat</div>
-                    <input type="text" name="alamat_customer" id="alamat_customer" value="{{ $transaksi->customer->alamat_customer }}" required>
+                    <input type="text" name="alamat_customer" id="alamat_customer" value="{{ $transaksi->customer->alamat_customer }}" placeholder="Alamat" required>
                 </div>
             </div>
             <div class="grid-container">
@@ -83,9 +83,6 @@
                 <div class="input-group">
                     <select class="form-select" id="inputGroupSelect04">
                     <option value="" disabled selected>Pilih...</option>
-                    {{-- @php
-                        $isSelected = in_array($transaksi->nama_barang, array_column($data_sewa, 'barang'));
-                    @endphp --}}
                     @foreach ($barang as $index => $item)
                         @if ($item->stok_barang == 0)
                             <option value="{{ $item->nama_barang }}"
@@ -115,12 +112,7 @@
                 <input type="hidden" name="barang_sewa[]" id="barangSewaInput">
                 <input type="hidden" name="jumlah_sewa[]" id="jumlahSewaInput">
                 <div id="selectedItems" style="margin-top: 10px;">
-                    {{-- @foreach ($data_sewa as $item)
-                        <div class="selected-item" data-value="{{ $item['barang'] }}">
-                            <span>{{ $item['barang'] }} (Jumlah: {{ $item['jumlah'] }})</span>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="removeSelectedItem('{{ $item['barang'] }}')">Hapus</button>
-                        </div>
-                    @endforeach --}}
+                    {{-- barang yang dipilih muncul di sini --}}
                 </div>
             </div>
 
@@ -382,9 +374,17 @@
     });
 
     document.querySelector('#addData').addEventListener('click', function (e) {
-        console.log('Isi selectedItems:', selectedItems);
         if (Object.keys(selectedItems).length === 0) {
-            alert('Tambahkan minimal satu barang sebelum menyimpan transaksi!');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Tambahkan minimal satu barang sebelum menyimpan transaksi!',
+                icon: 'warning',
+                position: 'bottom-end',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
             e.preventDefault();
         }
     });
@@ -424,46 +424,17 @@
             totalHarga += data.price * data.quantity;
         }
 
-        // barangSewaInput.value = barangSewa;
-        // jumlahSewaInput.value = jumlahSewa;
-
         barangSewaInput.value = barangSewa.join(',');
         jumlahSewaInput.value = jumlahSewa.join(',');
 
         const totalBayarInput = document.getElementById('totalBayar');
         totalBayarInput.value = formatRupiah(totalHarga);
 
-        // Log untuk debug
         console.log("Total Harga: ", totalHarga);
         console.log("Total Bayar Value: ", totalBayarInput.value);
 
-        // Update hidden input dengan angka asli
-        // const totalBayarRawInput = document.getElementById('totalBayarRaw');
-        // totalBayarRawInput.value = totalHarga;
-
-        // Update hidden input dengan angka asli
         updateRawValue(totalHarga);
     }
-
-    // VIEW BARANG EDIT
-    // remove function
-    // function removeSelectedItem(barang) {
-    //     // Hapus elemen dari tampilan
-    //     document.querySelector(`.selected-item[data-value="${barang}"]`).remove();
-
-    //     // Perbarui input tersembunyi untuk barang_sewa dan jumlah_sewa
-    //     const barangInput = document.getElementById('barangSewaInput').value.split(',');
-    //     const jumlahInput = document.getElementById('jumlahSewaInput').value.split(',');
-
-    //     const index = barangInput.indexOf(barang);
-    //     if (index > -1) {
-    //         barangInput.splice(index, 1);
-    //         jumlahInput.splice(index, 1);
-    //     }
-
-    //     document.getElementById('barangSewaInput').value = barangInput.join(',');
-    //     document.getElementById('jumlahSewaInput').value = jumlahInput.join(',');
-    // }
 
     // Bukti bayar muncul saat non-cash
     document.addEventListener('DOMContentLoaded', function () {
@@ -485,5 +456,44 @@
         opsiBayarSelect.addEventListener('change', toggleFields);
     });
 
+    // SWAL REQUIRED
+    document.querySelectorAll('form input[required], form select[required]').forEach(function (input) {
+        input.addEventListener('invalid', function () {
+            Swal.fire({
+                position: 'bottom-end',
+                title: 'Peringatan!',
+                text: 'Semua field yang wajib diisi harus diisi terlebih dahulu!',
+                icon: 'warning',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: false,
+            });
+        });
+    });
+
+// ALERT LOGOUT
+document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.logout-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var formElement = this;
+
+                Swal.fire({
+                    text: "Apakah anda yakin akan Logout?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        formElement.submit();
+                    }
+                });
+            });
+        });
+    });
 </script>
 @endsection

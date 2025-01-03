@@ -24,8 +24,6 @@ class UserRentalController extends Controller
     public function storeRental(Request $request)
     {
         try {
-            // dd($request->all());
-
             $request->validate([
                 'nama_customer' => 'required',
                 'alamat_customer' => 'required',
@@ -79,9 +77,9 @@ class UserRentalController extends Controller
                 }
             }
 
-            return redirect()->route('rental')
-                // ->with('show_modal', $request->opsi_bayar === 'Non-Cash')
-                ->with('success', 'Transaksi berhasil ditambahkan.');
+            session()->flash('success', 'Pesanan berhasil ditambahkan.');
+
+            return redirect()->route('user.rental');
         }
         catch (\Exception $e) {
             \Log::error('Error saat menyimpan transaksi: ' . $e->getMessage());
