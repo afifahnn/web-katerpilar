@@ -45,7 +45,7 @@
         </div>
 
         <hr>
-        <div class="copyright">&copy; 2024 Katerpilar Outdoor Gear & Rental</div>
+        <div class="copyright">&copy; 2025 Katerpilar Outdoor Gear & Rental</div>
     </div>
 </body>
 </html>

@@ -20,7 +20,7 @@
     </div>
 
     <div class="footer">
-        © Katerpilar Outdoor Gear & Rental 2025
+        © 2025 Katerpilar Outdoor Gear & Rental
     </div>
 </body>
 </html>

@@ -12,7 +12,8 @@ class EnsureAuthenticate
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::guard('admin')->check() && !Auth::guard('customer')->check()) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+            session()->flash('error', 'Silahkan login terlebih dahulu!');
+            return redirect('/login');
         }
 
         return $next($request);
