@@ -28,15 +28,19 @@
                         <li class="nav-item me-3 {{ Request::is('/') ? 'active' : '' }}">
                             <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Home</a>
                         </li>
-                        <li class="nav-item me-3 {{ Request::is('rental') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ url('/rental') }}">Pesan</a>
-                        </li>
-                        <li class="nav-item me-3 {{ Request::is('riwayat') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ url('/riwayat') }}">Riwayat</a>
-                        </li>
-                        <li class="nav-item me-3 {{ Request::is('profil') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ url('/profil') }}">Profil</a>
-                        </li>
+
+                        @auth
+                            <li class="nav-item me-3 {{ Request::is('rental') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ url('/rental') }}">Pesan</a>
+                            </li>
+                            <li class="nav-item me-3 {{ Request::is('riwayat') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ url('/riwayat') }}">Riwayat</a>
+                            </li>
+                            <li class="nav-item me-3 {{ Request::is('profil') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ url('/profil') }}">Profil</a>
+                            </li>
+                        @endauth
+
                         <li class="nav-item me-3" id="btn-logout">
                             @auth
                                 <form action="{{ route('logout') }}" method="POST" class="logout-form">

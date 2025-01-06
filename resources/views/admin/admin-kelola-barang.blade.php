@@ -86,7 +86,7 @@
                                 </td>
                                 <td>{{ $barangs->jenis }}</td>
                                 <td>{{ $barangs->nama_barang }}</td>
-                                <td style="text-align: center">{{ $barangs->stok_barang }}</td>
+                                <td style="text-align: center">{{ max(0, $barangs->stok_barang) }}</td>
                                 <td>Rp {{ number_format($barangs->harga_sewa1, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barangs->harga_sewa2, 0, ',', '.') }}</td>
                                 <td>Rp {{ number_format($barangs->harga_sewa3, 0, ',', '.') }}</td>
