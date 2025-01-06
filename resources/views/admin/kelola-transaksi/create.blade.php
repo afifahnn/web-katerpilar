@@ -88,14 +88,17 @@
                         <select class="form-select" id="inputGroupSelect04">
                         <option value="" disabled selected>Pilih...</option>
                         @foreach ($barang as $index => $item)
-                            @if ($item->stok_barang == 0)
+                            @php
+                                $stokTampil = max(0, $item->stok_barang);
+                            @endphp
+                            @if ($item->stok_barang <= 0)
                                 <option value="{{ $item->nama_barang }}"
                                         data-harga1="{{ $item->harga_sewa1 }}"
                                         data-harga2="{{ $item->harga_sewa2 }}"
                                         data-harga3="{{ $item->harga_sewa3 }}"
                                         data-kelipatan="{{ $item->kelipatan }}"
-                                        data-stok="{{ $item->stok_barang }}" disabled>
-                                    {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
+                                        data-stok="{{ $stokTampil }}" disabled>
+                                    {{ $item->nama_barang }} (Stok: {{ $stokTampil }})
                                 </option>
                             @else
                                 <option value="{{ $item->nama_barang }}"
@@ -103,8 +106,8 @@
                                         data-harga2="{{ $item->harga_sewa2 }}"
                                         data-harga3="{{ $item->harga_sewa3 }}"
                                         data-kelipatan="{{ $item->kelipatan }}"
-                                        data-stok="{{ $item->stok_barang }}">
-                                    {{ $item->nama_barang }} (Stok: {{ $item->stok_barang }})
+                                        data-stok="{{ $stokTampil }}">
+                                    {{ $item->nama_barang }} (Stok: {{ $stokTampil }})
                                 </option>
                             @endif
                         @endforeach

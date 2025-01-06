@@ -150,27 +150,42 @@
         });
 
         // ALERT LOGOUT
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.logout-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                var formElement = this;
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    var formElement = this;
 
-                Swal.fire({
-                    text: "Apakah anda yakin akan Logout?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        formElement.submit();
-                    }
+                    Swal.fire({
+                        text: "Apakah anda yakin akan Logout?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formElement.submit();
+                        }
+                    });
                 });
             });
         });
-    });
+
+        // STOK BARANG
+        const stokBarangInput = document.getElementById('stok_barang');
+
+        stokBarangInput.addEventListener('input', function () {
+            if (this.value < 0) {
+                this.value = '';
+            }
+        });
+
+        stokBarangInput.addEventListener('keydown', function (e) {
+            if (e.key === '-' || e.key === 'e') {
+                e.preventDefault();
+            }
+        });
     </script>
 @endsection

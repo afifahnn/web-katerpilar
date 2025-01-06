@@ -41,7 +41,7 @@
                     </div>
                     <div class="input-container">
                         <div class="content" for="stok_barang">Stok Barang</div>
-                        <input type="number" name="stok_barang" id="stok_barang" value="{{ $barang->stok_barang }}" placeholder="Stok Barang" required>
+                        <input type="number" name="stok_barang" id="stok_barang" value="{{ max(0, $barang->stok_barang) }}" placeholder="Stok Barang" required>
                     </div>
                 </div>
                 <div class="input-data">
@@ -194,6 +194,21 @@
                 });
             });
         });
+    });
+
+    // STOK BARANG
+    const stokBarangInput = document.getElementById('stok_barang');
+
+    stokBarangInput.addEventListener('input', function () {
+        if (this.value < 0) {
+            this.value = '';
+        }
+    });
+
+    stokBarangInput.addEventListener('keydown', function (e) {
+        if (e.key === '-' || e.key === 'e') {
+            e.preventDefault();
+        }
     });
     </script>
 @endsection

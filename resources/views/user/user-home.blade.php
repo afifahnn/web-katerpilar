@@ -41,7 +41,7 @@
                             <div class="name">{{ $barang->nama_barang }}</div>
                             <div class="stok">
                                 Stok :
-                                @if($barang->stok_barang == 0)
+                                @if($barang->stok_barang <= 0)
                                     <span style="color: red;">Habis</span>
                                 @else
                                     {{ $barang->stok_barang }}
@@ -64,7 +64,7 @@
                                     <div class="nama-modal">{{ $barang->nama_barang }}</div>
                                     <div class="stok-modal">
                                         Stok Barang :
-                                        @if($barang->stok_barang == 0)
+                                        @if($barang->stok_barang <= 0)
                                             <span style="color: red;">Habis</span>
                                         @else
                                             {{ $barang->stok_barang }} item
