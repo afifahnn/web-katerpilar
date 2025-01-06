@@ -22,7 +22,7 @@ class KelolaTransaksiController extends Controller
     public function createTransaksi()
     {
         $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
-        $barang = Barang::all();
+        $barang = Barang::orderBy('nama_barang', 'asc')->get();
         $customer = Customer::all();
         return view('admin.kelola-transaksi.create', ['barang' => $barang, 'transaksi' => $transaksi, 'customer' => $customer]);
     }
@@ -92,7 +92,7 @@ class KelolaTransaksiController extends Controller
     public function editTransaksi($id)
     {
         $transaksi = Transaksi::with('customer')->findOrFail($id);
-        $barang = Barang::all();
+        $barang = Barang::orderBy('nama_barang', 'asc')->get();
         $customer = Customer::all();
 
         $barang_sewa = json_decode($transaksi->barang_sewa, true);

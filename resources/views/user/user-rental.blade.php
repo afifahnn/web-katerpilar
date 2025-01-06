@@ -202,9 +202,9 @@
             hargaPerItem = hargaSewa3;
         }
         else {
-            const extraDays = totalHariNumber - 3; // Hari kelebihan di atas 3
-            const additionalCost = extraDays * kelipatan; // Gunakan kelipatan dari barang
-            hargaPerItem = hargaSewa3 + additionalCost; // Harga hari ke-3 ditambah tambahan
+            const extraDays = totalHariNumber - 3;
+            const additionalCost = extraDays * kelipatan;
+            hargaPerItem = hargaSewa3 + additionalCost;
         }
 
         // Jika barang sudah ada, tambahkan jumlahnya
