@@ -14,7 +14,7 @@ class UserRentalController extends Controller
     public function userRental()
     {
         $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')->get();
-        $barang = Barang::all();
+        $barang = Barang::orderBy('nama_barang', 'asc')->get();
         $customer = Customer::all();
         $admin = Admin::first();
         return view('user.user-rental', ['barang' => $barang, 'transaksi' => $transaksi, 'customer' => $customer, 'admin' => $admin]);
