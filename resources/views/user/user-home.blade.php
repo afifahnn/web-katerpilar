@@ -22,71 +22,88 @@
         </div>
     </div>
 
+    {{-- SEARCH BAR --}}
+    <div class="search-bar">
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text" id="addon-wrapping">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="search-input" class="form-control" placeholder="Search . . ." aria-label="Username" aria-describedby="addon-wrapping">
+        </div>
+    </div>
+
+    <div id="not-found" class="text-center" style="display: none; margin-top: 20px; font-weight: 600; color: rgb(68, 68, 68);">
+        Pencarian tidak ditemukan.
+    </div>
+
     {{-- KATALOG SECTION --}}
     <div class="katalog-section">
         @foreach($barang->groupBy('jenis')->sortKeys() as $jenis => $barangs)
-        <div class="jenis-barang">
-            {{ $jenis }}
-        </div>
+        <div class="jenis-wrapper">
+            <div class="jenis-barang">
+                {{ $jenis }}
+            </div>
 
-        <div class="carousel-section">
-            <div class="scroll-container">
-                @foreach($barangs as $barang)
-                <button type="button" class="btn p-0 shadow-none" data-bs-toggle="modal" data-bs-target="#modalBarang{{ $barang->id }}">
-                    <div class="card-container">
-                        <div class="pic-barang">
-                            <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="barang">
-                        </div>
-                        <div class="product">
-                            <div class="name">{{ $barang->nama_barang }}</div>
-                            <div class="stok">
-                                Stok :
-                                @if($barang->stok_barang <= 0)
-                                    <span style="color: red;">Habis</span>
-                                @else
-                                    {{ $barang->stok_barang }}
-                                @endif
+            <div class="carousel-section">
+                <div class="scroll-container">
+                    @foreach($barangs as $barang)
+                    <button type="button" class="btn p-0 shadow-none" data-bs-toggle="modal" data-bs-target="#modalBarang{{ $barang->id }}">
+                        <div class="card-container" data-name="{{ strtolower($barang->nama_barang) }}">
+                            <div class="pic-barang">
+                                <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="barang">
                             </div>
-                        </div>
-                    </div>
-                </button>
-
-                <div class="modal fade" id="modalBarang{{ $barang->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Barang</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" id="content-modal">
-                                <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="Foto produk">
-                                <div class="judul-modal">
-                                    <div class="nama-modal">{{ $barang->nama_barang }}</div>
-                                    <div class="stok-modal">
-                                        Stok Barang :
-                                        @if($barang->stok_barang <= 0)
-                                            <span style="color: red;">Habis</span>
-                                        @else
-                                            {{ $barang->stok_barang }} item
-                                        @endif
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="judul-desk">Deskripsi :</div>
-                                <div class="isi-modal">
-                                    <div class="desk-modal">{!! nl2br(e($barang->deskripsi_barang)) !!}</div>
-                                    <div class="harga-sewa">Harga Sewa :</div>
-                                    <div class="harga-modal">
-                                        <div>1 hari : Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</div>
-                                        <div>2 hari : Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</div>
-                                        <div>3 hari : Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</div>
-                                    </div>
+                            <div class="product">
+                                <div class="name">{{ $barang->nama_barang }}</div>
+                                <div class="stok">
+                                    Stok :
+                                    @if($barang->stok_barang <= 0)
+                                        <span style="color: red;">Habis</span>
+                                    @else
+                                        {{ $barang->stok_barang }}
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                    </button>
+
+                    {{-- MODAL --}}
+                    <div class="modal fade" id="modalBarang{{ $barang->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Barang</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" id="content-modal">
+                                    <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="Foto produk">
+                                    <div class="judul-modal">
+                                        <div class="nama-modal">{{ $barang->nama_barang }}</div>
+                                        <div class="stok-modal">
+                                            Stok Barang :
+                                            @if($barang->stok_barang <= 0)
+                                                <span style="color: red;">Habis</span>
+                                            @else
+                                                {{ $barang->stok_barang }} item
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="judul-desk">Deskripsi :</div>
+                                    <div class="isi-modal">
+                                        <div class="desk-modal">{!! nl2br(e($barang->deskripsi_barang)) !!}</div>
+                                        <div class="harga-sewa">Harga Sewa :</div>
+                                        <div class="harga-modal">
+                                            <div>1 hari : Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</div>
+                                            <div>2 hari : Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</div>
+                                            <div>3 hari : Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </div>
         @endforeach
@@ -111,15 +128,41 @@
 
 <!-- JavaScript -->
 <script>
-    function scrollLeft() {
-        const container = document.querySelector('.scroll-container');
-        container.scrollBy({ left: -80, behavior: 'smooth' });
-    }
+    // SEARCH
+    document.getElementById('search-input').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const jenisWrappers = document.querySelectorAll('.jenis-wrapper');
+        let totalMatches = 0;
 
-    function scrollRight() {
-        const container = document.querySelector('.scroll-container');
-        container.scrollBy({ left: 80, behavior: 'smooth' });
-    }
+        jenisWrappers.forEach(wrapper => {
+            const items = wrapper.querySelectorAll('.card-container');
+            let hasMatch = false;
+
+            items.forEach(item => {
+                const name = item.getAttribute('data-name');
+                if (name.includes(query)) {
+                    item.parentElement.style.display = '';
+                    hasMatch = true;
+                    totalMatches++;
+                } else {
+                    item.parentElement.style.display = 'none';
+                }
+            });
+
+            if (hasMatch) {
+                wrapper.style.display = '';
+            } else {
+                wrapper.style.display = 'none';
+            }
+        });
+
+        const notFoundMessage = document.getElementById('not-found');
+        if (totalMatches === 0) {
+            notFoundMessage.style.display = 'block';
+        } else {
+            notFoundMessage.style.display = 'none';
+        }
+    });
 </script>
 
 @endsection
