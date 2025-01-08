@@ -63,6 +63,7 @@ class AuthController extends Controller
             'telp_customer' => 'required|numeric',
         ], [
             'required' => ':attribute wajib diisi.',
+            'username.unique' => 'Username sudah digunakan, silakan pilih username lain.',
             'password.min' => 'Password harus minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'telp_customer.numeric' => 'Nomor telepon harus berupa angka.',

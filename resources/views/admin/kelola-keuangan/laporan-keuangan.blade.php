@@ -42,7 +42,7 @@
     <div class="filter-date">
         <div class="judul-filter">Laporan Keuangan per Periode</div>
         <div class="top-btn">
-            <form method="GET" action="{{ route('laporankeuangan') }}">
+            <form id="filterForm" method="GET" action="{{ route('laporankeuangan') }}">
                 <div class="display-tanggal">
                     <div class="input-tgl">
                         <div class="content-tgl">Tanggal Awal</div>
@@ -66,51 +66,56 @@
     </div>
 
     {{-- tabel --}}
-    <div class="container-tabel">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Tanggal</th>
-                    <th class="col-deskripsi">Keterangan</th>
-                    <th>Masuk</th>
-                    <th>Keluar</th>
-                    <th>Laba</th>
-                    <th>Omzet</th>
-                </tr>
-            </thead>
-            <tbody style="text-align: center">
-                @foreach ($laporanKeuangan as $item)
-                    <tr>
-                        <td style="text-align: center">{{ $loop->iteration }}.</td>
-                        <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                        <td class="col-deskripsi">{{ $item->deskripsi }}</td>
-                        <td>{{ $item->masuk ? 'Rp ' . number_format($item->masuk, 0, ',', '.') : '-' }}</td>
-                        <td>{{ $item->keluar ? 'Rp ' . number_format($item->keluar, 0, ',', '.') : '-' }}</td>
-                        <td>{{ $item->laba ? 'Rp ' . number_format($item->laba, 0, ',', '.') : '-' }}</td>
-                        <td>{{ $item->omzet ? 'Rp ' . number_format($item->omzet, 0, ',', '.') : '-' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-            <thead class="th-total">
-                <tr>
-                    <th colspan="3">Total</th>
-                    <th>Rp {{ number_format($totalMasuk, 0, ',', '.') }}</th>
-                    <th>Rp {{ number_format($totalKeluar, 0, ',', '.') }}</th>
-                    <th>Rp {{ number_format($totalLaba, 0, ',', '.') }}</th>
-                    <th>Rp {{ number_format($totalOmzet, 0, ',', '.') }}</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-
-    {{-- Cetak Laporan Keuangan --}}
-    <a href="{{ route('cetakpdf', ['tanggal_awal' => request('tanggal_awal'), 'tanggal_akhir' => request('tanggal_akhir')]) }}">
-        <div class="btn-cetak">
-            <button>Cetak</button>
+    @if ($isEmpty)
+        <div class="alert alert-warning">
+            Belum ada transaksi yang terjadi pada tanggal tersebut.
         </div>
-    </a>
+    @else
+        <div class="container-tabel">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Tanggal</th>
+                        <th class="col-deskripsi">Keterangan</th>
+                        <th>Masuk</th>
+                        <th>Keluar</th>
+                        <th>Laba</th>
+                        <th>Omzet</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center">
+                    @foreach ($laporanKeuangan as $item)
+                        <tr>
+                            <td style="text-align: center">{{ $loop->iteration }}.</td>
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
+                            <td class="col-deskripsi">{{ $item->deskripsi }}</td>
+                            <td>{{ $item->masuk ? 'Rp ' . number_format($item->masuk, 0, ',', '.') : '-' }}</td>
+                            <td>{{ $item->keluar ? 'Rp ' . number_format($item->keluar, 0, ',', '.') : '-' }}</td>
+                            <td>{{ $item->laba ? 'Rp ' . number_format($item->laba, 0, ',', '.') : '-' }}</td>
+                            <td>{{ $item->omzet ? 'Rp ' . number_format($item->omzet, 0, ',', '.') : '-' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <thead class="th-total">
+                    <tr>
+                        <th colspan="3">Total</th>
+                        <th>Rp {{ number_format($totalMasuk, 0, ',', '.') }}</th>
+                        <th>Rp {{ number_format($totalKeluar, 0, ',', '.') }}</th>
+                        <th>Rp {{ number_format($totalLaba, 0, ',', '.') }}</th>
+                        <th>Rp {{ number_format($totalOmzet, 0, ',', '.') }}</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
 
+        {{-- Cetak Laporan Keuangan --}}
+        <a href="{{ route('cetakpdf', ['tanggal_awal' => request('tanggal_awal'), 'tanggal_akhir' => request('tanggal_akhir')]) }}">
+            <div class="btn-cetak">
+                <button>Cetak</button>
+            </div>
+        </a>
+    @endif
 </div>
 
 <script>
@@ -136,6 +141,22 @@
                 });
             });
         });
+    });
+
+    // ALERT TANGGAL CETAK
+    document.getElementById('filterForm').addEventListener('submit', function (event) {
+        const tanggalAwal = document.getElementById('tanggalAwal').value;
+        const tanggalAkhir = document.getElementById('tanggalAkhir').value;
+
+        if (tanggalAkhir && tanggalAwal && tanggalAkhir < tanggalAwal) {
+            event.preventDefault();
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Tanggal Tidak Valid',
+                text: 'Tanggal Akhir tidak boleh lebih kecil dari Tanggal Awal.',
+            });
+        }
     });
 </script>
 @endsection

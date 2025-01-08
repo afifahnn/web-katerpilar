@@ -475,8 +475,8 @@
         });
     });
 
-// ALERT LOGOUT
-document.addEventListener('DOMContentLoaded', function () {
+    // ALERT LOGOUT
+    document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.logout-form').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 event.preventDefault();

@@ -43,6 +43,8 @@ class KelolaTransaksiController extends Controller
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
                 'opsi_bayar' => 'required|in:Cash,Non-Cash'
+            ], [
+                'tgl_kembali.after' => 'Tanggal kembali harus lebih besar dari tanggal sewa.',
             ]);
 
             // Buat data customer
@@ -123,6 +125,8 @@ class KelolaTransaksiController extends Controller
             'jumlah_sewa' => 'required',
             'total_bayar' => 'required',
             'opsi_bayar' => 'required|in:Cash,Non-Cash'
+        ], [
+            'tgl_kembali.after' => 'Tanggal kembali harus lebih besar dari tanggal sewa.',
         ]);
 
         $transaksi = Transaksi::findOrFail($id);

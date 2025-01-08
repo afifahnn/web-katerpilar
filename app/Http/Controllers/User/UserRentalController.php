@@ -36,6 +36,11 @@ class UserRentalController extends Controller
                 'opsi_bayar' => 'required|in:Cash,Non-Cash',
                 'metode_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required' : 'nullable',
                 'bukti_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048' : 'nullable',
+            ], [
+                'bukti_bayar.mimes' => 'Bukti bayar harus berupa file dengan format: jpeg, png, jpg, gif, atau svg.',
+                'bukti_bayar.max' => 'Ukuran file bukti bayar tidak boleh lebih dari 2MB.',
+                'bukti_bayar.image' => 'Bukti bayar harus berupa gambar yang valid.',
+                'tgl_kembali.after' => 'Tanggal kembali harus lebih besar dari tanggal sewa.',
             ]);
 
             $fileImg = null;

@@ -148,14 +148,12 @@
             var telpCustomer = document.getElementById('telp_customer');
             var alamatCustomer = document.getElementById('alamat_customer');
 
-            // Reset the fields
             telpCustomer.value = '';
             alamatCustomer.value = '';
 
             // Cari option yang sesuai dengan nama yang dimasukkan
             datalistOptions.forEach(function(option) {
                 if (option.value === inputNama) {
-                    // Isi nomor telepon dan alamat
                     telpCustomer.value = option.getAttribute('data-telp');
                     alamatCustomer.value = option.getAttribute('data-alamat');
                 }
@@ -183,9 +181,9 @@
             if (kembaliDate < sewaDate) {
                 alert('Tanggal kembali tidak boleh sebelum tanggal sewa!');
                 this.value = '';
-                totalHari.value = ''; // Reset total hari
+                totalHari.value = '';
             } else {
-                calculateTotalHari(); // Hitung ulang total hari
+                calculateTotalHari();
             }
         });
 
@@ -420,5 +418,30 @@
                 });
             });
         });
+
+        // SWAL
+        @if(session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'error',
+                title: '{{ session('error') }}',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        @endif
     </script>
 @endsection

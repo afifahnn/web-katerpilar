@@ -139,7 +139,9 @@ class KelolaUangController extends Controller
         $totalLaba = $currentLaba;
         $totalOmzet = $currentOmzet;
 
-        return view('admin.kelola-keuangan.laporan-keuangan', compact('laporanKeuangan', 'totalMasuk', 'totalKeluar', 'totalLaba', 'totalOmzet'));
+        $isEmpty = $laporanKeuangan->isEmpty();
+
+        return view('admin.kelola-keuangan.laporan-keuangan', compact('laporanKeuangan', 'totalMasuk', 'totalKeluar', 'totalLaba', 'totalOmzet', 'isEmpty'));
     }
 
 }
