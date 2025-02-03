@@ -75,7 +75,6 @@ class KelolaBarangController extends Controller
 
         $request->validate([
             'gambar_barang' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // 'gambar_barang' => 'required',
             'nama_barang' => 'required',
             'stok_barang' => 'required|numeric',
             'harga_sewa1' => 'required|numeric',
@@ -101,11 +100,10 @@ class KelolaBarangController extends Controller
         ]);
 
         if ($request->hasFile('gambar_barang')) {
-            // Hapus file gambar lama jika ada
             if ($barang->gambar_barang) {
                 \Storage::delete('public/' . $barang->gambar_barang);
             }
-            // Simpan gambar baru
+
             $filePath = $request->file('gambar_barang')->store('images/barang', 'public');
             $barang->gambar_barang = $filePath;
             $barang->save();

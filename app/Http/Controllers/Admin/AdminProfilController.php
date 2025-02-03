@@ -24,7 +24,6 @@ class AdminProfilController extends Controller
     // UPDATE PROFIL ADMIN
     public function updateProfil(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nama_admin' => 'required',
             'username' => 'required',

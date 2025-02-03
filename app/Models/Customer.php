@@ -15,13 +15,13 @@ class Customer extends Authenticatable
     protected $fillable = ['username', 'password', 'nama_customer', 'alamat_customer', 'telp_customer'];
     protected $hidden = ['password', 'remember_token',];
 
-    // public function barang(): HasMany
-    // {
-    //     return $this->hasMany(Barang::class);
-    // }
-
     public function transaksi(): HasMany
     {
         return $this->hasMany(Transaksi::class, 'customer_id');
     }
+
+    // public function barang(): HasMany
+    // {
+    //     return $this->hasMany(Barang::class);
+    // }
 }

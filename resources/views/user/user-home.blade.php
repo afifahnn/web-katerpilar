@@ -6,6 +6,26 @@
 
 @section('user-contents')
 <div id="user-home">
+    {{-- alert login --}}
+    @if(!Auth::check())
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    title: "Silahkan Login",
+                    text: "Silahkan login terlebih dahulu untuk melakukan pemesanan barang.",
+                    icon: "warning",
+                    confirmButtonText: "Login",
+                    showCancelButton: true,
+                    cancelButtonText: "Nanti Saja"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('login') }}";
+                    }
+                });
+            });
+        </script>
+    @endif
+
     {{-- HERO SECTION --}}
     <div class="hero-section">
         <div class="img-bg">
@@ -36,6 +56,10 @@
         Pencarian tidak ditemukan.
     </div>
 
+    @if ($barang->isEmpty())
+        <div class="alert alert-warning barang-empty">Belum ada alat yang disewakan saat ini</div>
+    @endif
+
     {{-- KATALOG SECTION --}}
     <div class="katalog-section">
         @foreach($barang->groupBy('jenis')->sortKeys() as $jenis => $barangs)
@@ -47,20 +71,16 @@
             <div class="carousel-section">
                 <div class="scroll-container">
                     @foreach($barangs as $barang)
-                    <button type="button" class="btn p-0 shadow-none" data-bs-toggle="modal" data-bs-target="#modalBarang{{ $barang->id }}">
+                    <button type="button" class="btn p-0 shadow-none {{ $barang->stok_barang <= 0 ? 'disabled-barang' : '' }}" data-bs-toggle="modal" data-bs-target="#modalBarang{{ $barang->id }}">
                         <div class="card-container" data-name="{{ strtolower($barang->nama_barang) }}">
                             <div class="pic-barang">
                                 <img src="{{ asset('storage/' . $barang->gambar_barang) }}" alt="barang">
                             </div>
                             <div class="product">
                                 <div class="name">{{ $barang->nama_barang }}</div>
-                                <div class="stok">
-                                    Stok :
-                                    @if($barang->stok_barang <= 0)
-                                        <span style="color: red;">Habis</span>
-                                    @else
-                                        {{ $barang->stok_barang }}
-                                    @endif
+                                <div class="harga">
+                                    Harga :
+                                    Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}
                                 </div>
                             </div>
                         </div>
@@ -93,9 +113,21 @@
                                         <div class="desk-modal">{!! nl2br(e($barang->deskripsi_barang)) !!}</div>
                                         <div class="harga-sewa">Harga Sewa :</div>
                                         <div class="harga-modal">
-                                            <div>1 hari : Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</div>
-                                            <div>2 hari : Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</div>
-                                            <div>3 hari : Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</div>
+                                            <div>
+                                                <div>1 hari</div>
+                                                <div>2 hari</div>
+                                                <div>3 hari</div>
+                                            </div>
+                                            <div>
+                                                <div>:</div>
+                                                <div>:</div>
+                                                <div>:</div>
+                                            </div>
+                                            <div>
+                                                <div>Rp {{ number_format($barang->harga_sewa1, 0, ',', '.') }}</div>
+                                                <div>Rp {{ number_format($barang->harga_sewa2, 0, ',', '.') }}</div>
+                                                <div>Rp {{ number_format($barang->harga_sewa3, 0, ',', '.') }}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

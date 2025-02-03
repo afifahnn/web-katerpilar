@@ -61,6 +61,7 @@
                         </th>
                         <th>Total Barang Sewa</th>
                         <th>Total Bayar</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -84,17 +85,25 @@
                             </td>
                             <td>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</td>
                             <td>
+                                @php
+                                    $statusStyles = [
+                                        'menunggu' => ['color' => 'text-secondary', 'icon' => 'fa-clock'],
+                                        'booking' => ['color' => 'text-warning', 'icon' => 'fa-calendar-check'],
+                                        'diambil' => ['color' => 'text-success', 'icon' => 'fa-box'],
+                                        'dikembalikan' => ['color' => 'text-primary', 'icon' => 'fa-check-circle'],
+                                        'dibatalkan' => ['color' => 'text-danger', 'icon' => 'fa-times-circle']
+                                    ];
+                                    $status = $statusStyles[$item->status];
+                                @endphp
+
+                                <i class="fas {{ $status['icon'] }} {{ $status['color'] }}"></i>
+                                <span class="{{ $status['color'] }}">{{ ucwords($item->status) }}</span>
+                            </td>
+                            <td>
                                 <div class="btn-aksi">
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalTransaksi{{ $item->id }}">
                                         <i class="fa-solid fa-circle-info" style="color: #FFFFFF; font-size: 17px;"></i>
                                     </button>
-                                    <form action="{{ route('admin.kelola-transaksi.delete', $item->id) }}" method="post" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-hapus">
-                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                        </button>
-                                    </form>
                                     <a href="{{ route('admin.kelola-transaksi.edit', $item->id) }}">
                                         <button class="btn-edit">
                                             <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
@@ -156,6 +165,23 @@
                                         <div class="isi-modals">
                                             <div class="judul-modal">Total Bayar</div>
                                             <div>Rp {{ number_format($item->total_bayar, 0, ',', '.') }}</div>
+                                        </div>
+                                        <div class="isi-modals">
+                                            <div class="judul-modal">Status Pesanan</div>
+                                            @php
+                                                $statusStyles = [
+                                                    'menunggu' => ['color' => 'text-secondary', 'icon' => 'fa-clock'],
+                                                    'booking' => ['color' => 'text-warning', 'icon' => 'fa-calendar-check'],
+                                                    'diambil' => ['color' => 'text-success', 'icon' => 'fa-box'],
+                                                    'dikembalikan' => ['color' => 'text-primary', 'icon' => 'fa-check-circle'],
+                                                    'dibatalkan' => ['color' => 'text-danger', 'icon' => 'fa-times-circle']
+                                                ];
+                                                $status = $statusStyles[$item->status];
+                                            @endphp
+                                            <div>
+                                                <i class="fas {{ $status['icon'] }} {{ $status['color'] }}"></i>
+                                                <span class="{{ $status['color'] }}">{{ ucwords($item->status) }}</span>
+                                            </div>
                                         </div>
                                         <div class="isi-modals">
                                             <div class="judul-modal">Metode Pembayaran</div>
@@ -289,31 +315,6 @@
         if (buttonId === 'sort-tglkembali') sortOrderTglKembali = sortOrder;
         if (buttonId === 'sort-name') sortOrderName = sortOrder;
     }
-
-    // ALERT DELETE
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.delete-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                var formElement = this;
-
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        formElement.submit();
-                    }
-                });
-            });
-        });
-    });
 
     // ALERT LOGOUT
     document.addEventListener('DOMContentLoaded', function () {

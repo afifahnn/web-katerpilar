@@ -18,14 +18,14 @@ class KelolaUangController extends Controller
         return view('admin.admin-kelola-uang', compact('keuangan'));
     }
 
-    // CREATE KEUANGAN
+    // CREATE PENGELUARAN
     public function createKeuangan()
     {
         $keuangan = Keuangan::all();
         return view('admin.kelola-keuangan.create', ['keuangan' => $keuangan]);
     }
 
-    // STORE KEUANGAN
+    // STORE PENGELUARAN
     public function storeKeuangan(Request $request)
     {
         $request->validate([
@@ -42,14 +42,14 @@ class KelolaUangController extends Controller
         return redirect()->route('kelolakeuangan');
     }
 
-    // EDIT KEUANGAN
+    // EDIT PENGELUARAN
     public function editKeuangan($id)
     {
         $keuangan = Keuangan::findOrFail($id);
         return view('admin.kelola-keuangan.edit', compact('keuangan'));
     }
 
-    // UPDATE KEUANGAN
+    // UPDATE PENGELUARAN
     public function updateKeuangan(Request $request, $id)
     {
         $request->validate([
@@ -99,6 +99,7 @@ class KelolaUangController extends Controller
                             DB::raw('NULL AS keluar'),
                             DB::raw("'Sewa alat' AS deskripsi")
                         )
+                        ->whereIn('transaksis.status', ['booking', 'diambil', 'dikembalikan'])
                 );
         }, 'combined_data')
         ->when($tanggalAwal, function ($query) use ($tanggalAwal) {
@@ -110,6 +111,7 @@ class KelolaUangController extends Controller
         ->orderBy('tanggal', 'ASC')
         ->get();
 
+        // menghitung laba omzet
         $currentLaba = 0;
         $currentOmzet = 0;
         $totalMasuk = 0;

@@ -23,7 +23,6 @@ class UserProfilController extends Controller
     // UPDATE PROFIL
     public function updateProfil(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'nama_customer' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:customer,username,' . Auth::guard('customer')->user()->id . ',id',

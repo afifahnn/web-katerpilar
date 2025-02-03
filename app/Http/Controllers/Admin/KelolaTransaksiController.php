@@ -12,7 +12,8 @@ class KelolaTransaksiController extends Controller
 {
     public function kelolatransaksi()
     {
-        $transaksi = Transaksi::with('customer')->orderBy('tgl_sewa', 'asc')
+        $transaksi = Transaksi::with('customer')
+        ->orderBy('tgl_sewa', 'asc')
         ->paginate(30);
         // ->get();
         return view('admin.admin-kelola-transaksi', compact('transaksi'));
@@ -31,8 +32,6 @@ class KelolaTransaksiController extends Controller
     public function storeTransaksi(Request $request)
     {
         try {
-            // dd($request->all());
-
             $request->validate([
                 'nama_customer' => 'required',
                 'alamat_customer' => 'required',
@@ -42,7 +41,8 @@ class KelolaTransaksiController extends Controller
                 'barang_sewa' => 'required',
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
-                'opsi_bayar' => 'required|in:Cash,Non-Cash'
+                'opsi_bayar' => 'required|in:Cash,Non-Cash',
+                'status' => 'required|in:menunggu,booking,diambil,dikembalikan,dibatalkan'
             ], [
                 'tgl_kembali.after' => 'Tanggal kembali harus lebih besar dari tanggal sewa.',
             ]);
@@ -68,6 +68,7 @@ class KelolaTransaksiController extends Controller
                 'barang_sewa' => json_encode($barangSewa),
                 'jumlah_sewa' => json_encode($jumlahSewa),
                 'opsi_bayar' => $request->opsi_bayar,
+                'status' => $request->input('status', 'menunggu'),
                 'total_bayar' => $request->total_bayar,
                 'metode_bayar' => $request->metode_bayar,
             ]);
@@ -75,7 +76,9 @@ class KelolaTransaksiController extends Controller
             foreach ($barangSewa as $index => $namaBarang) {
                 $barang = Barang::where('nama_barang', $namaBarang)->first();
                 if ($barang) {
-                    $barang->stok_barang -= $jumlahSewa[$index];
+                    if (in_array($request->status, ['menunggu', 'booking', 'diambil'])) {
+                        $barang->stok_barang -= $jumlahSewa[$index];
+                    }
                     $barang->save();
                 }
             }
@@ -114,7 +117,6 @@ class KelolaTransaksiController extends Controller
     // UPDATE TRANSAKSI
     public function updateTransaksi(Request $request, $id)
     {
-        // dd($request->all());
         $request->validate([
             'nama_customer' => 'required',
             'alamat_customer' => 'required',
@@ -124,12 +126,15 @@ class KelolaTransaksiController extends Controller
             'barang_sewa' => 'required',
             'jumlah_sewa' => 'required',
             'total_bayar' => 'required',
-            'opsi_bayar' => 'required|in:Cash,Non-Cash'
+            'opsi_bayar' => 'required|in:Cash,Non-Cash',
+            'status' => 'required|in:menunggu,booking,diambil,dikembalikan,dibatalkan'
         ], [
             'tgl_kembali.after' => 'Tanggal kembali harus lebih besar dari tanggal sewa.',
         ]);
 
         $transaksi = Transaksi::findOrFail($id);
+        $statusLama = $transaksi->status;
+        $statusBaru = $request->status;
         $barangSewa = isset($request->barang_sewa[0]) ? explode(',', $request->barang_sewa[0]) : [];
         $jumlahSewa = isset($request->jumlah_sewa[0]) ? explode(',', $request->jumlah_sewa[0]) : [];
         $jumlahSewa = array_map('intval', $jumlahSewa);
@@ -146,6 +151,7 @@ class KelolaTransaksiController extends Controller
             'tgl_kembali' => $request->tgl_kembali,
             'total_bayar' => $request->total_bayar,
             'opsi_bayar' => $request->opsi_bayar,
+            'status' => $request->status,
             'metode_bayar' => $request->metode_bayar,
         ]);
 
@@ -153,34 +159,47 @@ class KelolaTransaksiController extends Controller
         $transaksi->jumlah_sewa = json_encode($jumlahSewa);
         $transaksi->save();
 
+        // barang bertambah jika status 'kembali' dan 'batal'
+        foreach ($barangSewa as $index => $namaBarang) {
+            $barang = Barang::where('nama_barang', $namaBarang)->first();
+            if ($barang) {
+                $jumlah = $jumlahSewa[$index];
+
+                if (in_array($statusLama, ['menunggu', 'booking', 'diambil']) && in_array($statusBaru, ['dikembalikan', 'dibatalkan'])) {
+                    $barang->stok_barang += $jumlah;
+                }
+
+                elseif (in_array($statusLama, ['dikembalikan', 'dibatalkan']) && in_array($statusBaru, ['menunggu', 'booking', 'diambil'])) {
+                    $barang->stok_barang -= $jumlah;
+                }
+
+                $barang->save();
+            }
+        }
+
+        // barang yang diganti, ditambah, dikurang stoknya
         foreach ($barangSewaLama as $index => $namaBarang) {
             $barang = Barang::where('nama_barang', $namaBarang)->first();
 
             if ($barang) {
-                // Ambil jumlah sewa lama untuk barang yang akan dihapus
                 $jumlahSewaLamaBarang = $jumlahSewaLama[$index];
 
-                // Cek apakah barang ini ada dalam transaksi yang baru
-                $key = array_search($namaBarang, $barangSewa); // Cek apakah barang ini ada dalam barang_sewa yang baru
+                $key = array_search($namaBarang, $barangSewa);
                 if ($key !== false) {
-                    // Barang ada, jadi hitung perubahan jumlahnya
                     $jumlahSewaBaru = $jumlahSewa[$key];
                     if ($jumlahSewaBaru > $jumlahSewaLamaBarang) {
-                        // Jika jumlah sewa baru lebih banyak, kurangi stok
                         $barang->stok_barang -= ($jumlahSewaBaru - $jumlahSewaLamaBarang);
                     } elseif ($jumlahSewaBaru < $jumlahSewaLamaBarang) {
-                        // Jika jumlah sewa baru lebih sedikit, tambah stok
                         $barang->stok_barang += ($jumlahSewaLamaBarang - $jumlahSewaBaru);
                     }
                 } else {
-                    // Jika barang dihapus dari transaksi, tambah stok
                     $barang->stok_barang += $jumlahSewaLamaBarang;
                 }
                 $barang->save();
             }
         }
 
-        // barang baru ditambah ke transaksi
+        // barang yang baru saja ditambahkan
         foreach ($barangSewa as $index => $namaBarang) {
             if (!in_array($namaBarang, $barangSewaLama)) {
                 $barang = Barang::where('nama_barang', $namaBarang)->first();
@@ -211,7 +230,6 @@ class KelolaTransaksiController extends Controller
             }
         }
 
-        // Hapus transaksi
         $transaksi->delete();
 
         return redirect()->route('kelolatransaksi')->with('success', 'Transaksi berhasil dihapus.');

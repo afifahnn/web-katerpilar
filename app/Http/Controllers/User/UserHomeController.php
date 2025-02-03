@@ -13,4 +13,10 @@ class UserHomeController extends Controller
         $barang = Barang::all();
         return view('user.user-home', ['barang' => $barang]);
     }
+
+    // MANUAL USER
+    public function manualUser()
+    {
+        return view('user.user-manual');
+    }
 }

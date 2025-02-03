@@ -60,13 +60,14 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed',
             'nama_customer' => 'required|string',
             'alamat_customer' => 'required|string',
-            'telp_customer' => 'required|numeric',
+            'telp_customer' => 'required|numeric|digits_between:10,13',
         ], [
             'required' => ':attribute wajib diisi.',
             'username.unique' => 'Username sudah digunakan, silakan pilih username lain.',
             'password.min' => 'Password harus minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'telp_customer.numeric' => 'Nomor telepon harus berupa angka.',
+            'telp_customer.digits_between' => 'Nomor telepon harus antara 10 hingga 13 digit.',
         ], [
             'username' => 'Username',
             'password' => 'Password',
@@ -74,8 +75,6 @@ class AuthController extends Controller
             'alamat_customer' => 'Alamat customer',
             'telp_customer' => 'Nomor telepon',
         ]);
-
-        // dd($request->all());
 
         Customer::create([
             'username' => $request->username,
@@ -87,7 +86,6 @@ class AuthController extends Controller
 
         $request->session()->flash('success', 'Registration successful!');
 
-        // Redirect ke halaman login
         return redirect('/login');
     }
 

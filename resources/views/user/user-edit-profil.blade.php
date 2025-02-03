@@ -80,6 +80,7 @@
     const togglePassword = document.getElementById('toggle-password');
     const confirmTogglePassword = document.getElementById('confirm-toggle-password');
     const passwordInput = document.getElementById('password-input');
+    const confirmPasswordInput = document.getElementById('confirm-password-input');
 
     togglePassword.addEventListener('click', () => {
         const type = passwordInput.type === 'password' ? 'text' : 'password';

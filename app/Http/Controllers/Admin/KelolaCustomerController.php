@@ -33,7 +33,14 @@ class KelolaCustomerController extends Controller
             'telp_customer' => 'required',
         ]);
 
-        Customer::create($request->all());
+        // Customer::create($request->all());
+        Customer::firstOrCreate(
+            ['telp_customer' => $request->telp_customer],
+            [
+                'nama_customer' => $request->nama_customer,
+                'alamat_customer' => $request->alamat_customer,
+            ]
+        );
 
         session()->flash('success', 'Customer berhasil ditambahkan.');
 
@@ -54,10 +61,23 @@ class KelolaCustomerController extends Controller
             'nama_customer' => 'required',
             'alamat_customer' => 'required',
             'telp_customer' => 'required',
+            'password' => 'nullable|min:8|confirmed',
+        ], [
+            'password.min' => 'Password harus minimal 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.'
         ]);
 
         $customer = Customer::findOrFail($id);
-        $customer->update($request->all());
+        // $customer->update($request->all());
+        $customer->nama_customer = $request->nama_customer;
+        $customer->telp_customer = $request->telp_customer;
+        $customer->alamat_customer = $request->alamat_customer;
+
+        if ($request->filled('password')) {
+            $customer->password = bcrypt($request->password);
+        }
+
+        $customer->save();
 
         session()->flash('success', 'Customer berhasil diperbarui.');
 
@@ -65,11 +85,11 @@ class KelolaCustomerController extends Controller
     }
 
     // DELETE CUSTOMER
-    public function deleteCustomer($id)
-    {
-        $customer = Customer::findOrFail($id);
-        $customer->delete();
+    // public function deleteCustomer($id)
+    // {
+    //     $customer = Customer::findOrFail($id);
+    //     $customer->delete();
 
-        return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil dihapus.');
-    }
+    //     return redirect()->route('kelolacustomer')->with('success', 'Customer berhasil dihapus.');
+    // }
 }

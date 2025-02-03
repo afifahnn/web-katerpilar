@@ -12,7 +12,7 @@ class Transaksi extends Model
     use HasFactory;
 
     // protected $table = 'transaksi';
-    protected $fillable = ['tgl_sewa', 'tgl_kembali', 'barang_sewa', 'jumlah_sewa', 'total_bayar', 'opsi_bayar', 'metode_bayar', 'bukti_bayar', 'customer_id', 'barang_id'];
+    protected $fillable = ['tgl_sewa', 'tgl_kembali', 'barang_sewa', 'jumlah_sewa', 'total_bayar', 'opsi_bayar', 'metode_bayar', 'bukti_bayar', 'status', 'customer_id', 'barang_id'];
 
     public function barang(): BelongsTo
     {

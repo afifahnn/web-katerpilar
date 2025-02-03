@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class UserRiwayatController extends Controller
 {
-    public function userRiwayat()
+    public function userRiwayat(Request $request)
     {
         $user = Auth::guard('customer')->user();
 
@@ -18,32 +18,43 @@ class UserRiwayatController extends Controller
             return redirect()->route('login')->with('alert', 'Silakan login terlebih dahulu');
         }
 
-        $transaksi = Transaksi::with('customer')
+        $query = Transaksi::with('customer')
             ->where('customer_id', $user->id)
-            ->orderBy('tgl_sewa', 'asc')
-            ->paginate(8);
-            // ->get();
+            ->orderBy('tgl_sewa', 'asc');
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $transaksi = $query->paginate(10);
+
         return view('user.user-riwayat', compact('transaksi'));
     }
 
-    // DELETE RIWAYAT
-    public function deleteRiwayat($id)
+    // BATALKAN PESANAN
+    public function batalkanPesanan($id)
     {
         $transaksi = Transaksi::findOrFail($id);
         $barangSewa = json_decode($transaksi->barang_sewa, true);
         $jumlahSewa = json_decode($transaksi->jumlah_sewa, true);
 
-        foreach ($barangSewa as $index => $namaBarang) {
-            $barang = Barang::where('nama_barang', $namaBarang)->first();
-            if ($barang) {
-                $barang->stok_barang += $jumlahSewa[$index];
-                $barang->save();
+        if (!in_array($transaksi->status, ['diambil', 'dikembalikan', 'dibatalkan'])) {
+            $transaksi->status = 'dibatalkan';
+            $transaksi->save();
+
+            foreach ($barangSewa as $index => $namaBarang) {
+                $barang = Barang::where('nama_barang', $namaBarang)->first();
+                if ($barang) {
+                    $barang->stok_barang += $jumlahSewa[$index];
+                    $barang->save();
+                }
             }
+
+            session()->flash('success', 'Pesanan berhasil dibatalkan.');
+        } else {
+            session()->flash('error', 'Tidak dapat membatalkan pesanan ini.');
         }
 
-        // Hapus transaksi
-        $transaksi->delete();
-
-        return redirect()->route('user.riwayat')->with('success', 'Riwayat berhasil dihapus.');
+        return redirect()->route('user.riwayat');
     }
 }

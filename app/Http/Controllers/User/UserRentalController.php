@@ -34,6 +34,7 @@ class UserRentalController extends Controller
                 'jumlah_sewa' => 'required',
                 'total_bayar' => 'required',
                 'opsi_bayar' => 'required|in:Cash,Non-Cash',
+                'status' => 'required|in:menunggu,booking,diambil,dikembalikan,dibatalkan',
                 'metode_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required' : 'nullable',
                 'bukti_bayar' => $request->opsi_bayar === 'Non-Cash' ? 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048' : 'nullable',
             ], [
@@ -69,6 +70,7 @@ class UserRentalController extends Controller
                 'barang_sewa' => json_encode($barangSewa),
                 'jumlah_sewa' => json_encode($jumlahSewa),
                 'opsi_bayar' => $request->opsi_bayar,
+                'status' => $request->input('status', 'menunggu'),
                 'total_bayar' => $request->total_bayar,
                 'metode_bayar' => $request->metode_bayar,
                 'bukti_bayar' => $fileImg,

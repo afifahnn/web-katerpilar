@@ -15,8 +15,45 @@
     padding-bottom: 20px;
 }
 
+.filter-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin: 0px 40px;
+}
+
+.filter-status label {
+    font-weight: 600;
+    color: #333;
+}
+
+.filter-status select {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-status select:hover {
+    border-color: #007bff;
+}
+
+.filter-status select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
 .no-transactions {
-    font-size: 15px;
+    font-size: 14px;
     text-align: center;
     margin: 100px 0;
 }
@@ -130,6 +167,11 @@
 @media only screen and (max-width: 500px) {
     .riwayat-section {
         padding: 0 10px;
+    }
+
+    .filter-status {
+        margin: 0px 3px;
+        max-width: 500px;
     }
 
     .card-riwayat {

@@ -64,7 +64,7 @@
                 <div class="content">Total Hari</div>
                 <input type="text" id="totalHari" readonly placeholder="Total hari akan muncul di sini">
             </div>
-            <div class="input-data">
+            <div class="grid-container">
                 <div class="input-container">
                     <div class="content" for="opsi_bayar">Opsi Bayar</div>
                     <div class="input-group">
@@ -72,6 +72,19 @@
                             <option value="" disabled {{ $transaksi->opsi_bayar == null ? 'selected' : '' }}>Pilih...</option>
                             <option value="Cash" {{ $transaksi->opsi_bayar == 'cash' ? 'selected' : '' }}>Cash</option>
                             <option value="Non-Cash" {{ $transaksi->opsi_bayar == 'non-cash' ? 'selected' : '' }}>Non-Cash</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <div class="content" for="status">Status</div>
+                    <div class="input-group">
+                        <select class="form-select" id="inputGroupSelect01" name="status" required>
+                            <option value="" disabled {{ $transaksi->status == null ? 'selected' : '' }}>Pilih...</option>
+                            <option value="menunggu" {{ $transaksi->status == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                            <option value="booking" {{ $transaksi->status == 'booking' ? 'selected' : '' }}>Booking</option>
+                            <option value="diambil" {{ $transaksi->status == 'diambil' ? 'selected' : '' }}>Diambil</option>
+                            <option value="dikembalikan" {{ $transaksi->status == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
+                            <option value="dibatalkan" {{ $transaksi->status == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
                         </select>
                     </div>
                 </div>
@@ -159,14 +172,11 @@
         var telpCustomer = document.getElementById('telp_customer');
         var alamatCustomer = document.getElementById('alamat_customer');
 
-        // Reset the fields
         telpCustomer.value = '';
         alamatCustomer.value = '';
 
-        // Cari option yang sesuai dengan nama yang dimasukkan
         datalistOptions.forEach(function(option) {
             if (option.value === inputNama) {
-                // Isi nomor telepon dan alamat
                 telpCustomer.value = option.getAttribute('data-telp');
                 alamatCustomer.value = option.getAttribute('data-alamat');
             }
@@ -191,23 +201,23 @@
         if (kembaliDate < sewaDate) {
             alert('Tanggal kembali tidak boleh sebelum tanggal sewa!');
             this.value = '';
-            totalHari.value = ''; // Reset total hari
+            totalHari.value = '';
         } else {
-            calculateTotalHari(); // Hitung ulang total hari
+            calculateTotalHari();
         }
     });
 
-    // Fungsi untuk menghitung total hari
+    // menghitung total hari
     function calculateTotalHari() {
         const sewaDate = new Date(tanggalSewa.value);
         const kembaliDate = new Date(tanggalKembali.value);
 
         if (sewaDate && kembaliDate) {
-            const timeDiff = kembaliDate - sewaDate; // Selisih waktu dalam milidetik
-            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Konversi ke hari
+            const timeDiff = kembaliDate - sewaDate;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             totalHari.value = daysDiff > 0 ? daysDiff + " hari" : "";
         } else {
-            totalHari.value = ''; // Jika tanggal tidak lengkap, reset total hari
+            totalHari.value = '';
         }
     }
 
@@ -225,22 +235,16 @@
     console.log(selectedItems);
 
     // EDIT
-    // Ambil data dari hidden inputs dan tampilkan di halaman
     const dataSewa = @json($data_sewa);
-    console.log(document.getElementById('totalBayar').value);
+    // console.log(document.getElementById('totalBayar').value);
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Inisialisasi selectedItems
-        // const selectedItems = {};
         const selectedItemsContainer = document.getElementById('selectedItems');
 
         dataSewa.forEach(item => {
             const selectedValue = item.barang;
             const quantity = item.jumlah;
-            console.log(selectedValue);
-            console.log(quantity);
 
-            // Ambil elemen berdasarkan ID barang (selectedValue)
             const selectedText = document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.text;
             const hargaSewa1 = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.harga1 || 0);
             const hargaSewa2 = parseFloat(document.querySelector(`#inputGroupSelect04 option[value="${selectedValue}"]`)?.dataset.harga2 || 0);
@@ -261,14 +265,12 @@
                 hargaPerItem = hargaSewa3 + additionalCost;
             }
 
-            // Masukkan data ke dalam selectedItems
             selectedItems[selectedValue] = {
                 name: selectedText,
                 quantity: quantity,
                 price: hargaPerItem
             };
 
-            // Tambahkan item ke container tampilan
             const itemDiv = document.createElement('div');
             itemDiv.className = 'selected-item';
             itemDiv.dataset.value = selectedValue;
@@ -308,7 +310,7 @@
             return;
         }
 
-        const totalHariText = totalHari.value.match(/\d+/); // Ambil angka dari total hari
+        const totalHariText = totalHari.value.match(/\d+/);
         const totalHariNumber = totalHariText ? parseInt(totalHariText[0]) : 0;
 
         let hargaPerItem;
@@ -324,7 +326,6 @@
             hargaPerItem = hargaSewa3 + additionalCost;
         }
 
-        // Jika barang sudah ada, tambahkan jumlahnya
         if (selectedItems[selectedValue]) {
             if (selectedItems[selectedValue].quantity >= stokBarang) {
                 alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
@@ -332,7 +333,6 @@
             }
             selectedItems[selectedValue].quantity += 1;
 
-            // Update tampilan jumlah dan harga per item
             const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
             itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
             itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
@@ -342,7 +342,6 @@
                 return;
             }
 
-            // Tambahkan barang baru
             selectedItems[selectedValue] = {
                 name: selectedText,
                 quantity: 1,
@@ -392,30 +391,25 @@
         }
     });
 
-    // Format angka menjadi Rupiah
     function formatRupiah(number) {
         return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
-    // Hilangkan format Rupiah untuk nilai asli
     function removeRupiahFormat(input) {
         input.value = input.value.replace(/[^0-9]/g, '');
         updateRawValue(input.value);
     }
 
-    // Terapkan kembali format Rupiah
     function applyRupiahFormat(input) {
         const value = parseInt(input.value || 0);
         input.value = formatRupiah(value);
     }
 
-    // Fungsi untuk memperbarui nilai murni di hidden input
     function updateRawValue(value) {
         const totalBayarRaw = document.getElementById('totalBayarRaw');
         totalBayarRaw.value = value;
     }
 
-    // Fungsi untuk memperbarui input tersembunyi
     function updateHiddenInputs() {
         const barangSewa = [];
         const jumlahSewa = [];
@@ -432,9 +426,6 @@
 
         const totalBayarInput = document.getElementById('totalBayar');
         totalBayarInput.value = formatRupiah(totalHarga);
-
-        console.log("Total Harga: ", totalHarga);
-        console.log("Total Bayar Value: ", totalBayarInput.value);
 
         updateRawValue(totalHarga);
     }
