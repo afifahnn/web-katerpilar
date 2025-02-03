@@ -14,7 +14,6 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        // dd('masuk dashboard');
         $currentYear = Carbon::now()->year;
         $combinedData = DB::query()
         ->fromSub(function ($query) use ($currentYear) {
@@ -35,6 +34,7 @@ class AdminController extends Controller
                             DB::raw("'Sewa alat' AS deskripsi")
                         )
                         ->whereYear('transaksis.tgl_sewa', $currentYear)
+                        ->whereIn('transaksis.status', ['booking', 'diambil', 'dikembalikan'])
                 );
         }, 'combined_data')
         ->orderBy('tanggal', 'ASC')
@@ -43,7 +43,7 @@ class AdminController extends Controller
         $currentLaba = 0;
         $currentOmzet = 0;
 
-        // Proses data untuk menghitung laba dan omzet
+        // laba dan omzet
         $combinedData->each(function ($item) use (&$currentLaba, &$currentOmzet) {
             if ($item->masuk !== null) {
                 $currentOmzet += $item->masuk;

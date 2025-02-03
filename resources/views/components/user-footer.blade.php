@@ -25,7 +25,7 @@
                             <i class="fa-brands fa-whatsapp"></i>
                             <div class="name">WhatsApp</div>
                         </a>
-                        <a href="https://www.instagram.com/katerpilar.outdoor/profilecard/?igsh=aDA0MGJqNzd1YTFt" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.instagram.com/katerpilar.outdoor" target="_blank" rel="noopener noreferrer">
                             <i class="fa-brands fa-instagram"></i>
                             <div class="name">Instagram</div>
                         </a>

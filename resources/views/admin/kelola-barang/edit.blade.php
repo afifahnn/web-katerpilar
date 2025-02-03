@@ -114,13 +114,12 @@
 
         document.querySelectorAll('.currency-input').forEach(input => {
             input.addEventListener('input', function () {
-                const rawValue = cleanRupiah(this.value); // Ambil angka mentah
-                this.value = formatRupiah(rawValue, 'Rp '); // Format ulang dengan Rupiah
+                const rawValue = cleanRupiah(this.value);
+                this.value = formatRupiah(rawValue, 'Rp ');
             });
 
-            // Pastikan value yang dikirim adalah angka mentah
             input.closest('form').addEventListener('submit', function () {
-                input.value = cleanRupiah(input.value); // Hapus format sebelum submit
+                input.value = cleanRupiah(input.value);
             });
         });
 
@@ -135,21 +134,15 @@
             if (file) {
                 const reader = new FileReader();
 
-                // Saat file selesai dibaca
                 reader.onload = function (e) {
-                    // Tampilkan preview gambar baru
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                     imagePreviewImg.style.display = 'block';
-
-                    // Sembunyikan gambar sebelumnya (jika ada)
                     imagePreview.style.display = 'none';
                 };
 
-                // Membaca file yang diupload sebagai data URL
                 reader.readAsDataURL(file);
             } else {
-                // Jika tidak ada file yang dipilih, tampilkan gambar sebelumnya lagi
                 preview.src = '';
                 imagePreviewImg.style.display = 'none';
                 imagePreview.style.display = 'block';
@@ -173,42 +166,42 @@
         });
 
         // ALERT LOGOUT
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.logout-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                var formElement = this;
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    var formElement = this;
 
-                Swal.fire({
-                    text: "Apakah anda yakin akan Logout?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        formElement.submit();
-                    }
+                    Swal.fire({
+                        text: "Apakah anda yakin akan Logout?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formElement.submit();
+                        }
+                    });
                 });
             });
         });
-    });
 
-    // STOK BARANG
-    const stokBarangInput = document.getElementById('stok_barang');
+        // STOK BARANG
+        const stokBarangInput = document.getElementById('stok_barang');
 
-    stokBarangInput.addEventListener('input', function () {
-        if (this.value < 0) {
-            this.value = '';
-        }
-    });
+        stokBarangInput.addEventListener('input', function () {
+            if (this.value < 0) {
+                this.value = '';
+            }
+        });
 
-    stokBarangInput.addEventListener('keydown', function (e) {
-        if (e.key === '-' || e.key === 'e') {
-            e.preventDefault();
-        }
-    });
+        stokBarangInput.addEventListener('keydown', function (e) {
+            if (e.key === '-' || e.key === 'e') {
+                e.preventDefault();
+            }
+        });
     </script>
 @endsection

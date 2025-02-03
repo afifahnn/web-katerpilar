@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('opsi_bayar', ['cash', 'non-cash'])->default('cash');
             $table->string('metode_bayar')->nullable();
             $table->string('bukti_bayar')->nullable();
+            $table->enum('status', ['menunggu', 'booking', 'diambil', 'dikembalikan', 'dibatalkan'])->default('menunggu');
             $table->unsignedBigInteger('customer_id')->nullable()->unsigned();
             $table->unsignedBigInteger('barang_id')->nullable()->unsigned();
             $table->foreign('customer_id')->references('id')->on('customer')->onUpdate('cascade')->onDelete('cascade');

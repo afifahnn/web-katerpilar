@@ -21,6 +21,10 @@
         @yield('user-contents')
     </div>
 
+    <div class="help-icon" onclick="window.location.href='/manual-user'">
+        <i class="fa-solid fa-question"></i>
+    </div>
+
     @include('components.user-footer')
 </body>
 </html>

@@ -96,6 +96,10 @@
     outline: none;
 }
 
+.barang-empty {
+    margin: 0 20px;
+}
+
 /* KATALOG */
 .katalog-section {
     padding: 30px;
@@ -129,6 +133,10 @@
 
 .scroll-container::-webkit-scrollbar-track {
     background: #f1f1f1;
+}
+
+.disabled-barang {
+    opacity: 0.5;
 }
 
 .card-container {
@@ -176,7 +184,7 @@
     padding-bottom: 4px;
 }
 
-.product .stok {
+.product .harga {
     font-size: 13px;
 }
 
@@ -217,6 +225,8 @@
 
 .harga-modal {
     padding-left: 8px;
+    display: flex;
+    gap: 8px;
 }
 
 /* INFORMATION SECTION */
@@ -264,6 +274,10 @@
 
     .search-bar .input-group {
         width: 100%;
+    }
+
+    .barang-empty {
+        margin: 0 10px;
     }
 
     /* KATALOG SECTION */

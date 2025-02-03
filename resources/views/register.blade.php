@@ -83,6 +83,10 @@
             </div>
         </form>
     </div>
+
+    <div class="help-icon" onclick="window.location.href='/manual-user'">
+        <i class="fa-solid fa-question"></i>
+    </div>
 </body>
 
 {{-- JAVASCRIPT --}}

@@ -13,6 +13,11 @@ class Barang extends Model
     protected $table = 'barang';
     protected $fillable = ['gambar_barang', 'nama_barang', 'stok_barang', 'harga_sewa1', 'harga_sewa2', 'harga_sewa3', 'deskripsi_barang', 'jenis', 'kelipatan'];
 
+    public function transaksi(): HasMany
+    {
+        return $this->hasMany(Transaksi::class, 'barang_id');
+    }
+
     // public function admin()
     // {
     //     return $this->belongsTo(Admin::class, 'admin_id');
@@ -22,9 +27,4 @@ class Barang extends Model
     // {
     //     return $this->belongsTo(Customer::class, 'customer_id');
     // }
-
-    public function transaksi(): HasMany
-    {
-        return $this->hasMany(Transaksi::class, 'barang_id');
-    }
 }

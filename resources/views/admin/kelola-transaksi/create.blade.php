@@ -62,7 +62,7 @@
                     <div class="content">Total Hari</div>
                     <input type="text" id="totalHari" readonly placeholder="Total hari akan muncul di sini">
                 </div>
-                <div class="input-data">
+                <div class="grid-container">
                     <div class="input-container">
                         <div class="content" for="opsi_bayar">Opsi Bayar</div>
                         <div class="input-group">
@@ -70,6 +70,16 @@
                                 <option value="" disabled selected>Pilih...</option>
                                 <option value="Cash">Cash</option>
                                 <option value="Non-Cash">Non-Cash</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <div class="content" for="status">Status</div>
+                        <div class="input-group">
+                            <select class="form-select" id="inputGroupSelect01" name="status" required>
+                                <option value="" disabled selected>Pilih...</option>
+                                <option value="menunggu">Menunggu</option>
+                                <option value="booking">Booking</option>
                             </select>
                         </div>
                     </div>
@@ -151,7 +161,6 @@
             telpCustomer.value = '';
             alamatCustomer.value = '';
 
-            // Cari option yang sesuai dengan nama yang dimasukkan
             datalistOptions.forEach(function(option) {
                 if (option.value === inputNama) {
                     telpCustomer.value = option.getAttribute('data-telp');
@@ -193,11 +202,11 @@
             const kembaliDate = new Date(tanggalKembali.value);
 
             if (sewaDate && kembaliDate) {
-                const timeDiff = kembaliDate - sewaDate; // Selisih waktu dalam milidetik
-                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Konversi ke hari
+                const timeDiff = kembaliDate - sewaDate;
+                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
                 totalHari.value = daysDiff > 0 ? daysDiff + " hari" : "";
             } else {
-                totalHari.value = ''; // Jika tanggal tidak lengkap, reset total hari
+                totalHari.value = '';
             }
         }
 
@@ -239,7 +248,7 @@
                 hargaPerItem = hargaSewa3 + additionalCost;
             }
 
-            // Jika barang sudah ada, tambahkan jumlahnya
+            // tambah data barang yang sudah ditambah
             if (selectedItems[selectedValue]) {
                 if (selectedItems[selectedValue].quantity >= stokBarang) {
                     alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
@@ -247,7 +256,6 @@
                 }
                 selectedItems[selectedValue].quantity += 1;
 
-                // Update tampilan jumlah
                 const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
                 itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
                 itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
@@ -256,7 +264,6 @@
                     alert('Barang ini sudah habis stoknya!');
                     return;
                 }
-                // Tambahkan barang baru
                 selectedItems[selectedValue] = {
                     name: selectedText,
                     quantity: 1,
@@ -334,30 +341,26 @@
             opsiBayarSelect.addEventListener('change', toggleFields);
         });
 
-        // Format angka menjadi Rupiah
         function formatRupiah(number) {
             return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }
 
-        // Hilangkan format Rupiah untuk nilai asli
         function removeRupiahFormat(input) {
-            input.value = input.value.replace(/[^0-9]/g, ''); // Hanya angka
-            updateRawValue(input.value); // Perbarui nilai murni
+            input.value = input.value.replace(/[^0-9]/g, '');
+            updateRawValue(input.value);
         }
 
-        // Terapkan kembali format Rupiah
         function applyRupiahFormat(input) {
-            const value = parseInt(input.value || 0); // Konversi ke angka
-            input.value = formatRupiah(value); // Tambahkan format Rupiah
+            const value = parseInt(input.value || 0);
+            input.value = formatRupiah(value);
         }
 
-        // Fungsi untuk memperbarui nilai murni di hidden input
         function updateRawValue(value) {
             const totalBayarRaw = document.getElementById('totalBayarRaw');
-            totalBayarRaw.value = value; // Simpan nilai asli
+            totalBayarRaw.value = value;
         }
 
-        // Fungsi untuk memperbarui input tersembunyi
+        // memperbarui input tersembunyi
         function updateHiddenInputs() {
             const barangSewa = [];
             const jumlahSewa = [];
@@ -373,9 +376,8 @@
             jumlahSewaInput.value = jumlahSewa;
 
             const totalBayarInput = document.getElementById('totalBayar');
-            totalBayarInput.value = formatRupiah(totalHarga); // Tambahkan format Rupiah untuk tampilan
+            totalBayarInput.value = formatRupiah(totalHarga);
 
-            // Update hidden input dengan angka asli
             updateRawValue(totalHarga);
         }
 

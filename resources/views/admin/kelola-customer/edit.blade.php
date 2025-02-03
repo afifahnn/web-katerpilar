@@ -44,6 +44,31 @@
                         <input type="number" name="telp_customer" id="telp_customer" value="{{ $customer->telp_customer }}" placeholder="e.g. 081234567890" required>
                     </div>
                 </div>
+                <div class="btn-forgot" id="forgot-btn">Reset password</div>
+                <div id="forgot-pwd" style="display: none;">
+                    <div class="change-pwd">Ganti Password</div>
+                    <div class="grid-container">
+                        <div class="input-profil password-container">
+                            <div class="data-profil">Password Baru</div>
+                            <div class="password-wrapper">
+                                <input type="password" name="password" id="password-input" placeholder="Password">
+                                <i class="fa-solid fa-eye-slash" style="font-size: 16px" id="toggle-password"></i>
+                            </div>
+                            @if ($errors->has('password'))
+                                <div class="error-input">
+                                    {{ $errors->first('password') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="input-profil password-container">
+                            <div class="data-profil">Konfirmasi Password</div>
+                            <div class="password-wrapper">
+                                <input type="password" name="password_confirmation" id="confirm-password-input" placeholder="Konfirmasi Password">
+                                <i class="fa-solid fa-eye-slash" style="font-size: 16px" id="confirm-toggle-password"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="btn-add-create">
                     <div class="btn-add-data">
@@ -93,6 +118,38 @@
                 });
             });
         });
+    });
+
+    // FORGOT PASSWORD
+    document.addEventListener('DOMContentLoaded', function () {
+        const forgotBtn = document.getElementById('forgot-btn');
+        const forgotPwd = document.getElementById('forgot-pwd');
+
+        forgotBtn.addEventListener('click', function () {
+            if (forgotPwd.style.display === 'none' || forgotPwd.style.display === '') {
+                forgotPwd.style.display = 'block';
+            } else {
+                forgotPwd.style.display = 'none';
+            }
+        });
+    });
+
+    // TOGGLE PASSWORD
+    const togglePassword = document.getElementById('toggle-password');
+    const confirmTogglePassword = document.getElementById('confirm-toggle-password');
+    const passwordInput = document.getElementById('password-input');
+    const confirmPasswordInput = document.getElementById('confirm-password-input');
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        togglePassword.classList.toggle('fa-eye');
+    });
+
+    confirmTogglePassword.addEventListener('click', () => {
+        const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+        confirmPasswordInput.type = type;
+        confirmTogglePassword.classList.toggle('fa-eye');
     });
 </script>
 @endsection

@@ -80,13 +80,6 @@
                             <td class="col-deskripsi">{{ $item->deskripsi }}</td>
                             <td>
                                 <div class="btn-aksi">
-                                    <form action="{{ route('admin.kelola-keuangan.delete', $item->id) }}" method="post" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-hapus">
-                                            <i class="fa-solid fa-trash" style="color: #FFFFFF"></i>
-                                        </button>
-                                    </form>
                                     <a href="{{ route('admin.kelola-keuangan.edit', $item->id) }}">
                                         <button class="btn-edit">
                                             <i class="fa-solid fa-pen-to-square" style="color: #FFFFFF"></i>
@@ -173,31 +166,6 @@
 
         if (buttonId === 'sort-tgl') sortOrderTgl = sortOrder;
     }
-
-    // ALERT DELETE
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.delete-form').forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                event.preventDefault();
-                var formElement = this;
-
-                Swal.fire({
-                    title: 'Apakah anda yakin?',
-                    text: "Data ini akan dihapus dan tidak dapat dikembalikan.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        formElement.submit();
-                    }
-                });
-            });
-        });
-    });
 
     // ALERT LOGOUT
     document.addEventListener('DOMContentLoaded', function () {

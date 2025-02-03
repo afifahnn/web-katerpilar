@@ -31,11 +31,12 @@
                         {{ $errors->first('username') }}
                     </div>
                 @endif
-                <div class="pwd-container">
+                <div class="pwd-container" style="margin-bottom: 1px;">
                     <i class="fa-solid fa-lock"></i>
                     <input type="password" id="password-input" name="password" placeholder="Password">
                     <i class="fa-solid fa-eye-slash" id="toggle-password"></i>
                 </div>
+                <div class="forgot" onclick="window.location.href='/manual-user'">Lupa password?</div>
                 @if ($errors->has('password'))
                     <div class="error-input">
                         {{ $errors->first('password') }}
@@ -62,6 +63,10 @@
 
             </div>
         </form>
+    </div>
+
+    <div class="help-icon" onclick="window.location.href='/manual-user'">
+        <i class="fa-solid fa-question"></i>
     </div>
 </body>
 

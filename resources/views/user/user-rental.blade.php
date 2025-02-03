@@ -12,16 +12,16 @@
             @csrf
             <div class="input-data">
                 <div class="content" for="nama_customer">Nama</div>
-                <input class="form-control" name="nama_customer" list="datalistOptions" id="nama_customer" placeholder="Nama" value="{{ Auth::guard('customer')->user()->nama_customer }}" required>
+                <input class="form-control" name="nama_customer" list="datalistOptions" id="nama_customer" placeholder="Nama" value="{{ Auth::guard('customer')->user()->nama_customer }}" required readonly>
             </div>
             <div class="grid-container">
                 <div class="input-container">
                     <div class="content" for="telp_customer">Nomor Telepon</div>
-                    <input type="text" id="telp_customer" name="telp_customer" placeholder="e.g. 081234567890" value="{{ Auth::guard('customer')->user()->telp_customer }}" required>
+                    <input type="text" id="telp_customer" name="telp_customer" placeholder="e.g. 081234567890" value="{{ Auth::guard('customer')->user()->telp_customer }}" required readonly>
                 </div>
                 <div class="input-container">
                     <div class="content" for="alamat_customer">Alamat</div>
-                    <input type="text" id="alamat_customer" name="alamat_customer" placeholder="Alamat" value="{{ Auth::guard('customer')->user()->alamat_customer }}" required>
+                    <input type="text" id="alamat_customer" name="alamat_customer" placeholder="Alamat" value="{{ Auth::guard('customer')->user()->alamat_customer }}" required readonly>
                 </div>
             </div>
             <div class="grid-container">
@@ -50,10 +50,11 @@
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="status" value="menunggu">
 
             {{-- barang yang disewa --}}
             <div class="input-data">
-                <div class="content" for="barang_sewa">Barang yang Disewa </div>
+                <div class="content" for="barang_sewa">Barang yang Disewa</div>
                 <div class="input-group">
                     <select class="form-select" id="inputGroupSelect04">
                     <option value="" disabled selected>Pilih...</option>
@@ -82,7 +83,7 @@
                         @endif
                     @endforeach
                     </select>
-                    <button class="btn btn-outline-secondary" type="button" id="addItemBtn">
+                    <button class="btn btn-outline-secondary" type="button" id="addItemBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambahkan Item/Jumlah">
                         <i class="fa-solid fa-plus" style="font-size: 20px;"></i>
                     </button>
                 </div>
@@ -157,17 +158,16 @@
         }
     });
 
-    // Fungsi untuk menghitung total hari
     function calculateTotalHari() {
         const sewaDate = new Date(tanggalSewa.value);
         const kembaliDate = new Date(tanggalKembali.value);
 
         if (sewaDate && kembaliDate) {
-            const timeDiff = kembaliDate - sewaDate; // Selisih waktu dalam milidetik
-            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Konversi ke hari
+            const timeDiff = kembaliDate - sewaDate;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
             totalHari.value = daysDiff > 0 ? daysDiff + " hari" : "";
         } else {
-            totalHari.value = ''; // Jika tanggal tidak lengkap, reset total hari
+            totalHari.value = '';
         }
     }
 
@@ -177,7 +177,7 @@
     const selectedItemsContainer = document.getElementById('selectedItems');
     const barangSewaInput = document.getElementById('barangSewaInput');
     const jumlahSewaInput = document.getElementById('jumlahSewaInput');
-    const selectedItems = {}; // Menyimpan data barang dan jumlah
+    const selectedItems = {};
 
     addItemBtn.addEventListener('click', function () {
         const selectedValue = selectBox.value;
@@ -189,11 +189,19 @@
         const stokBarang = parseInt(selectBox.options[selectBox.selectedIndex]?.dataset.stok || 0);
 
         if (selectedValue === "" || !selectedValue) {
-            alert('Pilih barang terlebih dahulu!');
+            Swal.fire({
+                toast: true,
+                icon: 'warning',
+                title: 'Pilih barang terlebih dahulu!',
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
             return;
         }
 
-        const totalHariText = totalHari.value.match(/\d+/); // Ambil angka dari total hari
+        const totalHariText = totalHari.value.match(/\d+/);
         const totalHariNumber = totalHariText ? parseInt(totalHariText[0]) : 0;
 
         let hargaPerItem;
@@ -210,24 +218,37 @@
             hargaPerItem = hargaSewa3 + additionalCost;
         }
 
-        // Jika barang sudah ada, tambahkan jumlahnya
         if (selectedItems[selectedValue]) {
             if (selectedItems[selectedValue].quantity >= stokBarang) {
-                alert(`Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`);
+                Swal.fire({
+                    toast: true,
+                    icon: 'error',
+                    title: `Stok tidak mencukupi! Maksimal hanya ${stokBarang} unit.`,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
                 return;
             }
             selectedItems[selectedValue].quantity += 1;
 
-            // Update tampilan jumlah
             const itemElement = document.querySelector(`.selected-item[data-value="${selectedValue}"]`);
             itemElement.querySelector('.item-quantity').textContent = `Jumlah: ${selectedItems[selectedValue].quantity}`;
             itemElement.querySelector('.item-price').textContent = `Harga: Rp ${hargaPerItem * selectedItems[selectedValue].quantity}`;
         } else {
             if (stokBarang <= 0) {
-                alert('Barang ini sudah habis stoknya!');
+                Swal.fire({
+                    toast: true,
+                    icon: 'error',
+                    title: 'Barang ini sudah habis stoknya!',
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
                 return;
             }
-            // Tambahkan barang baru
             selectedItems[selectedValue] = {
                 name: selectedText,
                 quantity: 1,
@@ -305,30 +326,25 @@
         opsiBayarSelect.addEventListener('change', toggleFields);
     });
 
-    // Format angka menjadi Rupiah
     function formatRupiah(number) {
         return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
-    // Hilangkan format Rupiah untuk nilai asli
     function removeRupiahFormat(input) {
         input.value = input.value.replace(/[^0-9]/g, '');
         updateRawValue(input.value);
     }
 
-    // Terapkan kembali format Rupiah
     function applyRupiahFormat(input) {
         const value = parseInt(input.value || 0);
         input.value = formatRupiah(value);
     }
 
-    // Fungsi untuk memperbarui nilai murni di hidden input
     function updateRawValue(value) {
         const totalBayarRaw = document.getElementById('totalBayarRaw');
-        totalBayarRaw.value = value; // Simpan nilai asli
+        totalBayarRaw.value = value;
     }
 
-    // Fungsi untuk memperbarui input tersembunyi
     function updateHiddenInputs() {
         const barangSewa = [];
         const jumlahSewa = [];
@@ -397,6 +413,14 @@
                 timer: 3000,
                 timerProgressBar: false,
             });
+        });
+    });
+
+    // TOOLTIP
+    document.addEventListener("DOMContentLoaded", function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
 </script>

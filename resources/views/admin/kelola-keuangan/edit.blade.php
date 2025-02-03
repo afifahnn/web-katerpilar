@@ -65,7 +65,7 @@
 <script>
     // FORMAT RUPIAH UNTUK INPUT LANGSUNG
     function formatRupiah(angka, prefix = '') {
-        const numberString = angka.replace(/[^,\d]/g, '').toString(); // Hanya angka
+        const numberString = angka.replace(/[^,\d]/g, '').toString();
         const split = numberString.split(',');
         const sisa = split[0].length % 3;
         let rupiah = split[0].substr(0, sisa);
@@ -84,13 +84,12 @@
 
     document.querySelectorAll('.currency-input').forEach(input => {
         input.addEventListener('input', function () {
-            const rawValue = cleanRupiah(this.value); // Ambil angka mentah
-            this.value = formatRupiah(rawValue, 'Rp '); // Format ulang dengan Rupiah
+            const rawValue = cleanRupiah(this.value);
+            this.value = formatRupiah(rawValue, 'Rp ');
         });
 
-        // Pastikan value yang dikirim adalah angka mentah
         input.closest('form').addEventListener('submit', function () {
-            input.value = cleanRupiah(input.value); // Hapus format sebelum submit
+            input.value = cleanRupiah(input.value); 
         });
     });
 

@@ -9,14 +9,22 @@
     <div class="riwayat-section">
         <div class="riwayat">Riwayat Transaksi Anda</div>
         <div class="riwayat-container">
+            <div class="filter-status mb-3">
+                <form action="{{ route('user.riwayat') }}" method="GET">
+                    <label for="status">Filter Status:</label>
+                    <select name="status" id="status" class="form-control" onchange="this.form.submit()">
+                        <option value="">Semua Status</option>
+                        <option value="menunggu" {{ request('status') == 'menunggu' ? 'selected' : '' }}>Menunggu</option>
+                        <option value="booking" {{ request('status') == 'booking' ? 'selected' : '' }}>Booking</option>
+                        <option value="diambil" {{ request('status') == 'diambil' ? 'selected' : '' }}>Diambil</option>
+                        <option value="dikembalikan" {{ request('status') == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
+                        <option value="dibatalkan" {{ request('status') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                    </select>
+                </form>
+            </div>
             @if($transaksi->isEmpty())
                 <div class="no-transactions">
-                    <div>Anda belum pernah melakukan pemesanan barang</div>
-                    <div class="btn-add-create">
-                        <div class="btn-add-data">
-                            <button type="button" onclick="window.location.href='/katalog'">Lihat Katalog</button>
-                        </div>
-                    </div>
+                    <div>Tidak ada pesanan untuk status ini.</div>
                 </div>
             @else
                 @foreach($transaksi as $index => $item)
@@ -25,14 +33,31 @@
                             <div class="tgl-sewa">Tanggal sewa : </div>
                             <div>{{ \Carbon\Carbon::parse($item->tgl_sewa)->format('d/m/Y') }} <b>s.d.</b> {{ \Carbon\Carbon::parse($item->tgl_kembali)->format('d/m/Y') }}</div>
                         </div>
+                        <div class="tanggal">
+                            <div class="tgl-sewa">Status Pesanan :</div>
+                            <div style="font-weight: 600">
+                                @php
+                                    $statusStyles = [
+                                        'menunggu' => ['color' => 'text-secondary', 'icon' => 'fa-clock'],
+                                        'booking' => ['color' => 'text-warning', 'icon' => 'fa-calendar-check'],
+                                        'diambil' => ['color' => 'text-success', 'icon' => 'fa-box'],
+                                        'dikembalikan' => ['color' => 'text-primary', 'icon' => 'fa-check-circle'],
+                                        'dibatalkan' => ['color' => 'text-danger', 'icon' => 'fa-times-circle']
+                                    ];
+                                    $status = $statusStyles[$item->status];
+                                @endphp
+                                <i class="fas {{ $status['icon'] }} {{ $status['color'] }}"></i>
+                                <span class="{{ $status['color'] }}">{{ ucwords($item->status) }}</span>
+                            </div>
+                        </div>
                         <hr>
                         <div class="detail-riwayat">
                             <div class="barang">
                                 <div class="brg-sewa">Barang sewa :</div>
                                 <ul>
                                     @php
-                                        $barang_sewa = json_decode($item->barang_sewa, true);  // Decode JSON menjadi array
-                                        $jumlah_sewa = json_decode($item->jumlah_sewa, true);  // Decode JSON menjadi array
+                                        $barang_sewa = json_decode($item->barang_sewa, true);
+                                        $jumlah_sewa = json_decode($item->jumlah_sewa, true);
                                     @endphp
 
                                     @foreach($barang_sewa as $key => $barang)
@@ -64,17 +89,17 @@
                                             <div class="pic-bukti">
                                                 <img src="{{ asset('storage/' . $item->bukti_bayar) }}" alt="{{ $item->metode_bayar }}">
                                             </div>
-                                        @else
+                                        @elseif(!in_array($item->status, ['dikembalikan', 'dibatalkan']))
                                             <a href="{{ route('user.upload', $item->id) }}" class="btn btn-primary">Upload Bukti Bayar</a>
                                         @endif
                                     @endif
                                 </div>
                             </div>
                             <div class="cancel-rental">
-                                @if(\Carbon\Carbon::now()->lessThan(\Carbon\Carbon::parse($item->tgl_sewa)))
-                                    <form action="{{ route('user.riwayat.delete', $item->id) }}" method="post" class="delete-form">
+                                @if(\Carbon\Carbon::now()->lessThan(\Carbon\Carbon::parse($item->tgl_sewa)) && !in_array($item->status, ['diambil', 'dikembalikan', 'dibatalkan']))
+                                    <form action="{{ route('user.riwayat.batalkan', $item->id) }}" method="POST" class="delete-form">
                                         @csrf
-                                        @method('DELETE')
+                                        @method('POST')
                                         <button type="submit" class="btn-cancel">
                                             <i class="fa-solid fa-ban" style="font-size: 15px; padding-right: 5px;"></i>
                                             <span>Batalkan Pesanan</span>
@@ -109,7 +134,7 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!',
+                    confirmButtonText: 'Ya, batalkan!',
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {

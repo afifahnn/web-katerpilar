@@ -26,6 +26,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // User Home
 Route::get('/', [UserHomeController::class, 'userHome'])->name('user.home');
 
+// Manual User
+Route::get('/manual-user', [UserHomeController::class, 'manualUser'])->name('user.manual');
+
 Route::middleware(['auth'])->group(function () {
     // User Pesan
     Route::get('/rental', [UserRentalController::class, 'userRental'])->name('user.rental');
@@ -37,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // User Riwayat
     Route::get('/riwayat', [UserRiwayatController::class, 'userRiwayat'])->name('user.riwayat');
-    Route::delete('/riwayat/{id}', [UserRiwayatController::class, 'deleteRiwayat'])->name('user.riwayat.delete');
+    Route::post('/riwayat/batalkan/{id}', [UserRiwayatController::class, 'batalkanPesanan'])->name('user.riwayat.batalkan');
 
     // User Profil
     Route::get('/profil', [UserProfilController::class, 'userProfil'])->name('user.profil');
