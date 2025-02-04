@@ -1,12 +1,14 @@
 #manual-user {
-    background-color: red;
+    margin-bottom: 50px;
 }
 
+.whatsapp-link,
 .login-link {
     color: black;
     text-decoration: none;
     font-weight: bold;
 }
+
 .login-link:hover {
     text-decoration: underline;
 }
